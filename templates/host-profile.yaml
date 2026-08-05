@@ -1,0 +1,11 @@
+schema_version: 1
+host:
+  id: null
+  name: null
+  type: local
+  hostname: null
+  operating_system: null
+constraints:
+  dedicated_to_musashi: false
+  shared_services: []
+nodes: []

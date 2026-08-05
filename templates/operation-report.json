@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "report_type": "operation",
+  "report_id": null,
+  "created_at": null,
+  "agent_runtime": null,
+  "repository_commit": null,
+  "execution_mode": "advisory",
+  "scope": {"type": "single-node", "nodes": []},
+  "observations": [],
+  "validation": [],
+  "summary": null
+}

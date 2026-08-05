@@ -1,0 +1,12 @@
+# Local Musashi Dojo operational workspace
+.musashi/
+
+# Temporary local artifacts
+*.tmp
+*.lock
+*.bak
+
+# Local editor and OS artifacts
+.DS_Store
+.idea/
+.vscode/

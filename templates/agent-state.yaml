@@ -1,0 +1,11 @@
+schema_version: 1
+agent:
+  name: Niten
+  role: Dojo Node Operator
+repository:
+  previous_commit: null
+  current_commit: null
+  reconciled_at: null
+local_workspace:
+  initialized: false
+  last_session_at: null

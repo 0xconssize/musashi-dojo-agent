@@ -1,0 +1,14 @@
+schema_version: 1
+plan:
+  id: null
+  operation: inspect
+  created_at: null
+scope:
+  type: single-node
+  nodes: []
+steps: []
+confirmation:
+  required: false
+  granted_at: null
+validation: []
+recovery: []

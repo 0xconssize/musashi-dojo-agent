@@ -1,0 +1,20 @@
+schema_version: 1
+mode: advisory
+capabilities:
+  local_shell: false
+  remote_shell: false
+  ssh: false
+  file_read: true
+  file_write: false
+  file_transfer: false
+  privilege_escalation: never
+  container_management: false
+  system_service_management: false
+  network_configuration: false
+policy:
+  allow_read_only_commands: true
+  explain_reversible_changes: true
+  confirm_host_level_changes: true
+  confirm_destructive_changes: true
+  save_generated_scripts: true
+  retain_session_history: true

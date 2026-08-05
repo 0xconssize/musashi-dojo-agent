@@ -1,0 +1,14 @@
+schema_version: 1
+node:
+  id: null
+  name: null
+  role: relay
+  environment: musashi-testnet
+  host_id: null
+  installation_method: null
+  runtime_type: null
+  service_identity: null
+  data_directory: null
+  configuration_directory: null
+  workspace_path: null
+  enabled: true

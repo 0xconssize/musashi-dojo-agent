@@ -1,0 +1,11 @@
+schema_version: 1
+operator:
+  id: operator-001
+  name: null
+  preferred_language: null
+  experience_level: null
+  goals: []
+  confirmation_preferences:
+    explain_reversible_changes: true
+    confirm_host_level_changes: true
+    confirm_destructive_changes: true

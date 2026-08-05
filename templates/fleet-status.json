@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "observed_at": null,
+  "hosts": [],
+  "nodes": [],
+  "summary": {"total": 0, "healthy": 0, "degraded": 0, "unknown": 0}
+}

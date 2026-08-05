@@ -1,0 +1,10 @@
+schema_version: 1
+node_id: null
+observed_at: null
+status: unknown
+version: null
+sync:
+  status: unknown
+  tip: null
+  peer_count: null
+observations: []

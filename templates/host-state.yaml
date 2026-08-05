@@ -1,0 +1,9 @@
+schema_version: 1
+host_id: null
+observed_at: null
+status: unknown
+observations: []
+resources:
+  cpu_cores: null
+  memory_gb: null
+  disk_free_gb: null

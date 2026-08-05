@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "report_type": "diagnostic",
+  "report_id": null,
+  "created_at": null,
+  "execution_mode": "advisory",
+  "target": {"host_id": null, "node_id": null},
+  "checks": [],
+  "problems": [],
+  "recommendations": [],
+  "sanitized_log_excerpts": [],
+  "summary": null
+}

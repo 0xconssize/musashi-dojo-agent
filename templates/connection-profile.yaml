@@ -1,0 +1,11 @@
+schema_version: 1
+host_id: null
+access:
+  method: null
+  user: null
+  port: 22
+  authentication: operator-managed
+  privilege_escalation: prompt
+verification:
+  last_verified_at: null
+  signals: []

@@ -5,6 +5,13 @@ host:
   type: local
   hostname: null
   operating_system: null
+capabilities:
+  command_execution: null
+  file_read: null
+  file_write: null
+  file_transfer: null
+  service_management: null
+  container_management: null
 constraints:
   dedicated_to_musashi: false
   shared_services: []

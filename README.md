@@ -14,7 +14,8 @@ Niten is the **Dojo Node Operator**: an assistant for human judgment, not a repl
 - Host-focused safety and confirmation policies.
 - Templates for operator, host, node, execution, and operational state.
 - JSON Schema contracts for portable structured data.
-- Future locations for network knowledge, skills, playbooks, and reports.
+- Compact skills for registering hosts and nodes without modifying them.
+- Planned locations for current network knowledge, operational playbooks, and reports.
 
 The repository contains no executable source code or custom execution engine. The selected agent runtime supplies reasoning, conversation, command execution, remote access, and file operations.
 

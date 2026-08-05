@@ -1,1 +1,33 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://musashi-dojo.dev/schemas/node-profile.schema.json","title":"Node profile","type":"object","required":["schema_version","node"],"properties":{"schema_version":{"const":1},"node":{"type":"object","required":["id","name","role","environment","host_id"],"properties":{"id":{"type":"string"},"name":{"type":["string","null"]},"role":{"type":"string"},"environment":{"type":"string"},"host_id":{"type":["string","null"]},"installation_method":{"type":["string","null"]},"runtime_type":{"type":["string","null"]},"service_identity":{"type":["string","null"]},"enabled":{"type":"boolean"}},"additionalProperties":true}},"additionalProperties":false}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://musashi-dojo.dev/schemas/node-profile.schema.json",
+  "title": "Node profile",
+  "type": "object",
+  "required": ["schema_version", "node"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "node": {
+      "type": "object",
+      "required": ["id", "name", "role", "environment", "host_id", "installation_method", "runtime_type", "service_identity", "data_directory", "configuration_directory", "workspace_path", "enabled"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "name": {"type": ["string", "null"], "minLength": 1},
+        "role": {"enum": ["relay", "block-producer", "other"]},
+        "environment": {"type": "string", "minLength": 1},
+        "host_id": {"$ref": "#/$defs/id"},
+        "installation_method": {"type": ["string", "null"], "minLength": 1},
+        "runtime_type": {"type": ["string", "null"], "minLength": 1},
+        "service_identity": {"type": ["string", "null"], "minLength": 1},
+        "data_directory": {"type": ["string", "null"], "minLength": 1},
+        "configuration_directory": {"type": ["string", "null"], "minLength": 1},
+        "workspace_path": {"type": ["string", "null"], "minLength": 1},
+        "enabled": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 63}
+  },
+  "additionalProperties": false
+}

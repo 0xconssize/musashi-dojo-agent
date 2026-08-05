@@ -1,1 +1,25 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://musashi-dojo.dev/schemas/host-state.schema.json","title":"Host state","type":"object","required":["schema_version","host_id","observed_at","status"],"properties":{"schema_version":{"const":1},"host_id":{"type":["string","null"]},"observed_at":{"type":["string","null"],"format":"date-time"},"status":{"enum":["healthy","degraded","unreachable","unknown"]},"observations":{"type":"array"},"resources":{"type":"object","additionalProperties":true}},"additionalProperties":false}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://musashi-dojo.dev/schemas/host-state.schema.json",
+  "title": "Host state",
+  "type": "object",
+  "required": ["schema_version", "host_id", "observed_at", "status", "observations", "resources"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "host_id": {"type": ["string", "null"], "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 63},
+    "observed_at": {"type": ["string", "null"], "format": "date-time"},
+    "status": {"enum": ["healthy", "degraded", "unreachable", "unknown"]},
+    "observations": {"type": "array", "items": {"type": "string"}},
+    "resources": {
+      "type": "object",
+      "required": ["cpu_cores", "memory_gb", "disk_free_gb"],
+      "properties": {
+        "cpu_cores": {"type": ["number", "null"], "minimum": 0},
+        "memory_gb": {"type": ["number", "null"], "minimum": 0},
+        "disk_free_gb": {"type": ["number", "null"], "minimum": 0}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,1 +1,26 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://musashi-dojo.dev/schemas/node-state.schema.json","title":"Node state","type":"object","required":["schema_version","node_id","observed_at","status"],"properties":{"schema_version":{"const":1},"node_id":{"type":["string","null"]},"observed_at":{"type":["string","null"],"format":"date-time"},"status":{"enum":["running","stopped","starting","failed","unknown"]},"version":{"type":["string","null"]},"sync":{"type":"object","additionalProperties":true},"observations":{"type":"array"}},"additionalProperties":false}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://musashi-dojo.dev/schemas/node-state.schema.json",
+  "title": "Node state",
+  "type": "object",
+  "required": ["schema_version", "node_id", "observed_at", "status", "version", "sync", "observations"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "node_id": {"type": ["string", "null"], "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 63},
+    "observed_at": {"type": ["string", "null"], "format": "date-time"},
+    "status": {"enum": ["running", "stopped", "starting", "failed", "unknown"]},
+    "version": {"type": ["string", "null"], "minLength": 1},
+    "sync": {
+      "type": "object",
+      "required": ["status", "tip", "peer_count"],
+      "properties": {
+        "status": {"enum": ["synced", "syncing", "stalled", "unknown"]},
+        "tip": {"type": ["integer", "null"], "minimum": 0},
+        "peer_count": {"type": ["integer", "null"], "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "observations": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

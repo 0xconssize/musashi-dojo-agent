@@ -3,7 +3,7 @@ host_id: null
 access:
   method: null
   user: null
-  port: 22
+  port: null
   authentication: operator-managed
   privilege_escalation: prompt
 verification:

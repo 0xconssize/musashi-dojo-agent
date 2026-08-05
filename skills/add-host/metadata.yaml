@@ -1,0 +1,28 @@
+schema_version: 1
+skill: add-host
+phase: 3
+risk: local-state-only
+sources:
+  official:
+    url: https://leios.cardano-scaling.org/docs/testnet/getting-started/
+    sections:
+      - System requirements
+      - Run a relay
+    authority: authoritative
+    retrieved_at: "2026-08-05"
+    supported_snapshot:
+      network: Musashi Dojo public prototype testnet
+      release: prototype-2026w30
+      node_version: cardano-node 11.1.0.164
+  operator_scripts:
+    url: https://github.com/0xconssize/leios
+    commit: ebb5ac56a6c85c2e28b2e4d90b0d7437d5a2e77e
+    authority: supplementary
+    reviewed_paths:
+      - README.md
+    applicability: No script is used by this registration-only skill.
+freshness:
+  status: current
+  reviewed_at: "2026-08-05"
+  revalidate_before: Using any testnet-specific requirement, default, value, or command.
+  stale_when: The official page, linked configuration, supported release, or network incarnation changes.

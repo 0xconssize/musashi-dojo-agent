@@ -9,3 +9,7 @@ repository:
 local_workspace:
   initialized: false
   last_session_at: null
+active_context:
+  host_id: null
+  node_id: null
+  changed_at: null

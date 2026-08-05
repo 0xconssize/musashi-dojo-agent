@@ -1,1 +1,55 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://musashi-dojo.dev/schemas/host-profile.schema.json","title":"Host profile","type":"object","required":["schema_version","host","constraints","nodes"],"properties":{"schema_version":{"const":1},"host":{"type":"object","required":["id","name","type"],"properties":{"id":{"type":"string"},"name":{"type":["string","null"]},"type":{"enum":["local","remote"]},"hostname":{"type":["string","null"]}},"additionalProperties":true},"constraints":{"type":"object","additionalProperties":true},"nodes":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://musashi-dojo.dev/schemas/host-profile.schema.json",
+  "title": "Host profile",
+  "type": "object",
+  "required": ["schema_version", "host", "capabilities", "constraints", "nodes"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "host": {
+      "type": "object",
+      "required": ["id", "name", "type", "hostname", "operating_system"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "name": {"type": ["string", "null"], "minLength": 1},
+        "type": {"enum": ["local", "remote"]},
+        "hostname": {"type": ["string", "null"], "minLength": 1},
+        "operating_system": {"type": ["string", "null"], "minLength": 1}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"type": {"const": "remote"}}},
+          "then": {"properties": {"hostname": {"type": "string", "minLength": 1}}}
+        }
+      ],
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "object",
+      "required": ["command_execution", "file_read", "file_write", "file_transfer", "service_management", "container_management"],
+      "properties": {
+        "command_execution": {"type": ["boolean", "null"]},
+        "file_read": {"type": ["boolean", "null"]},
+        "file_write": {"type": ["boolean", "null"]},
+        "file_transfer": {"type": ["boolean", "null"]},
+        "service_management": {"type": ["boolean", "null"]},
+        "container_management": {"type": ["boolean", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "constraints": {
+      "type": "object",
+      "required": ["dedicated_to_musashi", "shared_services"],
+      "properties": {
+        "dedicated_to_musashi": {"type": "boolean"},
+        "shared_services": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      },
+      "additionalProperties": false
+    },
+    "nodes": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 63}
+  },
+  "additionalProperties": false
+}

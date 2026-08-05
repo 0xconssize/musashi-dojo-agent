@@ -301,7 +301,7 @@ musashi-dojo-agent/
 ├── AGENTS.md
 ├── AGENT.md
 ├── IDENTITY.md
-├── ONBOARDING.md
+├── ONBOARDING.md (temporary; delete after onboarding)
 ├── MEMORY.md
 ├── SECURITY.md
 ├── HOST_SAFETY.md
@@ -317,9 +317,6 @@ musashi-dojo-agent/
 │   └── known-issues.yaml
 │
 ├── skills/
-│   ├── onboard-operator/
-│   │   ├── SKILL.md
-│   │   └── metadata.yaml
 │   ├── assess-host/
 │   │   ├── SKILL.md
 │   │   └── metadata.yaml
@@ -1407,10 +1404,9 @@ Acceptance criteria:
 Deliver:
 
 - Stable Niten identity defined in `IDENTITY.md`.
-- Local `.musashi/identity/IDENTITY.md` generated from onboarding data;
-- `ONBOARDING.md`.
-- Operator onboarding skill.
-- Workspace initialization instructions.
+- Temporary `ONBOARDING.md` containing the complete onboarding and workspace initialization flow.
+- Local `.musashi/identity/IDENTITY.md` generated from onboarding data.
+- Cleanup step that deletes `ONBOARDING.md` after successful onboarding.
 
 Acceptance criteria:
 
@@ -1420,8 +1416,10 @@ Acceptance criteria:
 - It creates `IDENTITY.md` and stores operator-specific branding and avatar metadata under `.musashi/identity/`.
 - It allows the operator's personality preferences to replace any default personality aspect while preserving security and host-safety rules.
 - It can offer an avatar-generation flow without storing the image or mutable identity data in Git.
+- No onboarding skill, duplicate onboarding document, or permanent onboarding scaffolding is created.
+- `ONBOARDING.md` is deleted after successful onboarding.
 
-Phase implementations must first check whether the existing root `IDENTITY.md`, templates, and runtime instructions are sufficient. Any additional directory or substantial new file group requires the confirmation described in Section 5.9.
+Phase implementations must first check whether the existing root `IDENTITY.md`, templates, and runtime instructions are sufficient. This phase is intentionally implemented in one temporary root document; any additional directory or substantial new file group requires the confirmation described in Section 5.9.
 
 ### Phase 3 — Multi-host and multi-node model
 

@@ -1,0 +1,107 @@
+schema_version: 1
+network_id: musashi
+verified_at: "2026-08-05T10:16:18Z"
+
+authority:
+  root: https://leios.cardano-scaling.org/docs/testnet/getting-started/
+  policy: Official Musashi guidance overrides all Cardano mainnet and supplementary operator material.
+
+issues:
+  - id: prototype-is-volatile
+    status: current
+    severity: high
+    summary: The testnet uses continuously rebuilt pre-release software and may reset or re-pin configuration every few weeks.
+    action: Recheck all network declarations before installation, update, or recovery.
+    source: https://leios.cardano-scaling.org/docs/testnet/getting-started/#where-to-start
+
+  - id: sync-is-slow-or-bursty
+    status: current
+    severity: medium
+    summary: Few upstream relays and an unoptimized catch-up path can cause long pauses followed by jumps in sync progress.
+    action: Wait, retry later, or restart; report persistent stalls with version and logs.
+    source: https://leios.cardano-scaling.org/docs/testnet/getting-started/#confirm-you-are-syncing
+
+  - id: selected-release-requires-state-wipe
+    status: current
+    severity: high
+    summary: The prototype-2026w30 release notes require wiping local state because a Musashi Dijkstra block triggered a ledger issue.
+    action: Do not reuse old chain state when adopting w30; sideload from IOG relays or sync from genesis.
+    source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w30
+
+  - id: official-release-selection-conflict
+    status: unresolved
+    severity: high
+    summary: The guide selects w30, the releases page contains w31 and w31a, and the Operations Book still calls w27 latest.
+    action: Keep w30 selected until the getting-started guide changes; never choose solely by recency.
+    sources:
+      - https://leios.cardano-scaling.org/docs/testnet/getting-started/
+      - https://github.com/input-output-hk/ouroboros-leios/releases
+      - https://book.play.dev.cardano.org/adv-musashi.html
+
+  - id: linux-aarch64-asset-conflict
+    status: unresolved
+    severity: high
+    summary: The guide lists Linux aarch64 prebuilt support, but the w30 release has no Linux aarch64 archive or checksum.
+    action: Do not claim a w30 Linux aarch64 download is available; use another documented method or await guide reconciliation.
+    source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w30
+
+  - id: unpinned-nix-flake
+    status: current
+    severity: medium
+    summary: The documented Nix command follows an unpinned repository flake and may resolve newer code than the guide-selected release.
+    action: Inspect cardano-node --version and reconcile it with current.yaml before treating it as the selected release.
+    source: https://leios.cardano-scaling.org/docs/testnet/getting-started/#nix
+
+  - id: dijkstra-tooling-is-rough
+    status: current
+    severity: medium
+    summary: Not all Cardano tooling is Dijkstra-era ready.
+    action: Do not assume mainnet tools or Conway-era commands are compatible.
+    source: https://leios.cardano-scaling.org/docs/testnet/getting-started/#what-to-expect-in-the-early-days
+
+  - id: bls-registration-not-active
+    status: current
+    severity: medium
+    summary: The Dijkstra pool registration command requires a BLS signing key, but Musashi does not utilize it yet.
+    action: Follow the producer guide exactly and do not infer production BLS behavior.
+    source: https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/#register-stake-address-and-pool
+
+  - id: live-configuration-is-mutable
+    status: current
+    severity: high
+    summary: pin-config.sh downloads mutable live files from the Operations Book deployment.
+    action: Compare content hashes with current.yaml and mark declarations stale before using changed files.
+    source: https://raw.githubusercontent.com/input-output-hk/ouroboros-leios/main/testnet/pin-config.sh
+
+supplementary_phase3_review:
+  source: https://github.com/0xconssize/leios
+  commit: ebb5ac56a6c85c2e28b2e4d90b0d7437d5a2e77e
+  authority: false
+  usable_as_current_instructions: false
+  divergences:
+    - script: 00-set-environment-variables.sh
+      finding: README names CARDANO_NODE_NETWORK_ID, but the script exports CARDANO_NODE_NETWORK.
+    - script: 04-issue-operational-certificate.sh
+      finding: Reads tmp-testnet/shelley-genesis.json while the current guide places it under config/shelley-genesis.json.
+    - script: 08-run-node.sh
+      finding: Uses config.json and topology.json at the tmp-testnet root rather than the guide's config directory.
+    - script: 09-install-cardano-node-service.sh
+      finding: Generates a service with the same outdated root configuration paths.
+    - script: 05-register-certificates.sh
+      finding: Uses build-raw with hard-coded fees and deposits instead of the guide's transaction build workflow.
+    - script: 06-delegate-funds.sh
+      finding: Uses build-raw with a hard-coded fee instead of the guide's transaction build workflow.
+    - script: verify-opcert.sh
+      finding: Uses a Conway command group not documented for the current Dijkstra-era guide.
+    - script: reload-leios-db.sh
+      finding: Deletes database state and downloads an unreferenced snapshot workflow not authorized by the current guide.
+    - material: gLiveView instructions
+      finding: Third-party community/mainnet material; excluded because the Musashi guide does not authorize it.
+
+freshness:
+  status: current-as-reviewed
+  review_before_use: true
+  stale_when:
+    - Any cited official page or release changes.
+    - The selected release, topology, peer snapshot, or configuration hashes change.
+    - The operator scripts commit changes and is reconsidered for use.

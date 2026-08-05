@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-08-05T10:16:18Z",
+  "authoritative_root": "https://leios.cardano-scaling.org/docs/testnet/getting-started/",
+  "release_source": "https://github.com/input-output-hk/ouroboros-leios/releases",
+  "selection_policy": "The getting-started guide selects the operational release. A newer listed release is available-not-selected until that guide changes.",
+  "selected_release": "prototype-2026w30",
+  "releases": [
+    {
+      "tag": "prototype-2026w31a",
+      "published_at": "2026-08-03T10:40:06Z",
+      "tag_commit": "1c7cd2ad3356e89db8b7d311d085c8e48c9e2106",
+      "status": "available-not-selected",
+      "summary": "Hotfix changes invalid Leios certificate failures from node crashes to InvalidBlock traces.",
+      "state_action": "If crashes continue after updating, first delete only volatile chain state."
+    },
+    {
+      "tag": "prototype-2026w31",
+      "published_at": "2026-07-31T19:42:22Z",
+      "tag_commit": "7df3be372752b3d947e6e89ca0dc8d03ddd1c6fa",
+      "status": "available-not-selected",
+      "summary": "Adds EB announcement diffusion, exposes the BLS Leios key through cardano-api, and adds Linux aarch64 binaries.",
+      "state_action": "No state wipe required; updating relays together is recommended."
+    },
+    {
+      "tag": "prototype-2026w30",
+      "published_at": "2026-07-24T23:04:46Z",
+      "tag_commit": "1f55738136e518bdb691c5d8f41794eaf5c5a528",
+      "status": "guide-selected",
+      "summary": "Adds BLS key registration plumbing and Dijkstra ledger fixes; the BLS key is required by the registration command but is not utilized yet.",
+      "state_action": "Release notes require wiping local state and sideloading from IOG relays or syncing from genesis."
+    },
+    {
+      "tag": "prototype-2026w29",
+      "published_at": "2026-07-17T18:30:07Z",
+      "tag_commit": "355da093b8ef215095d55a4c9eec54b79b261f46",
+      "status": "historical",
+      "summary": "Increases certification throughput, adds CallTrace instrumentation, and caps oversized FetchLogic logs.",
+      "state_action": null
+    },
+    {
+      "tag": "prototype-2026w28",
+      "published_at": "2026-07-10T18:24:51Z",
+      "tag_commit": "038ddb3b3e6af7a5b11f941f4d92392531e3d134",
+      "status": "historical",
+      "summary": "Fixes missing Leios database tables, block re-application, and uncertified EB application on startup.",
+      "state_action": null
+    },
+    {
+      "tag": "prototype-2026w27b",
+      "published_at": "2026-07-09T02:08:44Z",
+      "tag_commit": "494a8da75bd8f6d5a4a4667b406d996a95ba6593",
+      "status": "historical",
+      "summary": "Fixes permanent stalling while syncing from genesis.",
+      "state_action": null
+    },
+    {
+      "tag": "prototype-2026w27a",
+      "published_at": "2026-07-08T16:57:38Z",
+      "tag_commit": "fc20d33e4f7ff957b95456713b8717642a4f8314",
+      "status": "historical-partial-fix",
+      "summary": "Improves stability but still suffers from sync-from-genesis stalls.",
+      "state_action": null
+    },
+    {
+      "tag": "prototype-2026w27",
+      "published_at": "2026-07-06T14:14:36Z",
+      "tag_commit": "d17756cbd1de8f1069e7262f4dbd5554491bb1d8",
+      "status": "broken-do-not-use",
+      "summary": "Breaking block and EB encoding changes; the release title explicitly marks it broken.",
+      "state_action": "Requires a Musashi respin, local-state deletion, and new network configuration."
+    },
+    {
+      "tag": "prototype-2026w26",
+      "published_at": "2026-06-26T18:39:37Z",
+      "tag_commit": "619d21a0d90e0450c2c2e4fb565dd95351628ee8",
+      "status": "historical",
+      "summary": "Fixes Dijkstra CLI transaction commands and adds macOS arm64 binaries.",
+      "state_action": null
+    },
+    {
+      "tag": "prototype-2026w25",
+      "published_at": "2026-06-19T06:05:45Z",
+      "tag_commit": "1c38c637256ea5e74335c5183585bdee3b1eaaac",
+      "status": "historical",
+      "summary": "Improves block-fetch stability and Dijkstra stake and governance queries.",
+      "state_action": null
+    },
+    {
+      "tag": "prototype-2026w24",
+      "published_at": "2026-06-11T21:54:46Z",
+      "tag_commit": "368f25ebe894dd26bb1c6693224ad09a14e6cce1",
+      "status": "historical-breaking",
+      "summary": "Adds voting pipeline work and a breaking N2N vote wire-format change.",
+      "state_action": null
+    },
+    {
+      "tag": "prototype-2026w23",
+      "published_at": "2026-06-11T21:39:08Z",
+      "tag_commit": "cd90a47ce63daec89bd2c9b02180e827bcb5605d",
+      "status": "historical-first-release",
+      "summary": "First public cardano-node leios-prototype release, based on Dijkstra-enabled node 11.0.1.",
+      "state_action": null
+    }
+  ],
+  "selected_release_assets": {
+    "linux_x86_64": {
+      "archive": "cardano-node-leios-x86_64-linux.tar.gz",
+      "sha256": "76a529ad4366db3e2e115a3d51a4effeee5a605658a9ceb7915d6daa0c57062e",
+      "status": "available"
+    },
+    "macos_aarch64": {
+      "archive": "cardano-node-leios-aarch64-darwin.tar.gz",
+      "sha256": "074ccf77368af26997121009423d766eeed9458da1faa5e6db37526efe5f0dce",
+      "status": "available"
+    },
+    "linux_aarch64": {
+      "archive": null,
+      "sha256": null,
+      "status": "documented-by-guide-but-absent-from-selected-release"
+    }
+  },
+  "conflicts": [
+    "The guide selects prototype-2026w30 while prototype-2026w31 and prototype-2026w31a are newer releases.",
+    "The linked Operations Book calls prototype-2026w27 latest while the guide selects prototype-2026w30.",
+    "The guide lists Linux aarch64 prebuilt support, but prototype-2026w30 publishes no Linux aarch64 asset."
+  ]
+}

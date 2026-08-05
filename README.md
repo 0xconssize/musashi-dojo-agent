@@ -15,7 +15,8 @@ Niten is the **Dojo Node Operator**: an assistant for human judgment, not a repl
 - Templates for operator, host, node, execution, and operational state.
 - JSON Schema contracts for portable structured data.
 - Compact skills for registering hosts and nodes without modifying them.
-- Planned locations for current network knowledge, operational playbooks, and reports.
+- Versioned current Musashi network declarations with source and freshness records.
+- Planned locations for operational playbooks and reports.
 
 The repository contains no executable source code or custom execution engine. The selected agent runtime supplies reasoning, conversation, command execution, remote access, and file operations.
 
@@ -28,7 +29,9 @@ Private and changing state belongs under `.musashi/`, including inventory, memor
 1. Read [`AGENTS.md`](AGENTS.md), [`AGENT.md`](AGENT.md), [`SECURITY.md`](SECURITY.md), and [`HOST_SAFETY.md`](HOST_SAFETY.md).
 2. Follow [`PLAN.md`](PLAN.md) for the project model and delivery phases.
 3. Initialize local state from [`templates/`](templates/) only when needed.
-4. Treat `network/` as the source of mutable testnet facts once it is populated and verified.
+4. Treat [`network/current.yaml`](network/current.yaml) as the source of mutable Musashi facts only while its freshness record is current, and read [`network/known-issues.yaml`](network/known-issues.yaml) before operational use.
+
+Musashi's official getting-started guide and its linked official resources are the only authority for testnet operations. Cardano mainnet documentation must not supply defaults or fill gaps in these declarations.
 
 ## Safety principle
 

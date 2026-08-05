@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "network_id": "musashi",
+  "network_magic": 164,
+  "verified_at": "2026-08-05T10:16:18Z",
+  "bootstrap_peers": [
+    {
+      "address": "leios-node.play.dev.cardano.org",
+      "port": 3001,
+      "source": "getting-started and topology"
+    }
+  ],
+  "topology": {
+    "use_ledger_after_slot": 1000,
+    "peer_snapshot_file": "peer-snapshot.json",
+    "local_root_access_points": [],
+    "public_root_access_points": []
+  },
+  "peer_snapshot": {
+    "node_to_client_version": 23,
+    "point": {
+      "slot": 502331,
+      "block_hash": "256711a28c0f7f2d33be3ebbb58ede85c1d215fdf47166862eecbaba1e62dcbc"
+    },
+    "unique_relays": [
+      {
+        "address": "leios-node.play.dev.cardano.org",
+        "port": 3001
+      }
+    ]
+  },
+  "sources": [
+    {
+      "url": "https://leios.cardano-scaling.org/docs/testnet/getting-started/#the-network-at-a-glance",
+      "authority": "authoritative-root",
+      "retrieved_at": "2026-08-05T10:09:12Z"
+    },
+    {
+      "url": "https://book.play.dev.cardano.org/environments-pre/leios/topology.json",
+      "sha256": "eaac2c4782cba20a08dd39e6ce06c2960759079801c52c2ad46ad77a59fc466d",
+      "retrieved_at": "2026-08-05T10:16:18Z"
+    },
+    {
+      "url": "https://book.play.dev.cardano.org/environments-pre/leios/peer-snapshot.json",
+      "sha256": "85bff6b34ae1ac47181bb31dbe2acd1545927f1cc9bae3e11b28ad4e026eba41",
+      "retrieved_at": "2026-08-05T10:16:18Z"
+    }
+  ],
+  "freshness": {
+    "status": "current-as-reviewed",
+    "stale_when": "The topology or peer-snapshot hash changes, the guide changes its bootstrap relay, or the network is respun."
+  }
+}

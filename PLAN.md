@@ -1460,6 +1460,14 @@ Acceptance criteria:
 
 ### Phase 4 — Current testnet knowledge
 
+Authoritative source policy:
+
+- Use <https://leios.cardano-scaling.org/docs/testnet/getting-started/> and only the official Musashi resources linked from that guide as the source of truth.
+- Never fill gaps with Cardano mainnet documentation, defaults, commands, topology, ports, eras, key procedures, or operating assumptions.
+- The getting-started guide selects the recommended current release. Newer releases or older linked pages must be recorded as conflicts rather than silently overriding it.
+- Reference the Phase 3 operator scripts at <https://github.com/0xconssize/leios> as supplementary material only; exclude every value or procedure not confirmed by the Musashi guide.
+- Record retrieval timestamps, exact source URLs, revisions or content hashes where available, explicit unknowns, internal source conflicts, and conditions that make each declaration stale.
+
 Deliver:
 
 - `network/current.yaml`.

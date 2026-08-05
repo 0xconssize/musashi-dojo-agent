@@ -1,0 +1,95 @@
+schema_version: 1
+
+network:
+  id: musashi
+  name: Ouroboros Leios public prototype testnet
+  environment: prototype-testnet
+  phase: Earth
+  status: experimental
+  network_magic: 164
+  network_id: Testnet
+  era: Dijkstra
+  consensus_mode: PraosMode
+
+release:
+  selected: prototype-2026w30
+  selection_basis: Selected explicitly by the authoritative getting-started guide.
+  node_version_reported: cardano-node 11.1.0.164
+  published_at: "2026-07-24T23:04:46Z"
+  tag_commit: 1f55738136e518bdb691c5d8f41794eaf5c5a528
+  newer_available_not_selected:
+    - prototype-2026w31
+    - prototype-2026w31a
+
+configuration:
+  base_url: https://book.play.dev.cardano.org/environments-pre/leios
+  pin_script: https://raw.githubusercontent.com/input-output-hk/ouroboros-leios/main/testnet/pin-config.sh
+  pin_script_commit: 4c110c1ba552754174dc948f0abb3fd67c06559b
+  verified_at: "2026-08-05T10:16:18Z"
+  files:
+    alonzo-genesis.json: 23bf365cae730137ad6868787f20ef4f58e446d22617d7b824f1c75695c760b5
+    byron-genesis.json: 683584e464d2c54f15c2939da888bbdea7442cf4b5c8f44da386db9b33291928
+    config.json: 3e624e05cf5cbfbc90da3908badb3ea2ee02225b8866842766429ca876758df9
+    conway-genesis.json: affa4227c27e14e1af2c1457a6b856d9394c2921adaa5818ca3079219f6e5cd2
+    dijkstra-genesis.json: b8113964e1eb80b755a4b7b531e02eb1181035eeeee39f49b76efaada1f72a1a
+    peer-snapshot.json: 85bff6b34ae1ac47181bb31dbe2acd1545927f1cc9bae3e11b28ad4e026eba41
+    shelley-genesis.json: 3cce5a00c8579b9cef44e8cb5a8ca27bd4e4f523e9075297b109d8278a0ebf93
+    topology.json: eaac2c4782cba20a08dd39e6ce06c2960759079801c52c2ad46ad77a59fc466d
+  chain:
+    system_start: "2026-07-01T00:00:00Z"
+    slot_length_seconds: 1
+    epoch_length_slots: 86400
+    security_parameter: 432
+    active_slots_coefficient: 0.05
+    slots_per_kes_period: 129600
+    max_kes_evolutions: 62
+    leios_database_backend: SQLite
+    leios_database_path: leios.db
+    experimental_protocols_enabled: true
+    config_minimum_node_version: 11.1.0-prototype-2026w27
+
+requirements:
+  file: requirements.yaml
+  verified_at: "2026-08-05T10:16:18Z"
+
+warnings:
+  - This is continuously rebuilt pre-release software on a resettable prototype testnet.
+  - prototype-2026w31 and prototype-2026w31a exist but are not selected by the getting-started guide.
+  - The linked Operations Book still labels prototype-2026w27 as latest; do not use that label to override this declaration.
+  - The guide lists Linux aarch64 prebuilt support, but the selected prototype-2026w30 release has no Linux aarch64 asset.
+  - Never substitute Cardano mainnet operating values or procedures.
+
+sources:
+  authoritative_root:
+    url: https://leios.cardano-scaling.org/docs/testnet/getting-started/
+    retrieved_at: "2026-08-05T10:09:12Z"
+    last_modified: "2026-07-30T20:27:38Z"
+    sha256: 6821444f79b5863b2424a7ceefaf20c59f8d34671106b317fdcd730442d64b91
+  linked_official:
+    - url: https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/
+      role: Block-producer requirements and Dijkstra procedures.
+      retrieved_at: "2026-08-05T10:09:59Z"
+      sha256: e2999a0e03901ef31b0f1c39eebca07e339db500acd5ca7603bce36af6e8299e
+    - url: https://book.play.dev.cardano.org/adv-musashi.html
+      role: Deployed Musashi configuration index.
+      retrieved_at: "2026-08-05T10:10:10Z"
+      sha256: fc5b24438c8f27708b4fe33a740ed48fa1afc638544f98a494ef18b24385f4cf
+    - url: https://github.com/input-output-hk/ouroboros-leios/releases
+      role: Official release history and assets.
+      retrieved_at: "2026-08-05T10:10:32Z"
+  supplementary:
+    url: https://github.com/0xconssize/leios
+    commit: ebb5ac56a6c85c2e28b2e4d90b0d7437d5a2e77e
+    authority: false
+    usage: Manual workflow comparison only; divergences are listed in known-issues.yaml.
+
+freshness:
+  status: current-as-reviewed
+  verified_at: "2026-08-05T10:16:18Z"
+  review_before_use: true
+  stale_when:
+    - The authoritative getting-started page changes.
+    - Its selected release or reported node version changes.
+    - The live configuration or topology content hashes change.
+    - The Musashi chain is reset or configuration is re-pinned.
+    - A value conflicts with direct observation or another official linked resource.

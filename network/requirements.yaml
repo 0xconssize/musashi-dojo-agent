@@ -1,0 +1,95 @@
+schema_version: 1
+network_id: musashi
+verified_at: "2026-08-05T10:16:18Z"
+
+host:
+  intended_environment: Throwaway machine or container; not a host the operator relies on.
+  cpu_cores: 2
+  memory_gb_comfortable: 4
+  node_memory_gb_observed_range:
+    minimum: 2
+    maximum: 2.5
+  storage:
+    type: SSD
+    approximate_gb: 25
+  unknown:
+    minimum_bandwidth_mbps: null
+    maximum_supported_latency_ms: null
+    minimum_iops: null
+
+prebuilt_platforms:
+  - platform: Linux x86-64
+    selected_release_asset: available
+  - platform: Linux aarch64
+    selected_release_asset: absent
+    warning: The guide lists support, but prototype-2026w30 publishes no matching asset.
+  - platform: macOS aarch64
+    selected_release_asset: available
+
+relay:
+  default_listen_address: 0.0.0.0
+  default_listen_port: 3010
+  bootstrap_port: 3001
+  network_magic: 164
+  sync_complete_when: syncProgress equals 100.00
+  working_directories:
+    nix: ./tmp-testnet
+    prebuilt_or_docker: ~/leios-testnet
+
+installation_methods:
+  nix:
+    flake_support_required: true
+    binary_cache: https://cache.iog.io
+    trusted_user_required_for_multi_user_install: true
+    includes_observability: true
+  prebuilt:
+    checksum_verification_required: true
+    includes_observability: false
+  docker:
+    image: ghcr.io/input-output-hk/ouroboros-leios/cardano-node-testnet:prototype-2026w30
+    includes_observability: false
+  process_compose:
+    selected_release_script: testnet/run.sh
+    required_commands:
+      - process-compose
+      - cardano-node
+      - cardano-cli
+      - envsubst
+      - jq
+    default_metrics_endpoint: 127.0.0.1:12798
+    default_grafana_endpoint: http://localhost:3000
+
+block_producer:
+  prerequisites:
+    - A relay already synced to 100.00 percent.
+    - A public IP address and open node port.
+    - An accurate clock maintained with NTP.
+    - cardano-cli and cardano-node from the Leios prototype on PATH.
+  era_command_group: dijkstra
+  keys:
+    - payment
+    - stake
+    - cold
+    - KES
+    - VRF
+    - BLS
+  bls_status: Required by pool registration but not utilized by Musashi at review time.
+  faucet_amount_test_ada: 10000
+  stake_address_deposit_ada: 2
+  stake_pool_deposit_ada: 500
+  example_pledge_test_ada: 1000
+  expected_activation_delay: Roughly two epochs after registration.
+
+sources:
+  authoritative_root: https://leios.cardano-scaling.org/docs/testnet/getting-started/
+  producer_guide: https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/
+  nix_setup: https://github.com/input-output-hk/iogx/blob/main/doc/nix-setup-guide.md
+  selected_release_script: https://github.com/input-output-hk/ouroboros-leios/blob/prototype-2026w30/testnet/run.sh
+
+freshness:
+  status: current-as-reviewed
+  review_before_use: true
+  stale_when:
+    - The getting-started requirements or selected release change.
+    - A release asset is added, removed, or replaced.
+    - The network enters a new experimental phase or is respun.

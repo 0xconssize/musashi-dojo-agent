@@ -103,19 +103,14 @@ The visual identity should avoid:
 - Generic cyberpunk clichés.
 - Confusion with an official Cardano or Input Output product.
 
-The repository will contain only the textual avatar specification in:
+The repository defines this stable visual direction in `IDENTITY.md`. During onboarding, a compatible agent runtime should create the operator-specific identity document and may generate the avatar locally under:
 
 ```text
-identity/ninja-avatar.md
-```
-
-A compatible agent runtime may generate the avatar during onboarding and store it locally under:
-
-```text
+.musashi/identity/IDENTITY.md
 .musashi/identity/niten-avatar.png
 ```
 
-The image is not part of the Git repository.
+The identity document, branding metadata, and image are not part of the Git repository.
 
 ---
 
@@ -292,7 +287,7 @@ musashi-dojo-agent/
 ├── PLAN.md
 ├── AGENTS.md
 ├── AGENT.md
-├── PERSONALITY.md
+├── IDENTITY.md
 ├── ONBOARDING.md
 ├── MEMORY.md
 ├── SECURITY.md
@@ -300,13 +295,6 @@ musashi-dojo-agent/
 ├── CONTRIBUTING.md
 ├── CHANGELOG.md
 ├── .gitignore
-│
-├── identity/
-│   ├── profile.yaml
-│   ├── personality-traits.yaml
-│   ├── introduction.md
-│   ├── ninja-avatar.md
-│   └── naming-guidelines.md
 │
 ├── network/
 │   ├── current.yaml
@@ -451,6 +439,8 @@ The local workspace will be stored under `.musashi/`.
 ├── memory.md
 │
 ├── identity/
+│   ├── IDENTITY.md
+│   ├── branding.yaml
 │   ├── avatar.yaml
 │   └── niten-avatar.png
 │
@@ -1245,7 +1235,7 @@ On first startup, Niten should:
 
 1. Read `AGENTS.md`.
 2. Read `AGENT.md`.
-3. Read `PERSONALITY.md`.
+3. Read `IDENTITY.md`.
 4. Read `ONBOARDING.md`.
 5. Check whether `.musashi/` exists.
 6. Initialize the workspace from templates when needed.
@@ -1262,10 +1252,11 @@ On first startup, Niten should:
    - Desired execution mode.
     - Operator or organization branding, such as name, logo, colors, visual style, and other identity guidelines.
     - Whether the operator represents a stake pool, including the stake pool name and public-facing branding.
+    - Personality preferences and any aspects of Niten's default personality the operator wants to replace.
 10. Create the operator profile.
 11. Detect or record execution capabilities.
 12. Create the initial host and node inventory.
-13. Use the collected operator or stake pool branding to define and generate a customized ninja avatar, when the runtime supports image generation; otherwise, create the textual avatar specification and record the pending generation step.
+13. Create `.musashi/identity/IDENTITY.md` from the collected branding and personality preferences, then define and generate a customized ninja avatar when the runtime supports image generation; otherwise, record the pending generation step.
 14. Record onboarding completion.
 15. Recommend the next relevant skill.
 
@@ -1384,7 +1375,7 @@ Deliver:
 - `README.md`.
 - `AGENTS.md`.
 - `AGENT.md`.
-- `PERSONALITY.md`.
+- `IDENTITY.md`.
 - `MEMORY.md`.
 - `SECURITY.md`.
 - `HOST_SAFETY.md`.
@@ -1402,11 +1393,9 @@ Acceptance criteria:
 
 Deliver:
 
-- Niten identity.
+- Stable Niten identity defined in `IDENTITY.md`.
+- Local `.musashi/identity/IDENTITY.md` generated from onboarding data; no mutable identity file is committed to the repository.
 - `ONBOARDING.md`.
-- Introduction text.
-- Personality traits.
-- Ninja avatar specification.
 - Operator onboarding skill.
 - Workspace initialization instructions.
 
@@ -1415,7 +1404,9 @@ Acceptance criteria:
 - An agent can conduct first-run onboarding.
 - It can create an operator profile and empty inventory.
 - It presents itself consistently as Niten.
-- It can offer an avatar-generation flow without storing the image in Git.
+- It creates `IDENTITY.md` and stores operator-specific branding and avatar metadata under `.musashi/identity/`.
+- It allows the operator's personality preferences to replace any default personality aspect while preserving security and host-safety rules.
+- It can offer an avatar-generation flow without storing the image or mutable identity data in Git.
 
 ### Phase 3 — Multi-host and multi-node model
 
@@ -1614,7 +1605,7 @@ Changes to the following files should receive extra review:
 
 - `AGENTS.md`.
 - `AGENT.md`.
-- `PERSONALITY.md`.
+- `IDENTITY.md`.
 - `SECURITY.md`.
 - `HOST_SAFETY.md`.
 - `network/current.yaml`.

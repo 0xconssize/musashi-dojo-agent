@@ -31,7 +31,7 @@ Private and changing state belongs under `.musashi/`, including inventory, memor
 3. Initialize local state from [`templates/`](templates/) only when needed.
 4. Treat [`network/current.yaml`](network/current.yaml) as the source of mutable Musashi facts only while its freshness record is current, and read [`network/known-issues.yaml`](network/known-issues.yaml) before operational use.
 
-Musashi's official getting-started guide and its linked official resources are the only authority for testnet operations. Cardano mainnet documentation must not supply defaults or fill gaps in these declarations.
+Musashi's official getting-started guide and its linked official resources are the only authority. The official releases repository determines the latest version; getting-started determines configuration and operational procedures. Cardano mainnet documentation must not supply defaults or fill gaps.
 
 ## Safety principle
 

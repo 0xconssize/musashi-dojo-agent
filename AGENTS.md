@@ -28,11 +28,10 @@ This repository defines behavior and contracts. It does not implement SSH, a CLI
 
 ## Musashi source authority
 
-- Use the Musashi getting-started guide and the official Musashi resources it links as the sole authority for testnet operations and mutable network facts.
+- Use the Musashi getting-started guide for testnet configuration and operational procedures. Use the official Ouroboros Leios releases repository as the authority for the latest release, its assets, compatibility, and release-specific actions.
 - Never import Cardano mainnet defaults, commands, topology, ports, eras, key procedures, or operating assumptions into Musashi.
-- The getting-started guide selects the recommended release. A newer release listing or an older linked page does not replace that selection; record the conflict and re-verify the guide.
+- Select the most recently published non-draft official release, including a pre-release. When getting-started lags, record its versioned examples as stale instead of downgrading the selected release.
 - Review `network/current.yaml`, `network/known-issues.yaml`, and their timestamps before using a network value. Stop or keep the value unknown when the declarations are stale.
-- Treat `https://github.com/0xconssize/leios` only as supplementary operator history. Use none of its values or commands unless the current Musashi guide confirms them.
 
 ## Repository updates
 

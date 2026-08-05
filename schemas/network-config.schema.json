@@ -64,11 +64,11 @@
     "warnings": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
     "sources": {
       "type": "object",
-      "required": ["authoritative_root", "linked_official", "supplementary"],
+      "required": ["operational_root", "release_authority", "linked_official"],
       "properties": {
-        "authoritative_root": {"type": "object", "additionalProperties": true},
-        "linked_official": {"type": "array", "items": {"type": "object", "additionalProperties": true}},
-        "supplementary": {"type": "object", "additionalProperties": true}
+        "operational_root": {"type": "object", "additionalProperties": true},
+        "release_authority": {"type": "object", "additionalProperties": true},
+        "linked_official": {"type": "array", "items": {"type": "object", "additionalProperties": true}}
       },
       "additionalProperties": false
     },

@@ -1,10 +1,11 @@
 schema_version: 1
 network_id: musashi
-verified_at: "2026-08-05T10:16:18Z"
+verified_at: "2026-08-05T10:37:17Z"
 
 authority:
-  root: https://leios.cardano-scaling.org/docs/testnet/getting-started/
-  policy: Official Musashi guidance overrides all Cardano mainnet and supplementary operator material.
+  operational_guide: https://leios.cardano-scaling.org/docs/testnet/getting-started/
+  releases: https://github.com/input-output-hk/ouroboros-leios/releases
+  policy: The release repository determines the latest version; the Musashi guide determines configuration and procedures. Both override Cardano mainnet material.
 
 issues:
   - id: prototype-is-volatile
@@ -21,29 +22,37 @@ issues:
     action: Wait, retry later, or restart; report persistent stalls with version and logs.
     source: https://leios.cardano-scaling.org/docs/testnet/getting-started/#confirm-you-are-syncing
 
-  - id: selected-release-requires-state-wipe
+  - id: selected-release-invalid-certificate-hotfix
+    status: current
+    severity: medium
+    summary: prototype-2026w31a prevents invalid Leios certificate errors from crashing the node and emits InvalidBlock traces instead.
+    action: If crashes continue after updating, first delete only the volatile chain state as directed by the release notes.
+    source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w31a
+
+  - id: getting-started-release-lag
     status: current
     severity: high
-    summary: The prototype-2026w30 release notes require wiping local state because a Musashi Dijkstra block triggered a ledger issue.
-    action: Do not reuse old chain state when adopting w30; sideload from IOG relays or sync from genesis.
-    source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w30
-
-  - id: official-release-selection-conflict
-    status: unresolved
-    severity: high
-    summary: The guide selects w30, the releases page contains w31 and w31a, and the Operations Book still calls w27 latest.
-    action: Keep w30 selected until the getting-started guide changes; never choose solely by recency.
+    summary: The operational guide still embeds w30 release downloads and container examples while the release repository has selected w31a.
+    action: Use w31a release assets and release notes. Retain only the guide's non-version-specific configuration and procedures, and keep unverified w31a equivalents unknown.
     sources:
       - https://leios.cardano-scaling.org/docs/testnet/getting-started/
       - https://github.com/input-output-hk/ouroboros-leios/releases
-      - https://book.play.dev.cardano.org/adv-musashi.html
 
-  - id: linux-aarch64-asset-conflict
-    status: unresolved
-    severity: high
-    summary: The guide lists Linux aarch64 prebuilt support, but the w30 release has no Linux aarch64 archive or checksum.
-    action: Do not claim a w30 Linux aarch64 download is available; use another documented method or await guide reconciliation.
-    source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w30
+  - id: operations-book-release-lag
+    status: current
+    severity: medium
+    summary: The linked Operations Book still calls w27 the latest release.
+    action: Use its live configuration links, but never its release label; the release repository selects w31a.
+    sources:
+      - https://book.play.dev.cardano.org/adv-musashi.html
+      - https://github.com/input-output-hk/ouroboros-leios/releases
+
+  - id: selected-release-node-version-unknown
+    status: unknown
+    severity: medium
+    summary: The w31a release metadata does not state the exact cardano-node version string.
+    action: Keep the value null until verified from an authoritative declaration or direct inspection of an installed selected-release binary.
+    source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w31a
 
   - id: unpinned-nix-flake
     status: current
@@ -73,35 +82,10 @@ issues:
     action: Compare content hashes with current.yaml and mark declarations stale before using changed files.
     source: https://raw.githubusercontent.com/input-output-hk/ouroboros-leios/main/testnet/pin-config.sh
 
-supplementary_phase3_review:
-  source: https://github.com/0xconssize/leios
-  commit: ebb5ac56a6c85c2e28b2e4d90b0d7437d5a2e77e
-  authority: false
-  usable_as_current_instructions: false
-  divergences:
-    - script: 00-set-environment-variables.sh
-      finding: README names CARDANO_NODE_NETWORK_ID, but the script exports CARDANO_NODE_NETWORK.
-    - script: 04-issue-operational-certificate.sh
-      finding: Reads tmp-testnet/shelley-genesis.json while the current guide places it under config/shelley-genesis.json.
-    - script: 08-run-node.sh
-      finding: Uses config.json and topology.json at the tmp-testnet root rather than the guide's config directory.
-    - script: 09-install-cardano-node-service.sh
-      finding: Generates a service with the same outdated root configuration paths.
-    - script: 05-register-certificates.sh
-      finding: Uses build-raw with hard-coded fees and deposits instead of the guide's transaction build workflow.
-    - script: 06-delegate-funds.sh
-      finding: Uses build-raw with a hard-coded fee instead of the guide's transaction build workflow.
-    - script: verify-opcert.sh
-      finding: Uses a Conway command group not documented for the current Dijkstra-era guide.
-    - script: reload-leios-db.sh
-      finding: Deletes database state and downloads an unreferenced snapshot workflow not authorized by the current guide.
-    - material: gLiveView instructions
-      finding: Third-party community/mainnet material; excluded because the Musashi guide does not authorize it.
-
 freshness:
   status: current-as-reviewed
   review_before_use: true
   stale_when:
-    - Any cited official page or release changes.
+    - The latest official non-draft release changes.
+    - Any cited operational page changes.
     - The selected release, topology, peer snapshot, or configuration hashes change.
-    - The operator scripts commit changes and is reconsidered for use.

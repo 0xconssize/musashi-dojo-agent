@@ -1,6 +1,6 @@
 schema_version: 1
 network_id: musashi
-verified_at: "2026-08-05T10:16:18Z"
+verified_at: "2026-08-05T10:37:17Z"
 
 host:
   intended_environment: Throwaway machine or container; not a host the operator relies on.
@@ -21,8 +21,7 @@ prebuilt_platforms:
   - platform: Linux x86-64
     selected_release_asset: available
   - platform: Linux aarch64
-    selected_release_asset: absent
-    warning: The guide lists support, but prototype-2026w30 publishes no matching asset.
+    selected_release_asset: available
   - platform: macOS aarch64
     selected_release_asset: available
 
@@ -46,10 +45,12 @@ installation_methods:
     checksum_verification_required: true
     includes_observability: false
   docker:
-    image: ghcr.io/input-output-hk/ouroboros-leios/cardano-node-testnet:prototype-2026w30
+    documented_image: ghcr.io/input-output-hk/ouroboros-leios/cardano-node-testnet:prototype-2026w30
+    selected_release_image: null
+    warning: The operational guide documents w30; the w31a release page does not confirm a container image tag.
     includes_observability: false
   process_compose:
-    selected_release_script: testnet/run.sh
+    selected_release_script: prototype-2026w31a:testnet/run.sh
     required_commands:
       - process-compose
       - cardano-node
@@ -81,15 +82,17 @@ block_producer:
   expected_activation_delay: Roughly two epochs after registration.
 
 sources:
-  authoritative_root: https://leios.cardano-scaling.org/docs/testnet/getting-started/
+  operational_guide: https://leios.cardano-scaling.org/docs/testnet/getting-started/
   producer_guide: https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/
   nix_setup: https://github.com/input-output-hk/iogx/blob/main/doc/nix-setup-guide.md
-  selected_release_script: https://github.com/input-output-hk/ouroboros-leios/blob/prototype-2026w30/testnet/run.sh
+  selected_release_script: https://github.com/input-output-hk/ouroboros-leios/blob/prototype-2026w31a/testnet/run.sh
+  releases: https://github.com/input-output-hk/ouroboros-leios/releases
 
 freshness:
   status: current-as-reviewed
   review_before_use: true
   stale_when:
-    - The getting-started requirements or selected release change.
+    - The getting-started requirements change.
+    - The latest official non-draft release changes.
     - A release asset is added, removed, or replaced.
     - The network enters a new experimental phase or is respun.

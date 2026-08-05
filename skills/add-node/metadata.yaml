@@ -13,21 +13,14 @@ sources:
     retrieved_at: "2026-08-05"
     supported_snapshot:
       network: Musashi Dojo public prototype testnet
-      release: prototype-2026w30
-      node_version: cardano-node 11.1.0.164
-  operator_scripts:
-    url: https://github.com/0xconssize/leios
-    commit: ebb5ac56a6c85c2e28b2e4d90b0d7437d5a2e77e
-    authority: supplementary
-    reviewed_paths:
-      - README.md
-      - 00-set-environment-variables.sh
-      - 08-run-node.sh
-      - 09-install-cardano-node-service.sh
-    applicability: No script is used by this registration-only skill.
+      release: prototype-2026w31a
+      node_version: null
+  release_authority:
+    url: https://github.com/input-output-hk/ouroboros-leios/releases
+    retrieved_at: "2026-08-05"
+    latest_release: prototype-2026w31a
 freshness:
   status: current
   reviewed_at: "2026-08-05"
   revalidate_before: Using any testnet-specific requirement, default, value, script, or command.
-  stale_when: The official page, linked configuration, supported release, network incarnation, or reviewed script commit changes.
-  excluded_divergence: README.md names CARDANO_NODE_NETWORK_ID while 00-set-environment-variables.sh exports CARDANO_NODE_NETWORK; neither value is used here.
+  stale_when: The official page, linked configuration, supported release, or network incarnation changes.

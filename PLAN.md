@@ -1427,8 +1427,7 @@ Authoritative operational source:
 
 - All Leios Musashi Dojo testnet facts used to populate the Phase 3 skills and knowledge must be obtained from the official getting-started documentation: <https://leios.cardano-scaling.org/docs/testnet/getting-started/>.
 - Treat that documentation and the official pages it links to as the source of truth for supported platforms, node releases, network parameters, bootstrap peers, configuration retrieval, ports, storage requirements, and operational procedures.
-- Use the operator-maintained scripts repository <https://github.com/0xconssize/leios> as supplementary practical material for the manual operator workflow, especially script sequencing and concrete command examples.
-- The `leios` repository is not authoritative: its scripts are convenience wrappers and may lag behind protocol or documentation changes. Every referenced script or procedure must be checked against the official documentation before being included in a skill or knowledge entry.
+- The operator-maintained scripts repository <https://github.com/0xconssize/leios> may be consulted privately as design input for knowledge, skills, and playbooks. Do not reference, cite, copy, or integrate it in project deliverables outside this plan.
 - Do not copy unverified values from prior sessions, local memory, examples, or third-party guides. Unknown or unavailable values remain explicit until verified from the official documentation.
 - Before implementing or accepting a Phase 3 skill or knowledge entry, review the source for changes and record its retrieval date, relevant section or linked page, and the version/configuration it supports.
 - A later review must be able to identify stale or obsolete skills and knowledge when the documentation changes; obsolete operational guidance must be marked for update or removal before it is used.
@@ -1444,7 +1443,6 @@ Deliver:
 - Active-context rules.
 - Operation-scope rules.
 - Source-aware knowledge and skill metadata, including source URL, source section, retrieval date, and supported testnet/node version where applicable.
-- References to the maintained `leios` scripts where they clarify the manual operator workflow, including the script path, expected prerequisites, and the corresponding official documentation section.
 - A documentation-freshness review covering every Phase 3 operational skill and knowledge entry.
 
 Acceptance criteria:
@@ -1454,7 +1452,6 @@ Acceptance criteria:
 - The agent identifies the exact target before modifications.
 - Node-specific and host-specific memory remain isolated.
 - Every testnet-specific instruction and mutable value is traceable to the official documentation or an official page linked from it.
-- Every use of a `leios` script is identified as supplementary, checked against the official documentation, and treated as stale when the two sources diverge until reviewed.
 - A reviewer can determine whether each Phase 3 skill or knowledge entry is current, stale, or obsolete.
 - The agent refuses to present stale or unverified testnet facts as current and directs the operator to the official documentation for re-verification.
 
@@ -1462,10 +1459,11 @@ Acceptance criteria:
 
 Authoritative source policy:
 
-- Use <https://leios.cardano-scaling.org/docs/testnet/getting-started/> and only the official Musashi resources linked from that guide as the source of truth.
+- Use <https://leios.cardano-scaling.org/docs/testnet/getting-started/> as the authority for Musashi configuration and operational procedures.
+- Use <https://github.com/input-output-hk/ouroboros-leios/releases> as the authority for the latest release, published assets, compatibility, and release-specific actions.
 - Never fill gaps with Cardano mainnet documentation, defaults, commands, topology, ports, eras, key procedures, or operating assumptions.
-- The getting-started guide selects the recommended current release. Newer releases or older linked pages must be recorded as conflicts rather than silently overriding it.
-- Reference the Phase 3 operator scripts at <https://github.com/0xconssize/leios> as supplementary material only; exclude every value or procedure not confirmed by the Musashi guide.
+- Select the most recently published non-draft official release even when the getting-started page lags, and mark versioned examples on the lagging page as stale.
+- Apply the Phase 3 private-research boundary to all Phase 4 work.
 - Record retrieval timestamps, exact source URLs, revisions or content hashes where available, explicit unknowns, internal source conflicts, and conditions that make each declaration stale.
 
 Deliver:

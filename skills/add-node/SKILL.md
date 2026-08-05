@@ -21,7 +21,7 @@ Collect or confirm:
 - Data, configuration, and workspace paths when known.
 - Enabled state.
 
-Unknown values remain null. Never copy defaults from stale documentation or supplementary scripts.
+Unknown values remain null. Never copy defaults from stale documentation.
 
 ## Workflow
 

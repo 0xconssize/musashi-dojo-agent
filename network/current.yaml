@@ -12,14 +12,12 @@ network:
   consensus_mode: PraosMode
 
 release:
-  selected: prototype-2026w30
-  selection_basis: Selected explicitly by the authoritative getting-started guide.
-  node_version_reported: cardano-node 11.1.0.164
-  published_at: "2026-07-24T23:04:46Z"
-  tag_commit: 1f55738136e518bdb691c5d8f41794eaf5c5a528
-  newer_available_not_selected:
-    - prototype-2026w31
-    - prototype-2026w31a
+  selected: prototype-2026w31a
+  selection_basis: Most recently published non-draft release in the official Ouroboros Leios repository.
+  node_version_reported: null
+  published_at: "2026-08-03T10:40:06Z"
+  tag_commit: 1c7cd2ad3356e89db8b7d311d085c8e48c9e2106
+  newer_available_not_selected: []
 
 configuration:
   base_url: https://book.play.dev.cardano.org/environments-pre/leios
@@ -50,21 +48,27 @@ configuration:
 
 requirements:
   file: requirements.yaml
-  verified_at: "2026-08-05T10:16:18Z"
+  verified_at: "2026-08-05T10:37:17Z"
 
 warnings:
   - This is continuously rebuilt pre-release software on a resettable prototype testnet.
-  - prototype-2026w31 and prototype-2026w31a exist but are not selected by the getting-started guide.
-  - The linked Operations Book still labels prototype-2026w27 as latest; do not use that label to override this declaration.
-  - The guide lists Linux aarch64 prebuilt support, but the selected prototype-2026w30 release has no Linux aarch64 asset.
+  - The getting-started guide still embeds prototype-2026w30 examples; use w31a assets and release notes while retaining its non-version-specific Musashi procedures.
+  - The linked Operations Book still labels prototype-2026w27 as latest; use neither page to downgrade the selected release.
+  - The official release does not state the exact cardano-node version string for prototype-2026w31a; keep it unknown until directly verified.
+  - The guide documents a w30 container image; availability of a w31a image is not confirmed by the release page.
   - Never substitute Cardano mainnet operating values or procedures.
 
 sources:
-  authoritative_root:
+  operational_root:
     url: https://leios.cardano-scaling.org/docs/testnet/getting-started/
     retrieved_at: "2026-08-05T10:09:12Z"
     last_modified: "2026-07-30T20:27:38Z"
     sha256: 6821444f79b5863b2424a7ceefaf20c59f8d34671106b317fdcd730442d64b91
+  release_authority:
+    url: https://github.com/input-output-hk/ouroboros-leios/releases
+    api_url: https://api.github.com/repos/input-output-hk/ouroboros-leios/releases
+    retrieved_at: "2026-08-05T10:37:17Z"
+    latest_release: prototype-2026w31a
   linked_official:
     - url: https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/
       role: Block-producer requirements and Dijkstra procedures.
@@ -74,22 +78,15 @@ sources:
       role: Deployed Musashi configuration index.
       retrieved_at: "2026-08-05T10:10:10Z"
       sha256: fc5b24438c8f27708b4fe33a740ed48fa1afc638544f98a494ef18b24385f4cf
-    - url: https://github.com/input-output-hk/ouroboros-leios/releases
-      role: Official release history and assets.
-      retrieved_at: "2026-08-05T10:10:32Z"
-  supplementary:
-    url: https://github.com/0xconssize/leios
-    commit: ebb5ac56a6c85c2e28b2e4d90b0d7437d5a2e77e
-    authority: false
-    usage: Manual workflow comparison only; divergences are listed in known-issues.yaml.
 
 freshness:
   status: current-as-reviewed
-  verified_at: "2026-08-05T10:16:18Z"
+  verified_at: "2026-08-05T10:37:17Z"
   review_before_use: true
   stale_when:
     - The authoritative getting-started page changes.
-    - Its selected release or reported node version changes.
+    - The latest official non-draft release changes.
+    - The getting-started configuration or operational procedures change.
     - The live configuration or topology content hashes change.
     - The Musashi chain is reset or configuration is re-pinned.
     - A value conflicts with direct observation or another official linked resource.

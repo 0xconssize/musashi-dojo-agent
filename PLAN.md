@@ -277,9 +277,22 @@ A successful command exit code is not sufficient evidence of success.
 
 The agent must validate the intended operational result.
 
+### 5.9 Minimal repository footprint
+
+The repository must remain intentionally concise and readable for a human operator. The structure shown below is a roadmap of possible capabilities, not a mandate to create every directory or placeholder in advance.
+
+- Create only the files and directories required by the current implementation phase.
+- Prefer extending an existing, well-scoped document over adding another document with overlapping purpose.
+- Do not create speculative scaffolding, empty directories, duplicate identity documents, or runtime-specific copies of canonical guidance.
+- Keep mutable operator branding, generated artifacts, and operational state in `.musashi/` rather than expanding the versioned repository.
+- If an implementation requires adding a new directory or materially expanding a directory tree from this plan, ask Juan for explicit confirmation before creating it.
+- The confirmation request must name the proposed paths, explain why the existing structure is insufficient, and state what will remain out of scope.
+
 ---
 
 ## 6. Repository Structure
+
+The following tree is an architectural reference. Implementations must follow the minimal-footprint rule above and may not expand it without explicit confirmation.
 
 ```text
 musashi-dojo-agent/
@@ -1407,6 +1420,8 @@ Acceptance criteria:
 - It creates `IDENTITY.md` and stores operator-specific branding and avatar metadata under `.musashi/identity/`.
 - It allows the operator's personality preferences to replace any default personality aspect while preserving security and host-safety rules.
 - It can offer an avatar-generation flow without storing the image or mutable identity data in Git.
+
+Phase implementations must first check whether the existing root `IDENTITY.md`, templates, and runtime instructions are sufficient. Any additional directory or substantial new file group requires the confirmation described in Section 5.9.
 
 ### Phase 3 — Multi-host and multi-node model
 

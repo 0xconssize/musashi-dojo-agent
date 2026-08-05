@@ -1427,6 +1427,8 @@ Authoritative operational source:
 
 - All Leios Musashi Dojo testnet facts used to populate the Phase 3 skills and knowledge must be obtained from the official getting-started documentation: <https://leios.cardano-scaling.org/docs/testnet/getting-started/>.
 - Treat that documentation and the official pages it links to as the source of truth for supported platforms, node releases, network parameters, bootstrap peers, configuration retrieval, ports, storage requirements, and operational procedures.
+- Use the operator-maintained scripts repository <https://github.com/0xconssize/leios> as supplementary practical material for the manual operator workflow, especially script sequencing and concrete command examples.
+- The `leios` repository is not authoritative: its scripts are convenience wrappers and may lag behind protocol or documentation changes. Every referenced script or procedure must be checked against the official documentation before being included in a skill or knowledge entry.
 - Do not copy unverified values from prior sessions, local memory, examples, or third-party guides. Unknown or unavailable values remain explicit until verified from the official documentation.
 - Before implementing or accepting a Phase 3 skill or knowledge entry, review the source for changes and record its retrieval date, relevant section or linked page, and the version/configuration it supports.
 - A later review must be able to identify stale or obsolete skills and knowledge when the documentation changes; obsolete operational guidance must be marked for update or removal before it is used.
@@ -1442,6 +1444,7 @@ Deliver:
 - Active-context rules.
 - Operation-scope rules.
 - Source-aware knowledge and skill metadata, including source URL, source section, retrieval date, and supported testnet/node version where applicable.
+- References to the maintained `leios` scripts where they clarify the manual operator workflow, including the script path, expected prerequisites, and the corresponding official documentation section.
 - A documentation-freshness review covering every Phase 3 operational skill and knowledge entry.
 
 Acceptance criteria:
@@ -1451,6 +1454,7 @@ Acceptance criteria:
 - The agent identifies the exact target before modifications.
 - Node-specific and host-specific memory remain isolated.
 - Every testnet-specific instruction and mutable value is traceable to the official documentation or an official page linked from it.
+- Every use of a `leios` script is identified as supplementary, checked against the official documentation, and treated as stale when the two sources diverge until reviewed.
 - A reviewer can determine whether each Phase 3 skill or knowledge entry is current, stale, or obsolete.
 - The agent refuses to present stale or unverified testnet facts as current and directs the operator to the official documentation for re-verification.
 

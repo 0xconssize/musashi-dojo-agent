@@ -1,12 +1,22 @@
 {
   "schema_version": 1,
+  "plan_id": null,
+  "step_id": null,
   "command_id": null,
   "target": {"host_id": null, "node_id": null},
+  "runtime_tool": null,
   "command": null,
   "started_at": null,
   "finished_at": null,
   "exit_code": null,
   "stdout": null,
   "stderr": null,
-  "validated": false
+  "sanitized": true,
+  "outcome": "not-run",
+  "error": null,
+  "validation": {
+    "performed": false,
+    "passed": null,
+    "checks": []
+  }
 }

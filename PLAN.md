@@ -732,6 +732,12 @@ schema_version: 1
 
 mode: remote-execution
 
+verified_at: "2026-08-05T12:00:00Z"
+
+runtime:
+  name: openclaw
+  connection_provider: runtime-ssh
+
 capabilities:
   local_shell: true
   remote_shell: true
@@ -749,8 +755,11 @@ policy:
   explain_reversible_changes: true
   confirm_host_level_changes: true
   confirm_destructive_changes: true
+  require_target_verification: true
+  validate_independently: true
   save_generated_scripts: true
   retain_session_history: true
+  sanitize_recorded_output: true
 ```
 
 Supported mode values:
@@ -764,6 +773,8 @@ mode:
 ```
 
 The agent must never claim an execution capability that has not been verified.
+
+When the declared profile and capabilities observed in the current runtime disagree, the agent must use the less privileged mode. Missing or stale capability evidence falls back to advisory mode.
 
 ---
 
@@ -787,7 +798,8 @@ access:
   user: musashi
   port: 22
   authentication: operator-managed
-  privilege_escalation: sudo-on-confirmation
+  connection_reference: null
+  privilege_escalation: prompt
 
 capabilities:
   command_execution: true
@@ -838,6 +850,8 @@ Where possible, remote operations should validate at least two host identity sig
 - Cloud instance identifier.
 
 The agent must stop when observed identity conflicts with inventory unless the operator explicitly reconciles the difference.
+
+A successful connection does not establish identity or authorize modification. Verification evidence becomes stale when the endpoint, access method, runtime session, expected host identity, or operation target changes.
 
 ---
 
@@ -962,6 +976,8 @@ The plan should state:
 - Node-local reversible change: explain before execution.
 - Host-level change: require explicit confirmation.
 - Broad or destructive change: require explicit and scoped confirmation.
+
+Required confirmation must be bound to the reviewed plan digest. Changing commands, targets, paths, privileges, expected disruption, or scope invalidates the confirmation.
 
 ### Step 5 — Execute incrementally
 
@@ -1484,6 +1500,8 @@ Acceptance criteria:
 
 ### Phase 5 — Execution and server access
 
+This phase inherits the Phase 4 source policy. Release selection, assets, compatibility, and release-specific actions come from the official releases repository; Musashi configuration and procedures come from the getting-started guide. Mainnet material must not fill gaps.
+
 Deliver:
 
 - Execution mode specification.
@@ -1494,7 +1512,7 @@ Deliver:
 - Execution plan schema.
 - Command result schema.
 - Host connection skill.
-- Node lifecycle skills.
+- Structured node-plan execution skill for lifecycle orchestration; concrete lifecycle procedures remain in Phase 6.
 - Generated-script policy.
 - Remote host identity checks.
 

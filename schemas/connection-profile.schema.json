@@ -6,28 +6,106 @@
   "required": ["schema_version", "host_id", "access", "verification"],
   "properties": {
     "schema_version": {"const": 1},
-    "host_id": {"type": ["string", "null"], "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 63},
+    "host_id": {"$ref": "#/$defs/nullableId"},
     "access": {
       "type": "object",
-      "required": ["method", "user", "port", "authentication", "privilege_escalation"],
+      "required": ["method", "user", "port", "authentication", "connection_reference", "privilege_escalation"],
       "properties": {
-        "method": {"type": ["string", "null"], "minLength": 1},
+        "method": {"enum": [null, "local", "ssh", "remote-shell", "container", "cloud-exec", "vm-manager", "existing-session"]},
         "user": {"type": ["string", "null"], "minLength": 1},
         "port": {"type": ["integer", "null"], "minimum": 1, "maximum": 65535},
-        "authentication": {"type": "string", "minLength": 1},
-        "privilege_escalation": {"type": "string", "minLength": 1}
+        "authentication": {"enum": ["operator-managed", "runtime-managed", "agent-runtime"]},
+        "connection_reference": {"type": ["string", "null"], "minLength": 1},
+        "privilege_escalation": {"enum": ["never", "prompt", "verified"]}
       },
       "additionalProperties": false
     },
     "verification": {
       "type": "object",
-      "required": ["last_verified_at", "signals"],
+      "required": ["status", "last_verified_at", "valid_for_modification", "observed", "signals"],
       "properties": {
+        "status": {"enum": ["unverified", "verified", "conflict", "stale"]},
         "last_verified_at": {"type": ["string", "null"], "format": "date-time"},
-        "signals": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+        "valid_for_modification": {"type": "boolean"},
+        "observed": {
+          "type": "object",
+          "required": ["connection_type", "endpoint", "user", "hostname", "operating_system", "current_directory", "privileges"],
+          "properties": {
+            "connection_type": {"type": ["string", "null"], "minLength": 1},
+            "endpoint": {"type": ["string", "null"], "minLength": 1},
+            "user": {"type": ["string", "null"], "minLength": 1},
+            "hostname": {"type": ["string", "null"], "minLength": 1},
+            "operating_system": {"type": ["string", "null"], "minLength": 1},
+            "current_directory": {"type": ["string", "null"], "minLength": 1},
+            "privileges": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+          },
+          "additionalProperties": false
+        },
+        "signals": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": ["name", "expected", "observed", "matched"],
+            "properties": {
+              "name": {"type": "string", "minLength": 1},
+              "expected": {"type": ["string", "null"]},
+              "observed": {"type": ["string", "null"]},
+              "matched": {"type": ["boolean", "null"]}
+            },
+            "additionalProperties": false
+          }
+        }
       },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "verified"}}},
+          "then": {
+            "properties": {
+              "last_verified_at": {"type": "string", "format": "date-time"},
+              "valid_for_modification": {"const": true}
+            }
+          },
+          "else": {"properties": {"valid_for_modification": {"const": false}}}
+        }
+      ],
       "additionalProperties": false
     }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"verification": {"properties": {"status": {"const": "verified"}}}}},
+      "then": {
+        "properties": {
+          "host_id": {"$ref": "#/$defs/id"},
+          "access": {"properties": {"method": {"not": {"type": "null"}}}}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "access": {"properties": {"method": {"enum": ["ssh", "remote-shell", "container", "cloud-exec", "vm-manager", "existing-session"]}}},
+          "verification": {"properties": {"status": {"const": "verified"}}}
+        }
+      },
+      "then": {
+        "properties": {
+          "verification": {
+            "properties": {
+              "signals": {
+                "minItems": 2,
+                "items": {"properties": {"matched": {"const": true}}}
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 63},
+    "nullableId": {"type": ["string", "null"], "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 63}
   },
   "additionalProperties": false
 }

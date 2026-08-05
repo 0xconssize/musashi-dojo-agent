@@ -1,1 +1,126 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://musashi-dojo.dev/schemas/execution-capabilities.schema.json","title":"Execution capabilities","type":"object","required":["schema_version","mode","capabilities","policy"],"properties":{"schema_version":{"const":1},"mode":{"enum":["advisory","local-execution","remote-execution"]},"capabilities":{"type":"object","additionalProperties":{"type":"boolean"}},"policy":{"type":"object","additionalProperties":{"type":"boolean"}}},"additionalProperties":false}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://musashi-dojo.dev/schemas/execution-capabilities.schema.json",
+  "title": "Execution capabilities",
+  "type": "object",
+  "required": ["schema_version", "mode", "verified_at", "runtime", "capabilities", "policy"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "mode": {"enum": ["advisory", "local-execution", "remote-execution"]},
+    "verified_at": {"type": ["string", "null"], "format": "date-time"},
+    "runtime": {
+      "type": "object",
+      "required": ["name", "connection_provider"],
+      "properties": {
+        "name": {"type": ["string", "null"], "minLength": 1},
+        "connection_provider": {"type": ["string", "null"], "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "object",
+      "required": [
+        "local_shell",
+        "remote_shell",
+        "ssh",
+        "file_read",
+        "file_write",
+        "file_transfer",
+        "privilege_escalation",
+        "container_management",
+        "system_service_management",
+        "network_configuration"
+      ],
+      "properties": {
+        "local_shell": {"type": "boolean"},
+        "remote_shell": {"type": "boolean"},
+        "ssh": {"type": "boolean"},
+        "file_read": {"type": "boolean"},
+        "file_write": {"type": "boolean"},
+        "file_transfer": {"type": "boolean"},
+        "privilege_escalation": {"enum": ["never", "prompt", "verified"]},
+        "container_management": {"type": "boolean"},
+        "system_service_management": {"type": "boolean"},
+        "network_configuration": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "policy": {
+      "type": "object",
+      "required": [
+        "allow_read_only_commands",
+        "explain_reversible_changes",
+        "confirm_host_level_changes",
+        "confirm_destructive_changes",
+        "require_target_verification",
+        "validate_independently",
+        "save_generated_scripts",
+        "retain_session_history",
+        "sanitize_recorded_output"
+      ],
+      "properties": {
+        "allow_read_only_commands": {"type": "boolean"},
+        "explain_reversible_changes": {"const": true},
+        "confirm_host_level_changes": {"const": true},
+        "confirm_destructive_changes": {"const": true},
+        "require_target_verification": {"const": true},
+        "validate_independently": {"const": true},
+        "save_generated_scripts": {"type": "boolean"},
+        "retain_session_history": {"type": "boolean"},
+        "sanitize_recorded_output": {"const": true}
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"mode": {"const": "advisory"}}},
+      "then": {
+        "properties": {
+          "capabilities": {
+            "properties": {
+              "local_shell": {"const": false},
+              "remote_shell": {"const": false},
+              "ssh": {"const": false},
+              "privilege_escalation": {"const": "never"},
+              "container_management": {"const": false},
+              "system_service_management": {"const": false},
+              "network_configuration": {"const": false}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"mode": {"const": "local-execution"}}},
+      "then": {
+        "properties": {
+          "verified_at": {"type": "string", "format": "date-time"},
+          "runtime": {"properties": {"name": {"type": "string", "minLength": 1}}},
+          "capabilities": {"properties": {"local_shell": {"const": true}}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"mode": {"const": "remote-execution"}}},
+      "then": {
+        "properties": {
+          "verified_at": {"type": "string", "format": "date-time"},
+          "runtime": {
+            "properties": {
+              "name": {"type": "string", "minLength": 1},
+              "connection_provider": {"type": "string", "minLength": 1}
+            }
+          },
+          "capabilities": {
+            "anyOf": [
+              {"properties": {"remote_shell": {"const": true}}},
+              {"properties": {"ssh": {"const": true}}}
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

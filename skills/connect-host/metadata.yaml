@@ -1,0 +1,25 @@
+schema_version: 1
+skill: connect-host
+phase: 5
+risk: read-only
+sources:
+  operational:
+    url: https://leios.cardano-scaling.org/docs/testnet/getting-started/
+    sections:
+      - Run a relay
+      - Confirm you are syncing
+    authority: Musashi configuration and operational procedures
+    retrieved_at: "2026-08-05"
+    supported_snapshot:
+      network: Musashi Dojo public prototype testnet
+      release: prototype-2026w31a
+      node_version: null
+  release_authority:
+    url: https://github.com/input-output-hk/ouroboros-leios/releases
+    retrieved_at: "2026-08-05"
+    latest_release: prototype-2026w31a
+freshness:
+  status: current
+  reviewed_at: "2026-08-05"
+  revalidate_before: Using a testnet-specific command, value, asset, compatibility claim, or recovery action.
+  stale_when: The latest official release, Musashi guide, network incarnation, or target identity changes.

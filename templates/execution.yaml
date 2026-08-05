@@ -1,5 +1,9 @@
 schema_version: 1
 mode: advisory
+verified_at: null
+runtime:
+  name: null
+  connection_provider: null
 capabilities:
   local_shell: false
   remote_shell: false
@@ -16,5 +20,8 @@ policy:
   explain_reversible_changes: true
   confirm_host_level_changes: true
   confirm_destructive_changes: true
+  require_target_verification: true
+  validate_independently: true
   save_generated_scripts: true
   retain_session_history: true
+  sanitize_recorded_output: true

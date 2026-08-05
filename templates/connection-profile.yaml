@@ -5,7 +5,18 @@ access:
   user: null
   port: null
   authentication: operator-managed
-  privilege_escalation: prompt
+  connection_reference: null
+  privilege_escalation: never
 verification:
+  status: unverified
   last_verified_at: null
+  valid_for_modification: false
+  observed:
+    connection_type: null
+    endpoint: null
+    user: null
+    hostname: null
+    operating_system: null
+    current_directory: null
+    privileges: []
   signals: []

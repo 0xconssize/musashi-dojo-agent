@@ -1,1 +1,212 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://musashi-dojo.dev/schemas/execution-plan.schema.json","title":"Execution plan","type":"object","required":["schema_version","plan","scope","steps","confirmation","validation"],"properties":{"schema_version":{"const":1},"plan":{"type":"object","required":["id","operation"],"properties":{"id":{"type":["string","null"]},"operation":{"type":"string"}},"additionalProperties":true},"scope":{"type":"object","required":["type","nodes"],"properties":{"type":{"enum":["single-node","selected-nodes","fleet"]},"nodes":{"type":"array","items":{"type":"string"}}},"additionalProperties":true},"steps":{"type":"array"},"confirmation":{"type":"object","required":["required"],"properties":{"required":{"type":"boolean"}},"additionalProperties":true},"validation":{"type":"array"}},"additionalProperties":false}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://musashi-dojo.dev/schemas/execution-plan.schema.json",
+  "title": "Execution plan",
+  "type": "object",
+  "required": ["schema_version", "plan", "status", "execution_mode", "scope", "targets", "steps", "confirmation", "validation", "recovery"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "plan": {
+      "type": "object",
+      "required": ["id", "operation", "created_at", "repository_commit"],
+      "properties": {
+        "id": {"$ref": "#/$defs/nullableId"},
+        "operation": {"type": "string", "minLength": 1},
+        "created_at": {"type": ["string", "null"], "format": "date-time"},
+        "repository_commit": {"type": ["string", "null"], "minLength": 7}
+      },
+      "additionalProperties": false
+    },
+    "status": {"enum": ["draft", "approved", "executing", "completed", "failed", "stopped"]},
+    "execution_mode": {"enum": ["advisory", "local-execution", "remote-execution"]},
+    "scope": {
+      "type": "object",
+      "required": ["type", "nodes"],
+      "properties": {
+        "type": {"enum": ["single-node", "selected-nodes", "fleet"]},
+        "nodes": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}}
+      },
+      "additionalProperties": false
+    },
+    "targets": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["host_id", "node_id", "access_method", "runtime_identity", "paths", "shared_host_nodes"],
+        "properties": {
+          "host_id": {"$ref": "#/$defs/id"},
+          "node_id": {"$ref": "#/$defs/id"},
+          "access_method": {"enum": ["local", "ssh", "remote-shell", "container", "cloud-exec", "vm-manager", "existing-session"]},
+          "runtime_identity": {"type": ["string", "null"], "minLength": 1},
+          "paths": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "shared_host_nodes": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "target",
+          "action",
+          "command",
+          "generated_script",
+          "impact",
+          "required_capabilities",
+          "required_privileges",
+          "affected_paths",
+          "affected_services",
+          "expected_disruption",
+          "preconditions",
+          "expected_outcome"
+        ],
+        "properties": {
+          "id": {"$ref": "#/$defs/id"},
+          "target": {"$ref": "#/$defs/stepTarget"},
+          "action": {"type": "string", "minLength": 1},
+          "command": {"type": ["string", "null"], "minLength": 1},
+          "generated_script": {"type": ["string", "null"], "pattern": "^\\.musashi/generated/(commands|scripts)/"},
+          "impact": {"enum": ["read-only", "node-local-reversible", "host-level", "destructive-broad"]},
+          "required_capabilities": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": ["local_shell", "remote_shell", "ssh", "file_read", "file_write", "file_transfer", "privilege_escalation", "container_management", "system_service_management", "network_configuration"]
+            }
+          },
+          "required_privileges": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "affected_paths": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "affected_services": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "expected_disruption": {"type": ["string", "null"]},
+          "preconditions": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "expected_outcome": {"type": "string", "minLength": 1}
+        },
+        "anyOf": [
+          {"properties": {"command": {"type": "string", "minLength": 1}}},
+          {"properties": {"generated_script": {"type": "string", "pattern": "^\\.musashi/generated/(commands|scripts)/"}}}
+        ],
+        "additionalProperties": false
+      }
+    },
+    "confirmation": {
+      "type": "object",
+      "required": ["required", "reason", "plan_digest", "granted_by", "granted_at"],
+      "properties": {
+        "required": {"type": "boolean"},
+        "reason": {"type": ["string", "null"], "minLength": 1},
+        "plan_digest": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+        "granted_by": {"type": ["string", "null"], "minLength": 1},
+        "granted_at": {"type": ["string", "null"], "format": "date-time"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"required": {"const": true}}},
+          "then": {
+            "properties": {
+              "reason": {"type": "string", "minLength": 1},
+              "plan_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+            }
+          },
+          "else": {
+            "properties": {
+              "reason": {"const": null},
+              "plan_digest": {"const": null},
+              "granted_by": {"const": null},
+              "granted_at": {"const": null}
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "validation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "target", "check", "success_criteria", "independent_of_exit_status"],
+        "properties": {
+          "id": {"$ref": "#/$defs/id"},
+          "target": {"$ref": "#/$defs/stepTarget"},
+          "check": {"type": "string", "minLength": 1},
+          "success_criteria": {"type": "string", "minLength": 1},
+          "independent_of_exit_status": {"const": true}
+        },
+        "additionalProperties": false
+      }
+    },
+    "recovery": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "trigger", "action", "confirmation_required"],
+        "properties": {
+          "id": {"$ref": "#/$defs/id"},
+          "trigger": {"type": "string", "minLength": 1},
+          "action": {"type": "string", "minLength": 1},
+          "confirmation_required": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"not": {"const": "draft"}}}},
+      "then": {
+        "properties": {
+          "plan": {
+            "properties": {
+              "id": {"$ref": "#/$defs/id"},
+              "created_at": {"type": "string", "format": "date-time"},
+              "repository_commit": {"type": "string", "minLength": 7}
+            }
+          },
+          "scope": {"properties": {"nodes": {"minItems": 1}}},
+          "targets": {"minItems": 1},
+          "steps": {"minItems": 1},
+          "validation": {"minItems": 1}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {"enum": ["approved", "executing", "completed", "failed"]},
+          "confirmation": {"properties": {"required": {"const": true}}}
+        }
+      },
+      "then": {
+        "properties": {
+          "confirmation": {
+            "properties": {
+              "granted_by": {"type": "string", "minLength": 1},
+              "granted_at": {"type": "string", "format": "date-time"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"enum": ["executing", "completed", "failed"]}}},
+      "then": {"properties": {"execution_mode": {"enum": ["local-execution", "remote-execution"]}}}
+    }
+  ],
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 63},
+    "nullableId": {"type": ["string", "null"], "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 63},
+    "stepTarget": {
+      "type": "object",
+      "required": ["host_id", "node_id"],
+      "properties": {
+        "host_id": {"$ref": "#/$defs/id"},
+        "node_id": {"$ref": "#/$defs/id"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

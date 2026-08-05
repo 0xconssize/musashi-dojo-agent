@@ -26,6 +26,17 @@ This repository defines behavior and contracts. It does not implement SSH, a CLI
 - Every modifying operation must use an explicit single-node, selected-nodes, or fleet scope and state the node ID, host ID, role, access method, runtime identity, relevant paths, shared-host nodes, and expected impact.
 - Never silently broaden a node operation to its host or fleet. Stop on missing, duplicate, or inconsistent host/node references.
 
+## Execution and host access
+
+- Derive advisory, local-execution, or remote-execution mode from `.musashi/execution.yaml` and capabilities actually exposed by the runtime. On disagreement, use the less privileged mode.
+- Use `connect-host` before remote inspection and before every modifying operation whose connection evidence is missing, stale, or inconsistent. A remote target needs at least two matching identity signals when available.
+- Use `execute-node-plan` only with a schema-valid plan, explicit targets, verified access, declared impact, validation criteria, and the confirmations required by `SECURITY.md`.
+- Bind confirmation to the plan digest. Any change to command, target, path, privilege, disruption, or scope invalidates it.
+- Use only runtime-provided local or remote tools. This repository does not implement transports or an execution engine.
+- Save generated artifacts and sanitized results under `.musashi/`; never download and immediately execute content.
+- Treat exit status as one observation. Confirm the intended node state and unaffected shared-host workloads independently.
+- Until a concrete operation skill is delivered, remain advisory for that operation rather than inventing a lifecycle procedure.
+
 ## Musashi source authority
 
 - Use the Musashi getting-started guide for testnet configuration and operational procedures. Use the official Ouroboros Leios releases repository as the authority for the latest release, its assets, compatibility, and release-specific actions.

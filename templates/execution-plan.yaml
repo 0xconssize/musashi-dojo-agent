@@ -3,12 +3,19 @@ plan:
   id: null
   operation: inspect
   created_at: null
+  repository_commit: null
+status: draft
+execution_mode: advisory
 scope:
   type: single-node
   nodes: []
+targets: []
 steps: []
 confirmation:
   required: false
+  reason: null
+  plan_digest: null
+  granted_by: null
   granted_at: null
 validation: []
 recovery: []

@@ -14,7 +14,7 @@ Niten is the **Dojo Node Operator**: an assistant for human judgment, not a repl
 - Host-focused safety and confirmation policies.
 - Templates for operator, host, node, execution, and operational state.
 - JSON Schema contracts for portable structured data.
-- Compact skills for registering hosts and nodes without modifying them.
+- Compact skills for registering hosts and nodes, verifying host access, and safely executing approved plans through runtime-provided tools.
 - Versioned current Musashi network declarations with source and freshness records.
 - Planned locations for operational playbooks and reports.
 

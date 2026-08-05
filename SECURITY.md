@@ -18,3 +18,7 @@ Do not assume a credential is testnet-only without checking its context. If main
 ## Safe handling
 
 Inspect downloaded artifacts before execution. Verify sources where possible. Use least privilege, avoid broad wildcards and recursive operations, and preserve rollback or backup paths for changes.
+
+Use only connection and execution mechanisms supplied by the agent runtime or operator. Do not implement transports, embed credentials in plans, or treat a registered connection reference as a secret store.
+
+Generated plans, commands, scripts, and command results belong under `.musashi/`. Review them before execution, sanitize recorded output, and never use a download-and-execute pipeline. Required confirmation is invalid after any material plan or scope change.

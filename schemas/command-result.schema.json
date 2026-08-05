@@ -1,1 +1,100 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://musashi-dojo.dev/schemas/command-result.schema.json","title":"Command result","type":"object","required":["schema_version","command_id","command","exit_code","validated"],"properties":{"schema_version":{"const":1},"command_id":{"type":["string","null"]},"command":{"type":["string","null"]},"target":{"type":"object","additionalProperties":true},"started_at":{"type":["string","null"],"format":"date-time"},"finished_at":{"type":["string","null"],"format":"date-time"},"exit_code":{"type":["integer","null"]},"stdout":{"type":["string","null"]},"stderr":{"type":["string","null"]},"validated":{"type":"boolean"}},"additionalProperties":false}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://musashi-dojo.dev/schemas/command-result.schema.json",
+  "title": "Command result",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "plan_id",
+    "step_id",
+    "command_id",
+    "target",
+    "runtime_tool",
+    "command",
+    "started_at",
+    "finished_at",
+    "exit_code",
+    "stdout",
+    "stderr",
+    "sanitized",
+    "outcome",
+    "error",
+    "validation"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "plan_id": {"$ref": "#/$defs/nullableId"},
+    "step_id": {"$ref": "#/$defs/nullableId"},
+    "command_id": {"$ref": "#/$defs/nullableId"},
+    "target": {
+      "type": "object",
+      "required": ["host_id", "node_id"],
+      "properties": {
+        "host_id": {"$ref": "#/$defs/nullableId"},
+        "node_id": {"$ref": "#/$defs/nullableId"}
+      },
+      "additionalProperties": false
+    },
+    "runtime_tool": {"type": ["string", "null"], "minLength": 1},
+    "command": {"type": ["string", "null"], "minLength": 1},
+    "started_at": {"type": ["string", "null"], "format": "date-time"},
+    "finished_at": {"type": ["string", "null"], "format": "date-time"},
+    "exit_code": {"type": ["integer", "null"]},
+    "stdout": {"type": ["string", "null"]},
+    "stderr": {"type": ["string", "null"]},
+    "sanitized": {"const": true},
+    "outcome": {"enum": ["not-run", "succeeded", "failed", "aborted", "unknown"]},
+    "error": {"type": ["string", "null"]},
+    "validation": {
+      "type": "object",
+      "required": ["performed", "passed", "checks"],
+      "properties": {
+        "performed": {"type": "boolean"},
+        "passed": {"type": ["boolean", "null"]},
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "passed", "evidence"],
+            "properties": {
+              "name": {"type": "string", "minLength": 1},
+              "passed": {"type": "boolean"},
+              "evidence": {"type": ["string", "null"]}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"performed": {"const": false}}},
+          "then": {"properties": {"passed": {"const": null}, "checks": {"maxItems": 0}}}
+        },
+        {
+          "if": {"properties": {"performed": {"const": true}}},
+          "then": {"properties": {"passed": {"type": "boolean"}, "checks": {"minItems": 1}}}
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"outcome": {"const": "succeeded"}}},
+      "then": {
+        "properties": {
+          "validation": {
+            "properties": {
+              "performed": {"const": true},
+              "passed": {"const": true}
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "nullableId": {"type": ["string", "null"], "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 63}
+  },
+  "additionalProperties": false
+}

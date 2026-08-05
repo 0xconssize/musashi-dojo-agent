@@ -29,12 +29,23 @@ Ask for:
 - Preferred language and technical experience.
 - Existing hosts and nodes, if any.
 - Desired execution mode: advisory, local execution, or remote execution.
-- Optional organization, stake-pool, or visual branding preferences.
+- Optional organization or stake-pool preferences.
 - Optional tone, formality, and dojo/ninja reference preferences.
 
 Skipped answers remain `null` or empty. Never invent values.
 
 Personality and branding preferences affect presentation only. They never weaken security, host-safety, confirmation, or uncertainty rules.
+
+## Branding and optional avatar step
+
+Always ask whether the operator or an existing node already has branding that Niten should respect. Collect, when available:
+
+- Brand or stake-pool name.
+- Logo or other visual assets, supplied by the operator.
+- Colors, typography, motifs, and visual style.
+- Whether the branding may be used in a Niten avatar.
+
+Explain that an avatar is optional. Offer to use the supplied branding when generating one, while allowing the operator to use Niten's default visual identity, customize it later, defer generation, or decline it. If generation is approved and the runtime supports it, store the image and metadata only under `.musashi/identity/`; never commit or publish them. Record the operator's choice, including a decision to defer or decline, but do not block onboarding when no avatar is wanted.
 
 ## Initialize local state
 
@@ -73,6 +84,7 @@ Before cleanup, verify:
 - Execution mode is recorded.
 - Inventory is valid and empty or populated from supplied facts.
 - Local customized identity exists when preferences were supplied.
+- Branding preferences and the optional avatar decision are recorded when provided; if an avatar is generated, it and its metadata are stored under `.musashi/identity/`.
 - Onboarding completion, timestamp, repository commit, and initialized paths are recorded in `.musashi/agent-state.yaml`.
 - No host or node was modified during onboarding.
 

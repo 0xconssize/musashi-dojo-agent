@@ -3,11 +3,29 @@
   "report_type": "diagnostic",
   "report_id": null,
   "created_at": null,
+  "agent_runtime": null,
+  "repository_commit": null,
+  "network": {
+    "id": null,
+    "selected_release": null,
+    "configuration_verified_at": null
+  },
   "execution_mode": "advisory",
-  "target": {"host_id": null, "node_id": null},
+  "target": {
+    "host_id": null,
+    "node_id": null,
+    "role": null,
+    "installation_method": null,
+    "runtime_identity": null
+  },
+  "symptom": null,
+  "evidence_window": {"started_at": null, "finished_at": null},
   "checks": [],
   "problems": [],
+  "unknowns": [],
   "recommendations": [],
   "sanitized_log_excerpts": [],
+  "outcome": "inconclusive",
+  "sanitized": true,
   "summary": null
 }

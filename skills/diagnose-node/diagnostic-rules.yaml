@@ -1,0 +1,64 @@
+schema_version: 1
+skill: diagnose-node
+phase: 6
+risk: read-only
+scope: [single-node]
+inputs: [node_id, symptom, evidence_window, runtime_capabilities]
+outputs: [diagnostic_report]
+success: Findings are evidence-backed, sanitized, reproducible, and separate unknowns from likely causes.
+
+rules:
+  - id: host-capacity
+    check: Compare observed CPU, memory, SSD space, and architecture with current requirements.
+    outcomes: [pass, fail, unknown]
+    evidence: Timestamped host observations and the requirements verification timestamp.
+  - id: clock-health
+    check: Observe clock synchronization and material skew without changing time service configuration.
+    outcomes: [pass, fail, unknown]
+    evidence: Timestamped runtime or host clock observations.
+  - id: runtime-identity
+    check: Match the running process, service, or container to the registered node identity.
+    outcomes: [pass, fail, unknown]
+    evidence: Sanitized identity and ownership observations.
+  - id: release-provenance
+    check: Compare installed artifact provenance with the selected official release; keep the exact node version unknown when no authoritative mapping exists.
+    outcomes: [pass, fail, conflict, unknown]
+    evidence: Installed provenance, current.yaml, and official release metadata.
+  - id: configuration-integrity
+    check: Compare Musashi configuration and topology hashes with current.yaml without exposing secrets.
+    outcomes: [pass, fail, conflict, unknown]
+    evidence: File hashes, paths, and current declaration hashes.
+  - id: storage-health
+    check: Observe free space, writable node paths, and bounded storage errors without repairing filesystems.
+    outcomes: [pass, fail, unknown]
+    evidence: Timestamped capacity, ownership, and error observations.
+  - id: startup-health
+    check: Correlate runtime state with bounded fatal or crash evidence.
+    outcomes: [pass, fail, unknown]
+    evidence: Process state and sanitized bounded logs.
+  - id: tip-trend
+    check: Compare at least two time-separated tip or sync observations before classifying progress.
+    outcomes: [progressing, stalled, unavailable, unknown]
+    evidence: Values and timestamps; one observation is insufficient for stalled.
+  - id: peer-connectivity
+    check: Observe peer evidence and distinguish no peers from slow or bursty synchronization.
+    outcomes: [connected, none, unavailable, unknown]
+    evidence: Node telemetry, bounded logs, or runtime endpoints.
+  - id: shared-host-impact
+    check: Verify registered sibling nodes and unrelated shared services remain healthy.
+    outcomes: [pass, fail, unknown]
+    evidence: Sanitized status observations for declared shared workloads.
+
+current_release_rules:
+  - id: w31a-invalid-certificate-crash
+    applies_when:
+      selected_release: prototype-2026w31a
+      symptom: Invalid Leios certificate crash persists after update.
+    diagnosis: Confirm release provenance and exact crash evidence before recommending recovery.
+    recommendation: Use recover-node to remove only volatile chain state after separate destructive confirmation.
+    source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w31a
+
+freshness:
+  status: current-as-reviewed
+  reviewed_at: "2026-08-05"
+  stale_when: Requirements, configuration hashes, latest release, guide, known issues, or failure evidence changes.

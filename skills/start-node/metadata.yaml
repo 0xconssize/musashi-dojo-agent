@@ -1,0 +1,23 @@
+schema_version: 1
+skill: start-node
+phase: 6
+risk: node-local-reversible
+scope: [single-node]
+inputs: [node_id, verified_access, runtime_identity, configuration, validation_criteria]
+outputs: [operation_report, node_state]
+success: The intended node remains running and passes independent health checks.
+confirmation:
+  required_for: [host-level, destructive-broad, shared-resource-change]
+sources:
+  operational:
+    url: https://leios.cardano-scaling.org/docs/testnet/getting-started/
+    sections: [Run a relay, Confirm you are syncing]
+    retrieved_at: "2026-08-05"
+  release_authority:
+    url: https://github.com/input-output-hk/ouroboros-leios/releases
+    latest_release: prototype-2026w31a
+    retrieved_at: "2026-08-05"
+freshness:
+  status: current-as-reviewed
+  revalidate_before: Using a testnet-specific startup or validation procedure.
+  stale_when: Runtime identity, configuration, target state, guide, or selected release changes.

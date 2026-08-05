@@ -2,12 +2,25 @@
   "schema_version": 1,
   "report_type": "operation",
   "report_id": null,
+  "operation": null,
   "created_at": null,
   "agent_runtime": null,
   "repository_commit": null,
+  "network": {
+    "id": null,
+    "selected_release": null,
+    "configuration_verified_at": null
+  },
   "execution_mode": "advisory",
-  "scope": {"type": "single-node", "nodes": []},
+  "scope": {"type": "single-node", "hosts": [], "nodes": []},
+  "plan_id": null,
+  "commands": [],
+  "checks": [],
   "observations": [],
+  "problems": [],
+  "recommendations": [],
   "validation": [],
+  "outcome": "not-run",
+  "sanitized": true,
   "summary": null
 }

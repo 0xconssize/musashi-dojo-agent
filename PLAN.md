@@ -1529,6 +1529,15 @@ Acceptance criteria:
 
 ### Phase 6 — Initial operational skills
 
+Implementation boundary:
+
+- Initial deployment covers the relay role only. Block-producer registration remains outside this phase.
+- Installation, network configuration, and start are separate plans with independent validation; installation leaves the relay stopped.
+- Lifecycle operations use the Phase 5 execution contracts and runtime-provided tools rather than embedded executors or transports.
+- Diagnosis is read-only. Update and recovery are single-node operations; fleet rollout remains in Phase 7.
+- Recovery must be tied to observed evidence and applicable official guidance. It never implies a full state reset.
+- Issue reporting produces a sanitized local draft only; external publication requires a separate explicit operator instruction.
+
 Deliver:
 
 - Assess-host skill.
@@ -1542,6 +1551,8 @@ Deliver:
 - Recover-node skill.
 - Report-issue skill.
 - Supporting playbooks.
+
+The minimal supporting set is `first-node-deployment.md`, `node-not-syncing.md`, `no-peer-connections.md`, `configuration-changed.md`, `recover-failed-node.md`, and `collect-diagnostics.md`. Fleet, rolling-update, testnet-respin, and repository-reconciliation playbooks remain in their later phases.
 
 Acceptance criteria:
 

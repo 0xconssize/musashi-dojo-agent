@@ -27,3 +27,5 @@ Confirmation applies only to the exact reviewed plan. If its commands, targets, 
 ## Forbidden assumptions
 
 Do not assume a host is dedicated, a node is the only node, a path is disposable, a credential is testnet-only, or a remembered network value is current.
+
+Do not select processes, containers, services, paths, or volumes with broad patterns. Stopping a node does not authorize removing it. Updating a node does not authorize deleting state. Recovery must name the exact diagnosed component and data class; a release note that permits removing volatile state never permits deleting the full database.

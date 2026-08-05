@@ -1,1 +1,121 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://musashi-dojo.dev/schemas/diagnostic-report.schema.json","title":"Diagnostic report","type":"object","required":["schema_version","report_type","report_id","created_at","execution_mode","target","checks","problems","recommendations","summary"],"properties":{"schema_version":{"const":1},"report_type":{"const":"diagnostic"},"report_id":{"type":["string","null"]},"created_at":{"type":["string","null"],"format":"date-time"},"execution_mode":{"enum":["advisory","local-execution","remote-execution"]},"target":{"type":"object"},"checks":{"type":"array"},"problems":{"type":"array"},"recommendations":{"type":"array"},"sanitized_log_excerpts":{"type":"array","items":{"type":"string"}},"summary":{"type":["string","null"]}},"additionalProperties":false}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://musashi-dojo.dev/schemas/diagnostic-report.schema.json",
+  "title": "Diagnostic report",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "report_type",
+    "report_id",
+    "created_at",
+    "agent_runtime",
+    "repository_commit",
+    "network",
+    "execution_mode",
+    "target",
+    "symptom",
+    "evidence_window",
+    "checks",
+    "problems",
+    "unknowns",
+    "recommendations",
+    "sanitized_log_excerpts",
+    "outcome",
+    "sanitized",
+    "summary"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "report_type": {"const": "diagnostic"},
+    "report_id": {"$ref": "#/$defs/nullableId"},
+    "created_at": {"type": ["string", "null"], "format": "date-time"},
+    "agent_runtime": {"type": ["string", "null"], "minLength": 1},
+    "repository_commit": {"type": ["string", "null"], "minLength": 7},
+    "network": {
+      "type": "object",
+      "required": ["id", "selected_release", "configuration_verified_at"],
+      "properties": {
+        "id": {"type": ["string", "null"], "minLength": 1},
+        "selected_release": {"type": ["string", "null"], "minLength": 1},
+        "configuration_verified_at": {"type": ["string", "null"], "format": "date-time"}
+      },
+      "additionalProperties": false
+    },
+    "execution_mode": {"enum": ["advisory", "local-execution", "remote-execution"]},
+    "target": {
+      "type": "object",
+      "required": ["host_id", "node_id", "role", "installation_method", "runtime_identity"],
+      "properties": {
+        "host_id": {"$ref": "#/$defs/nullableId"},
+        "node_id": {"$ref": "#/$defs/nullableId"},
+        "role": {"type": ["string", "null"], "minLength": 1},
+        "installation_method": {"type": ["string", "null"], "minLength": 1},
+        "runtime_identity": {"type": ["string", "null"], "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "symptom": {"type": ["string", "null"], "minLength": 1},
+    "evidence_window": {
+      "type": "object",
+      "required": ["started_at", "finished_at"],
+      "properties": {
+        "started_at": {"type": ["string", "null"], "format": "date-time"},
+        "finished_at": {"type": ["string", "null"], "format": "date-time"}
+      },
+      "additionalProperties": false
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "status", "evidence"],
+        "properties": {
+          "id": {"$ref": "#/$defs/id"},
+          "status": {"enum": ["pass", "fail", "conflict", "progressing", "stalled", "connected", "none", "unavailable", "unknown"]},
+          "evidence": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "problems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity", "summary", "evidence", "confidence"],
+        "properties": {
+          "id": {"$ref": "#/$defs/id"},
+          "severity": {"enum": ["low", "medium", "high", "critical", "unknown"]},
+          "summary": {"type": "string", "minLength": 1},
+          "evidence": {"type": ["string", "null"]},
+          "confidence": {"enum": ["low", "medium", "high", "unknown"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "unknowns": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["priority", "action", "rationale", "impact", "confirmation_required"],
+        "properties": {
+          "priority": {"enum": ["low", "medium", "high", "urgent"]},
+          "action": {"type": "string", "minLength": 1},
+          "rationale": {"type": "string", "minLength": 1},
+          "impact": {"enum": ["read-only", "node-local-reversible", "host-level", "destructive-broad"]},
+          "confirmation_required": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "sanitized_log_excerpts": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "outcome": {"enum": ["healthy", "degraded", "failed", "inconclusive"]},
+    "sanitized": {"const": true},
+    "summary": {"type": ["string", "null"], "minLength": 1}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 63},
+    "nullableId": {"type": ["string", "null"], "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 63}
+  },
+  "additionalProperties": false
+}

@@ -22,3 +22,5 @@ Inspect downloaded artifacts before execution. Verify sources where possible. Us
 Use only connection and execution mechanisms supplied by the agent runtime or operator. Do not implement transports, embed credentials in plans, or treat a registered connection reference as a secret store.
 
 Generated plans, commands, scripts, and command results belong under `.musashi/`. Review them before execution, sanitize recorded output, and never use a download-and-execute pipeline. Required confirmation is invalid after any material plan or scope change.
+
+Diagnostic reports and issue drafts must minimize evidence and remove credentials, keys, tokens, unnecessary usernames, private addresses, unrelated services, and private paths. Creating a local draft grants no permission to publish it or upload attachments.

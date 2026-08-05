@@ -1,0 +1,25 @@
+schema_version: 1
+skill: join-testnet
+phase: 6
+risk: variable-impact
+scope: [single-node]
+inputs: [node_id, release_provenance, installation_method, configuration_path, verified_access]
+outputs: [operation_report, node_state]
+success: A stopped relay has hash-verified current Musashi configuration and preserved recovery material.
+confirmation:
+  required_for: [host-level, destructive-broad]
+  invalidated_by: [command-change, target-change, path-change, privilege-change, scope-change]
+sources:
+  operational:
+    url: https://leios.cardano-scaling.org/docs/testnet/getting-started/
+    sections: [The network at a glance, Run a relay]
+    retrieved_at: "2026-08-05"
+    documented_release: prototype-2026w30
+  release_authority:
+    url: https://github.com/input-output-hk/ouroboros-leios/releases
+    latest_release: prototype-2026w31a
+    retrieved_at: "2026-08-05"
+freshness:
+  status: current-with-source-conflict
+  revalidate_before: Retrieving or applying configuration.
+  stale_when: Configuration hashes, topology, selected release, guide, or network incarnation change.

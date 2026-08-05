@@ -1,0 +1,24 @@
+schema_version: 1
+skill: assess-host
+phase: 6
+risk: read-only
+scope: [single-host]
+inputs: [host_id, intended_role, installation_method, runtime_capabilities]
+outputs: [operation_report, host_state]
+success: Evidence-backed suitability outcome with no host modification.
+confirmation:
+  required: false
+  stop_if: A proposed check would modify the host.
+sources:
+  operational:
+    url: https://leios.cardano-scaling.org/docs/testnet/getting-started/
+    sections: [System requirements, Run a relay]
+    retrieved_at: "2026-08-05"
+  release_authority:
+    url: https://github.com/input-output-hk/ouroboros-leios/releases
+    latest_release: prototype-2026w31a
+    retrieved_at: "2026-08-05"
+freshness:
+  status: current-as-reviewed
+  revalidate_before: Comparing a host with current requirements.
+  stale_when: Requirements, release assets, installation methods, or the network incarnation change.

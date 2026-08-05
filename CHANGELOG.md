@@ -11,3 +11,4 @@
 - Phase 3 multi-host and multi-node registration with compact `add-host` and `add-node` skills, bidirectional inventory rules, explicit active context, stricter contracts, and source-freshness metadata.
 - Phase 4 current Musashi network declarations covering the latest official release, live configuration snapshot, bootstrap data, requirements, release history, known issues, and source precedence.
 - Phase 5 execution modes, verified local and remote host access, structured plans and command results, generated-artifact policy, and compact `connect-host` and `execute-node-plan` skills.
+- Phase 6 initial operations: host assessment; relay installation and Musashi configuration; node start, stop, restart, diagnosis, update, recovery, and local issue drafting; six supporting playbooks; diagnostic rules; and strengthened operation and diagnostic report contracts.

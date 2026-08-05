@@ -1,1 +1,110 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://musashi-dojo.dev/schemas/operation-report.schema.json","title":"Operation report","type":"object","required":["schema_version","report_type","report_id","created_at","execution_mode","scope","summary"],"properties":{"schema_version":{"const":1},"report_type":{"const":"operation"},"report_id":{"type":["string","null"]},"created_at":{"type":["string","null"],"format":"date-time"},"agent_runtime":{"type":["string","null"]},"repository_commit":{"type":["string","null"]},"execution_mode":{"enum":["advisory","local-execution","remote-execution"]},"scope":{"type":"object"},"observations":{"type":"array"},"validation":{"type":"array"},"summary":{"type":["string","null"]}},"additionalProperties":false}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://musashi-dojo.dev/schemas/operation-report.schema.json",
+  "title": "Operation report",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "report_type",
+    "report_id",
+    "operation",
+    "created_at",
+    "agent_runtime",
+    "repository_commit",
+    "network",
+    "execution_mode",
+    "scope",
+    "plan_id",
+    "commands",
+    "checks",
+    "observations",
+    "problems",
+    "recommendations",
+    "validation",
+    "outcome",
+    "sanitized",
+    "summary"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "report_type": {"const": "operation"},
+    "report_id": {"$ref": "#/$defs/nullableId"},
+    "operation": {"type": ["string", "null"], "minLength": 1},
+    "created_at": {"type": ["string", "null"], "format": "date-time"},
+    "agent_runtime": {"type": ["string", "null"], "minLength": 1},
+    "repository_commit": {"type": ["string", "null"], "minLength": 7},
+    "network": {
+      "type": "object",
+      "required": ["id", "selected_release", "configuration_verified_at"],
+      "properties": {
+        "id": {"type": ["string", "null"], "minLength": 1},
+        "selected_release": {"type": ["string", "null"], "minLength": 1},
+        "configuration_verified_at": {"type": ["string", "null"], "format": "date-time"}
+      },
+      "additionalProperties": false
+    },
+    "execution_mode": {"enum": ["advisory", "local-execution", "remote-execution"]},
+    "scope": {
+      "type": "object",
+      "required": ["type", "hosts", "nodes"],
+      "properties": {
+        "type": {"enum": ["single-host", "single-node", "selected-nodes", "fleet"]},
+        "hosts": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "nodes": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}}
+      },
+      "additionalProperties": false
+    },
+    "plan_id": {"$ref": "#/$defs/nullableId"},
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["step_id", "command_id", "outcome"],
+        "properties": {
+          "step_id": {"$ref": "#/$defs/nullableId"},
+          "command_id": {"$ref": "#/$defs/nullableId"},
+          "outcome": {"enum": ["not-run", "succeeded", "failed", "aborted", "unknown"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "checks": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/check"}
+    },
+    "observations": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "problems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "summary", "evidence"],
+        "properties": {
+          "severity": {"enum": ["low", "medium", "high", "critical", "unknown"]},
+          "summary": {"type": "string", "minLength": 1},
+          "evidence": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "recommendations": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "validation": {"type": "array", "items": {"$ref": "#/$defs/check"}},
+    "outcome": {"enum": ["not-run", "succeeded", "failed", "partial", "suitable", "conditional", "unsuitable", "inconclusive"]},
+    "sanitized": {"const": true},
+    "summary": {"type": ["string", "null"], "minLength": 1}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 63},
+    "nullableId": {"type": ["string", "null"], "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 63},
+    "check": {
+      "type": "object",
+      "required": ["id", "passed", "evidence"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "passed": {"type": ["boolean", "null"]},
+        "evidence": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

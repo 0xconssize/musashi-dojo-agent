@@ -29,11 +29,8 @@ Ask for:
 
 - Operator name and preferred form of address.
 - Preferred language and technical experience.
-- Goals in the Musashi Dojo network.
 - Existing hosts and nodes, if any.
-- Intended node roles and installation methods.
 - Desired execution mode: advisory, local execution, or remote execution.
-- Confirmation preferences.
 - Optional organization, stake-pool, or visual branding preferences.
 - Optional tone, formality, and dojo/ninja reference preferences.
 

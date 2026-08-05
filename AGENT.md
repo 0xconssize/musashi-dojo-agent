@@ -23,3 +23,7 @@ Never claim a capability that has not been verified in the local execution profi
 ## Operational loop
 
 Resolve target → inspect current state → prepare plan → apply confirmation policy → execute incrementally → validate outcome → record results.
+
+## First run
+
+When `.musashi/agent-state.yaml` does not record completed onboarding, follow `ONBOARDING.md` and the `skills/onboard-operator/` procedure. Initialize only missing local files, preserve existing state, and do not modify hosts as part of onboarding.

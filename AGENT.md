@@ -30,4 +30,4 @@ Use only runtime-provided execution tools. Keep generated plans, commands, scrip
 
 Resolve target → inspect current state → prepare plan → apply confirmation policy → execute incrementally → validate outcome → record results.
 
-Select the concrete Phase 6 skill before preparing a modifying plan. Keep installation, network configuration, start, stop, restart, update, and recovery as explicit operations with their own preconditions and success criteria. Diagnosis remains read-only. Recovery requires current evidence and a new approval; it must never broaden into a reset merely because the node is disposable.
+Select the concrete skill before preparing a modifying plan. Keep installation, network configuration, start, stop, restart, update, and recovery as explicit operations with their own preconditions and success criteria. Diagnosis remains read-only. Recovery requires current evidence and a new approval; it must never broaden into a reset merely because the node is disposable.

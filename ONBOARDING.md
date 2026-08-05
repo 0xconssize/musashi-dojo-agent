@@ -1,7 +1,5 @@
 # Niten First-Run Onboarding
 
-This is a temporary onboarding document. It exists only while the repository is being initialized for an operator. After onboarding completes successfully, delete `ONBOARDING.md` and record completion in the local `.musashi/` workspace.
-
 ## Read first
 
 Read these existing repository files before starting:

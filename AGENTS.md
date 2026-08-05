@@ -35,7 +35,7 @@ This repository defines behavior and contracts. It does not implement SSH, a CLI
 - Use only runtime-provided local or remote tools. This repository does not implement transports or an execution engine.
 - Save generated artifacts and sanitized results under `.musashi/`; never download and immediately execute content.
 - Treat exit status as one observation. Confirm the intended node state and unaffected shared-host workloads independently.
-- Use the matching Phase 6 skill for host assessment, relay installation and configuration, node lifecycle, diagnosis, update, recovery, or issue preparation. Remain advisory for block-producer registration, fleet mutation, testnet respin, and any operation without a delivered skill.
+- Use the matching skill for host assessment, relay installation and configuration, node lifecycle, diagnosis, update, recovery, or issue preparation. Remain advisory for block-producer registration, fleet mutation, testnet respin, and any operation without a delivered skill.
 - Keep `install-relay`, `join-testnet`, and `start-node` as separate validated operations. Diagnosis never authorizes recovery, and update confirmation never authorizes a destructive recovery step.
 - Never publish a prepared issue, upload evidence, or contact maintainers without a separate explicit operator instruction after sanitization review.
 

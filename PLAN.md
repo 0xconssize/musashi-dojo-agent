@@ -1423,6 +1423,14 @@ Phase implementations must first check whether the existing root `IDENTITY.md`, 
 
 ### Phase 3 — Multi-host and multi-node model
 
+Authoritative operational source:
+
+- All Leios Musashi Dojo testnet facts used to populate the Phase 3 skills and knowledge must be obtained from the official getting-started documentation: <https://leios.cardano-scaling.org/docs/testnet/getting-started/>.
+- Treat that documentation and the official pages it links to as the source of truth for supported platforms, node releases, network parameters, bootstrap peers, configuration retrieval, ports, storage requirements, and operational procedures.
+- Do not copy unverified values from prior sessions, local memory, examples, or third-party guides. Unknown or unavailable values remain explicit until verified from the official documentation.
+- Before implementing or accepting a Phase 3 skill or knowledge entry, review the source for changes and record its retrieval date, relevant section or linked page, and the version/configuration it supports.
+- A later review must be able to identify stale or obsolete skills and knowledge when the documentation changes; obsolete operational guidance must be marked for update or removal before it is used.
+
 Deliver:
 
 - Inventory schema.
@@ -1433,6 +1441,8 @@ Deliver:
 - Add-node skill.
 - Active-context rules.
 - Operation-scope rules.
+- Source-aware knowledge and skill metadata, including source URL, source section, retrieval date, and supported testnet/node version where applicable.
+- A documentation-freshness review covering every Phase 3 operational skill and knowledge entry.
 
 Acceptance criteria:
 
@@ -1440,6 +1450,9 @@ Acceptance criteria:
 - Multiple nodes may reference the same host.
 - The agent identifies the exact target before modifications.
 - Node-specific and host-specific memory remain isolated.
+- Every testnet-specific instruction and mutable value is traceable to the official documentation or an official page linked from it.
+- A reviewer can determine whether each Phase 3 skill or knowledge entry is current, stale, or obsolete.
+- The agent refuses to present stale or unverified testnet facts as current and directs the operator to the official documentation for re-verification.
 
 ### Phase 4 — Current testnet knowledge
 

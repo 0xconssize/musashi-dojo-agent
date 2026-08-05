@@ -1394,7 +1394,7 @@ Acceptance criteria:
 Deliver:
 
 - Stable Niten identity defined in `IDENTITY.md`.
-- Local `.musashi/identity/IDENTITY.md` generated from onboarding data; no mutable identity file is committed to the repository.
+- Local `.musashi/identity/IDENTITY.md` generated from onboarding data;
 - `ONBOARDING.md`.
 - Operator onboarding skill.
 - Workspace initialization instructions.

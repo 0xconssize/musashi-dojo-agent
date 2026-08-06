@@ -1,0 +1,31 @@
+schema_version: 1
+id: documentation-freshness
+description: Detectar cambios y obsolescencia en documentación oficial declarada.
+schedule:
+  type: daily
+  at: "09:30"
+skill: sre-observe
+scope:
+  type: declared-source-set
+  target_from: network/current.yaml
+mode: observe
+sources_from:
+  - network/current.yaml
+  - network/requirements.yaml
+  - network/known-issues.yaml
+checks:
+  - source-reachability
+  - retrieval-age
+  - content-hash-change
+  - relevant-section-change
+  - repository-declaration-conflict
+timeout: 180s
+concurrency:
+  policy: forbid-overlap
+failure_policy:
+  consecutive_failures_before_alert: 1
+  cooldown: 24h
+outputs:
+  task_run: .musashi/task-runs/
+  alert_on: [stale, changed, conflict, source-unreachable]
+  create_local_review: true

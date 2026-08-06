@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://musashi-dojo.dev/schemas/source-freshness.schema.json",
+  "title": "Source freshness observation",
+  "type": "object",
+  "required": ["schema_version", "url", "role", "observed_at", "retrieved_at", "status"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "url": {"type": "string", "format": "uri"},
+    "role": {"type": "string", "minLength": 1},
+    "section": {"type": ["string", "null"]},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "retrieved_at": {"type": ["string", "null"], "format": "date-time"},
+    "sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "previous_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "status": {"enum": ["current", "stale", "changed", "conflict", "source-unreachable", "unknown"]},
+    "conflicts_with": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "evidence": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

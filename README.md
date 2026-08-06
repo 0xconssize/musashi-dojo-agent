@@ -15,6 +15,7 @@ Niten is the **Dojo Node Operator**: an assistant for human judgment, not a repl
 - Templates for operator, host, node, execution, and operational state.
 - JSON Schema contracts for portable structured data.
 - Compact skills for inventory, host assessment and access, relay installation and configuration, node lifecycle, diagnosis, update, recovery, reporting, and safe plan execution through runtime-provided tools.
+- Read-only SRE task definitions for node and host health, configuration drift, release freshness, documentation freshness, and knowledge freshness.
 - Versioned current Musashi network declarations with source and freshness records.
 - Initial relay deployment, diagnostic, configuration-change, recovery, and evidence-collection playbooks.
 
@@ -31,6 +32,12 @@ If you find incorrect knowledge, an unclear skill, a misleading instruction, or 
 For a reproducible host or node incident, use the local `report-issue` skill first. It creates a sanitized draft under `.musashi/`; publication and evidence uploads always require a separate explicit operator decision.
 
 Accepted issues are resolved through a reviewed pull request. Shared knowledge changes are not made directly from an issue or from private operational state.
+
+## Scheduled SRE checks
+
+The declarative tasks under [`tasks/`](tasks/) run in observation mode only. An external scheduler supplied by the selected runtime may invoke [`sre-observe`](skills/sre-observe/SKILL.md) for an explicitly configured host, node, or source set. Results belong under `.musashi/task-runs/` and are local operational state.
+
+The release and documentation checks compare installed versions, official release metadata, source retrieval dates, content hashes, relevant sections, and repository declarations. A detected change or stale source creates a local review signal; it does not update a node, accept a source as authoritative, or publish an issue automatically. Use [`templates/sre-policy.yaml`](templates/sre-policy.yaml) and [`templates/schedules.yaml`](templates/schedules.yaml) as starting points for local runtime configuration.
 
 ## Getting started
 

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://musashi-dojo.dev/schemas/task-run.schema.json",
+  "title": "Scheduled task run",
+  "type": "object",
+  "required": ["schema_version", "run_id", "task_id", "started_at", "finished_at", "repository_commit", "mode", "scope", "checks", "outcome", "sanitized"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "run_id": {"$ref": "#/$defs/id"},
+    "task_id": {"$ref": "#/$defs/id"},
+    "started_at": {"type": "string", "format": "date-time"},
+    "finished_at": {"type": "string", "format": "date-time"},
+    "repository_commit": {"type": "string", "minLength": 7},
+    "agent_runtime": {"type": ["string", "null"]},
+    "mode": {"const": "observe"},
+    "scope": {
+      "type": "object",
+      "required": ["type", "host_id", "node_id"],
+      "properties": {
+        "type": {"enum": ["single-node", "single-host", "declared-source-set"]},
+        "host_id": {"type": ["string", "null"]},
+        "node_id": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "status", "evidence"],
+        "properties": {
+          "id": {"$ref": "#/$defs/id"},
+          "status": {"enum": ["healthy", "degraded", "failed", "unknown", "current", "update-available", "stale", "changed", "conflict", "drift", "missing-source", "source-unreachable", "asset-unverified", "compatibility-unknown"]},
+          "evidence": {"type": ["string", "null"]},
+          "observed_at": {"type": ["string", "null"], "format": "date-time"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "outcome": {"enum": ["healthy", "degraded", "failed", "unknown"]},
+    "alert": {"type": ["string", "null"]},
+    "local_review_path": {"type": ["string", "null"]},
+    "sanitized": {"const": true}
+  },
+  "$defs": {"id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 100}},
+  "additionalProperties": false
+}

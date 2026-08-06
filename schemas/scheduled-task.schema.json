@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://musashi-dojo.dev/schemas/scheduled-task.schema.json",
+  "title": "Scheduled SRE task",
+  "type": "object",
+  "required": ["schema_version", "id", "description", "schedule", "skill", "scope", "mode", "checks", "timeout", "concurrency", "failure_policy", "outputs"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "id": {"$ref": "#/$defs/id"},
+    "description": {"type": "string", "minLength": 1},
+    "schedule": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {"enum": ["interval", "daily", "weekly"]},
+        "every": {"type": "string", "pattern": "^[1-9][0-9]*(s|m|h|d)$"},
+        "at": {"type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"},
+        "weekday": {"enum": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]}
+      },
+      "allOf": [
+        {"if": {"properties": {"type": {"const": "interval"}}}, "then": {"required": ["every"]}},
+        {"if": {"properties": {"type": {"const": "daily"}}}, "then": {"required": ["at"]}},
+        {"if": {"properties": {"type": {"const": "weekly"}}}, "then": {"required": ["weekday", "at"]}}
+      ],
+      "additionalProperties": false
+    },
+    "skill": {"const": "sre-observe"},
+    "scope": {
+      "type": "object",
+      "required": ["type", "target_from"],
+      "properties": {
+        "type": {"enum": ["single-node", "single-host", "declared-source-set"]},
+        "target_from": {"enum": ["local-policy", "network/current.yaml", "network/requirements.yaml", "network/known-issues.yaml", "repository"]}
+      },
+      "additionalProperties": false
+    },
+    "mode": {"const": "observe"},
+    "sources": {"type": "array", "items": {"$ref": "#/$defs/source"}},
+    "sources_from": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "checks": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/id"}},
+    "timeout": {"type": "string", "pattern": "^[1-9][0-9]*(s|m)$"},
+    "concurrency": {
+      "type": "object",
+      "required": ["policy"],
+      "properties": {"policy": {"const": "forbid-overlap"}},
+      "additionalProperties": false
+    },
+    "failure_policy": {
+      "type": "object",
+      "required": ["consecutive_failures_before_alert", "cooldown"],
+      "properties": {
+        "consecutive_failures_before_alert": {"type": "integer", "minimum": 1},
+        "cooldown": {"type": "string", "pattern": "^[1-9][0-9]*(m|h|d)$"}
+      },
+      "additionalProperties": false
+    },
+    "outputs": {
+      "type": "object",
+      "required": ["task_run", "alert_on"],
+      "properties": {
+        "task_run": {"const": ".musashi/task-runs/"},
+        "alert_on": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "create_local_review": {"type": "boolean"},
+        "on_update_available": {"const": "report-only"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 63},
+    "source": {
+      "type": "object",
+      "required": ["url", "role"],
+      "properties": {"url": {"type": "string", "format": "uri"}, "role": {"type": "string", "minLength": 1}},
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,27 @@
+schema_version: 1
+id: host-health
+description: Comprobar recursos y servicios compartidos de un host.
+schedule:
+  type: interval
+  every: 15m
+skill: sre-observe
+scope:
+  type: single-host
+  target_from: local-policy
+mode: observe
+checks:
+  - disk-headroom
+  - inode-headroom
+  - memory-and-load
+  - clock-health
+  - shared-services
+  - expected-port-ownership
+timeout: 120s
+concurrency:
+  policy: forbid-overlap
+failure_policy:
+  consecutive_failures_before_alert: 2
+  cooldown: 30m
+outputs:
+  task_run: .musashi/task-runs/
+  alert_on: [degraded, failed, unknown]

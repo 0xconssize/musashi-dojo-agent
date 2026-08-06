@@ -316,6 +316,14 @@ musashi-dojo-agent/
 │   ├── requirements.yaml
 │   └── known-issues.yaml
 │
+├── tasks/
+│   ├── node-health.yaml
+│   ├── host-health.yaml
+│   ├── configuration-drift.yaml
+│   ├── release-freshness.yaml
+│   ├── documentation-freshness.yaml
+│   └── knowledge-freshness.yaml
+│
 ├── skills/
 │   ├── assess-host/
 │   │   ├── SKILL.md
@@ -357,6 +365,9 @@ musashi-dojo-agent/
 │   │   ├── SKILL.md
 │   │   └── metadata.yaml
 │   ├── execute-node-plan/
+│   │   ├── SKILL.md
+│   │   └── metadata.yaml
+│   ├── sre-observe/
 │   │   ├── SKILL.md
 │   │   └── metadata.yaml
 │   └── report-issue/
@@ -405,7 +416,11 @@ musashi-dojo-agent/
 │   ├── diagnostic-report.schema.json
 │   ├── fleet-status.schema.json
 │   ├── agent-memory.schema.json
-│   └── network-config.schema.json
+│   ├── network-config.schema.json
+│   ├── scheduled-task.schema.json
+│   ├── task-run.schema.json
+│   ├── source-freshness.schema.json
+│   └── release-observation.schema.json
 │
 └── templates/
     ├── workspace.yaml
@@ -427,6 +442,8 @@ musashi-dojo-agent/
     ├── host-memory.md
     ├── node-memory.md
     ├── github-issue.md
+    ├── sre-policy.yaml
+    ├── schedules.yaml
     └── session-summary.md
 ```
 
@@ -1534,6 +1551,7 @@ Implementation boundary:
 - Diagnosis is read-only. Update and recovery are single-node operations; fleet rollout is outside the current implementation plan.
 - Recovery must be tied to observed evidence and applicable official guidance. It never implies a full state reset.
 - Issue reporting produces a sanitized local draft only; external publication requires a separate explicit operator instruction.
+- Scheduled SRE checks use runtime-provided scheduling and `sre-observe` in observation mode only. Release and documentation freshness observations produce local evidence and review signals, never automatic updates or publication.
 
 Deliver:
 
@@ -1547,6 +1565,7 @@ Deliver:
 - Update-node skill.
 - Recover-node skill.
 - Report-issue skill.
+- SRE-observe skill and read-only scheduled task definitions.
 - Supporting playbooks.
 
 The minimal supporting set is `first-node-deployment.md`, `node-not-syncing.md`, `no-peer-connections.md`, `configuration-changed.md`, `recover-failed-node.md`, and `collect-diagnostics.md`. Fleet, rolling-update, testnet-respin, and repository-reconciliation playbooks remain outside the current implementation plan.
@@ -1701,7 +1720,6 @@ Possible future additions include:
 - Migration tools generated from schemas.
 - Community-contributed personality variants.
 - Multiple visual identity profiles.
-- Scheduled health checks through runtime capabilities.
 - Automated GitHub issue generation and submission.
 
 All extensions should preserve the declarative nature of the repository.

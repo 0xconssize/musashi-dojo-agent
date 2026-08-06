@@ -22,3 +22,9 @@ Use the local `report-issue` skill for node or host incidents. It produces a san
 Issues describe a problem or proposal. Accepted repository changes must be implemented through a reviewed pull request. Link the issue from the pull request, update `CHANGELOG.md` when behavior or shared knowledge changes, and add a manual validation example when the change addresses an ambiguity.
 
 Suggested labels are `type:knowledge`, `type:skill`, `type:documentation`, `type:operational`, `type:enhancement`, `status:needs-triage`, `status:accepted`, `status:declined`, and an applicable `area:*` label. Keep the taxonomy small and add labels only when they support triage.
+
+## Scheduled SRE tasks
+
+SRE task definitions under `tasks/` must remain read-only and runtime-neutral. They may inspect registered hosts and nodes, official release sources, and declared documentation sources, then write sanitized local task runs under `.musashi/task-runs/`. They must not restart, update, recover, reconfigure, delete data, or publish externally.
+
+Changes to task contracts must update the corresponding files under `schemas/`. Changes to source authorities must include a URL, role, relevant section, retrieval date, and a verification or freshness rule. A release check may report an available update, but must never turn that observation into an update plan that executes automatically.

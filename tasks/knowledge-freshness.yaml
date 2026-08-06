@@ -1,0 +1,29 @@
+schema_version: 1
+id: knowledge-freshness
+description: Revisar la frescura y trazabilidad de skills, playbooks y declaraciones de red.
+schedule:
+  type: weekly
+  weekday: monday
+  at: "10:00"
+skill: sre-observe
+scope:
+  type: declared-source-set
+  target_from: repository
+mode: observe
+checks:
+  - skill-source-metadata
+  - source-retrieval-dates
+  - source-section-presence
+  - network-declaration-freshness
+  - known-issue-freshness
+  - internal-source-conflicts
+timeout: 300s
+concurrency:
+  policy: forbid-overlap
+failure_policy:
+  consecutive_failures_before_alert: 1
+  cooldown: 7d
+outputs:
+  task_run: .musashi/task-runs/
+  alert_on: [stale, missing-source, conflict]
+  create_local_review: true

@@ -1,0 +1,27 @@
+schema_version: 1
+id: configuration-drift
+description: Detectar diferencias entre inventario, configuración declarada y estado observado.
+schedule:
+  type: interval
+  every: 1h
+skill: sre-observe
+scope:
+  type: single-node
+  target_from: local-policy
+mode: observe
+checks:
+  - configuration-hashes
+  - declared-paths
+  - topology-and-ports
+  - installed-release
+  - inventory-consistency
+timeout: 120s
+concurrency:
+  policy: forbid-overlap
+failure_policy:
+  consecutive_failures_before_alert: 1
+  cooldown: 6h
+outputs:
+  task_run: .musashi/task-runs/
+  alert_on: [drift, unknown]
+  create_local_review: true

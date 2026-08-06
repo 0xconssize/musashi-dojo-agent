@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://musashi-dojo.dev/schemas/release-observation.schema.json",
+  "title": "Release observation",
+  "type": "object",
+  "required": ["schema_version", "observed_at", "source_url", "installed", "latest", "status"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "source_url": {"type": "string", "format": "uri"},
+    "installed": {"type": ["string", "null"]},
+    "latest": {"type": ["string", "null"]},
+    "latest_is_draft": {"type": "boolean"},
+    "latest_is_prerelease": {"type": "boolean"},
+    "assets": {"type": "array", "items": {"$ref": "#/$defs/asset"}},
+    "compatibility": {"enum": ["compatible", "incompatible", "unknown"]},
+    "status": {"enum": ["current", "update-available", "release-unknown", "asset-unverified", "compatibility-unknown", "source-unreachable"]},
+    "release_notes": {"type": ["string", "null"]},
+    "evidence": {"type": ["string", "null"]}
+  },
+  "$defs": {
+    "asset": {
+      "type": "object",
+      "required": ["name", "available", "checksum_available"],
+      "properties": {"name": {"type": "string", "minLength": 1}, "available": {"type": "boolean"}, "checksum_available": {"type": "boolean"}},
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

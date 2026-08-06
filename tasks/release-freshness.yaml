@@ -1,0 +1,31 @@
+schema_version: 1
+id: release-freshness
+description: Comprobar releases oficiales, assets, checksums y compatibilidad.
+schedule:
+  type: daily
+  at: "09:00"
+skill: sre-observe
+scope:
+  type: single-node
+  target_from: local-policy
+mode: observe
+sources:
+  - url: https://github.com/input-output-hk/ouroboros-leios/releases
+    role: release-authority
+checks:
+  - latest-non-draft-release
+  - release-classification
+  - asset-availability
+  - checksum-availability
+  - compatibility-and-release-notes
+  - installed-version
+timeout: 180s
+concurrency:
+  policy: forbid-overlap
+failure_policy:
+  consecutive_failures_before_alert: 1
+  cooldown: 24h
+outputs:
+  task_run: .musashi/task-runs/
+  alert_on: [update-available, asset-unverified, compatibility-unknown, source-unreachable]
+  on_update_available: report-only

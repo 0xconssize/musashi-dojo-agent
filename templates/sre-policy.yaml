@@ -1,0 +1,22 @@
+schema_version: 1
+mode: observe
+timezone: Europe/Madrid
+targets:
+  nodes: []
+  hosts: []
+sources:
+  max_age:
+    network: 24h
+    release: 24h
+    documentation: 24h
+    knowledge: 7d
+actions:
+  restart: forbidden
+  update: forbidden
+  recovery: forbidden
+  configuration_change: forbidden
+  external_publication: forbidden
+alerts:
+  destination: local-only
+  deduplicate: true
+  retain_task_runs: 30d

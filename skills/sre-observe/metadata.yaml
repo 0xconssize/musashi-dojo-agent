@@ -1,0 +1,11 @@
+schema_version: 1
+skill: sre-observe
+phase: 6
+risk: local-state-only
+scope: [single-node, single-host, declared-source-set]
+inputs: [task_definition, target, runtime_capabilities, repository_commit, source_policy]
+outputs: [task_run, sanitized_evidence, local_alert]
+success: All declared read-only checks complete or are explicitly unknown and a validated local task run exists.
+confirmation:
+  required_for: [restart, update, recovery, configuration-change, external-publication]
+  publication_in_scope: false

@@ -1,0 +1,31 @@
+schema_version: 1
+skill: generate-cardano-keys
+phase: 6
+risk: node-local-reversible
+sources:
+  official:
+    url: https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/
+    sections:
+      - Payment and stake keys
+      - Node operational keys
+      - BLS keys
+      - Operational certificate
+    authority: authoritative
+    retrieved_at: "2026-08-06"
+    supported_snapshot:
+      network: Musashi Dojo public prototype testnet
+      network_magic: 164
+      era: Dijkstra
+      guide_examples_release: prototype-2026w30
+      selected_release: prototype-2026w31a
+      guide_referenced_container_image: ghcr.io/input-output-hk/ouroboros-leios/cardano-node-testnet:prototype-2026w30
+      container_image_status: guide-referenced; revalidate before use
+  network_overview:
+    url: https://www.musashi.network/
+    retrieved_at: "2026-08-06"
+    authority: official
+freshness:
+  status: current
+  reviewed_at: "2026-08-06"
+  revalidate_before: Generating keys or relying on any era, release, network, or BLS behavior.
+  stale_when: The official guide, linked configuration, supported release, or network incarnation changes.

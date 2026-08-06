@@ -1,0 +1,63 @@
+schema_version: 1
+skill: install-block-producer
+phase: 6
+risk: variable-impact
+scope: [single-node]
+inputs:
+  - node_id
+  - host_assessment
+  - installation_method
+  - target_paths
+  - runtime_identity
+  - selected_release
+  - registered_pool
+  - producer_keys
+outputs:
+  - operation_report
+  - node_state
+success: A selected official block-producer implementation is verified at declared paths, remains stopped, and shared workloads are unaffected.
+confirmation:
+  required_for:
+    - package-installation
+    - system-directory
+    - service-definition
+    - container-creation
+    - ownership-change
+    - firewall-change
+    - host-level
+    - destructive-broad
+  invalidated_by:
+    - command-change
+    - target-change
+    - path-change
+    - privilege-change
+    - scope-change
+    - method-change
+sources:
+  operational:
+    url: https://leios.cardano-scaling.org/docs/testnet/getting-started/
+    sections:
+      - System requirements
+      - Run a relay
+      - Prebuilt binaries
+      - Docker
+    authority: Musashi configuration and installation procedures
+    retrieved_at: "2026-08-06"
+    documented_release: prototype-2026w30
+    documented_container_image: ghcr.io/input-output-hk/ouroboros-leios/cardano-node-testnet:prototype-2026w30
+  producer:
+    url: https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/
+    sections:
+      - Restart as block producer
+    authority: Block-producer key and invocation requirements
+    retrieved_at: "2026-08-06"
+  release_authority:
+    url: https://github.com/input-output-hk/ouroboros-leios/releases
+    latest_release: prototype-2026w31a
+    retrieved_at: "2026-08-06"
+    published_assets: [Linux x86-64, Linux aarch64, macOS aarch64]
+freshness:
+  status: current-with-source-conflict
+  reviewed_at: "2026-08-06"
+  revalidate_before: Selecting a release, asset, checksum, image, platform, configuration, or producer command.
+  stale_when: Latest release, assets, checksums, guide methods, requirements, image availability, or network incarnation changes.

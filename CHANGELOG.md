@@ -14,3 +14,4 @@
 - Phase 6 initial operations: host assessment; relay installation and Musashi configuration; node start, stop, restart, diagnosis, update, recovery, and local issue drafting; six supporting playbooks; diagnostic rules; and strengthened operation and diagnostic report contracts.
 - GitHub issue intake for sanitized operational problems and collaborative feedback on knowledge, skills, playbooks, and documentation, with an issue-to-reviewed-PR workflow.
 - Read-only SRE observation package with scheduled task definitions for node and host health, configuration drift, release freshness, documentation freshness, and knowledge freshness, plus task, source, and release observation schemas.
+- Experimental campaign model with authority and expiry metadata, pilot gates, participant run tracking, campaign schemas, and a non-active BLS key-enrollment example.

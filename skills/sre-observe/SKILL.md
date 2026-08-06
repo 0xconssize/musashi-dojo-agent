@@ -20,11 +20,11 @@ Require a schema-valid task definition, an explicit single-node or single-host t
 5. For documentation checks, fetch only declared sources through runtime-provided capabilities, record retrieval time and content hash, and compare relevant sections with repository declarations and skill metadata.
 6. Classify each check as `healthy`, `degraded`, `failed`, `unknown`, `current`, `update-available`, `stale`, or `source-unreachable` as applicable.
 7. Write a schema-valid task run and sanitized evidence under `.musashi/task-runs/`. Do not write external source content or private logs into the Git repository.
-8. Apply the task's alert and deduplication policy locally. A knowledge issue may be prepared as a draft, but publication is never part of this skill.
+8. Apply the task's alert and deduplication policy locally. A knowledge issue or an unactivated campaign candidate may be prepared as a draft, but publication and campaign activation are never part of this skill.
 
 ## Stop conditions
 
-Stop on target drift, stale authority, unavailable capability, unknown release provenance, failed sanitization, source contradiction, or an action outside observation mode. Escalate with evidence rather than improvising a repair.
+Stop on target drift, stale authority, unavailable capability, unknown release provenance, failed sanitization, source contradiction, or an action outside observation mode. Escalate with evidence rather than improvising a repair. A source change may suggest a campaign candidate, but it cannot approve or start a campaign.
 
 ## Success
 

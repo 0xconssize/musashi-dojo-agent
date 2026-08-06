@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://musashi-dojo.dev/schemas/campaign.schema.json",
+  "title": "Experimental testnet campaign",
+  "type": "object",
+  "required": ["schema_version", "id", "title", "status", "authority", "scope", "compatibility", "mode", "steps", "success_criteria", "stop_conditions", "retirement"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "id": {"$ref": "#/$defs/id"},
+    "title": {"type": "string", "minLength": 1},
+    "status": {"enum": ["proposed", "approved", "pilot", "active", "paused", "completed", "cancelled", "expired"]},
+    "authority": {
+      "type": "object",
+      "required": ["type", "source_url", "source_ref", "verification", "issued_at", "expires_at"],
+      "properties": {
+        "type": {"enum": ["official-team-instruction", "official-documentation", "release-note", "operator-proposal"]},
+        "source_url": {"type": ["string", "null"], "format": "uri"},
+        "source_ref": {"type": "string", "minLength": 1},
+        "verification": {"enum": ["unverified", "operator-confirmed", "official"]},
+        "issued_at": {"type": ["string", "null"], "format": "date-time"},
+        "expires_at": {"type": ["string", "null"], "format": "date-time"}
+      },
+      "additionalProperties": false
+    },
+    "scope": {
+      "type": "object",
+      "required": ["network", "roles", "target_policy"],
+      "properties": {
+        "network": {"type": "string", "minLength": 1},
+        "roles": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "target_policy": {"enum": ["single-participant", "selected-participants"]}
+      },
+      "additionalProperties": false
+    },
+    "compatibility": {
+      "type": "object",
+      "required": ["releases", "required_capabilities"],
+      "properties": {
+        "releases": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "required_capabilities": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      },
+      "additionalProperties": false
+    },
+    "mode": {"enum": ["observe", "prepare-and-confirm", "execute-with-confirmation"]},
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "skill", "confirmation", "risk"],
+        "properties": {
+          "id": {"$ref": "#/$defs/id"},
+          "skill": {"type": "string", "minLength": 1},
+          "confirmation": {"enum": ["none", "explicit"]},
+          "risk": {"enum": ["read-only", "local-reversible", "key-material", "host-change", "transaction", "destructive"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "success_criteria": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "stop_conditions": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "retirement": {
+      "type": "object",
+      "required": ["on_expiry", "preserve_history", "superseded_by"],
+      "properties": {
+        "on_expiry": {"const": "stop-new-executions"},
+        "preserve_history": {"const": true},
+        "superseded_by": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {"id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 100}},
+  "additionalProperties": false
+}

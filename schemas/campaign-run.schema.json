@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://musashi-dojo.dev/schemas/campaign-run.schema.json",
+  "title": "Experimental campaign run",
+  "type": "object",
+  "required": ["schema_version", "run_id", "campaign_id", "started_at", "state", "repository_commit", "participants", "sanitized"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "run_id": {"$ref": "#/$defs/id"},
+    "campaign_id": {"$ref": "#/$defs/id"},
+    "started_at": {"type": "string", "format": "date-time"},
+    "finished_at": {"type": ["string", "null"], "format": "date-time"},
+    "state": {"enum": ["not-started", "prepared", "awaiting-confirmation", "running", "verified", "blocked", "failed", "skipped", "expired"]},
+    "repository_commit": {"type": "string", "minLength": 7},
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["participant_id", "state", "steps"],
+        "properties": {
+          "participant_id": {"$ref": "#/$defs/id"},
+          "host_id": {"type": ["string", "null"]},
+          "node_id": {"type": ["string", "null"]},
+          "state": {"enum": ["not-started", "prepared", "awaiting-confirmation", "running", "verified", "blocked", "failed", "skipped", "expired"]},
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["step_id", "state"],
+              "properties": {
+                "step_id": {"$ref": "#/$defs/id"},
+                "state": {"enum": ["not-started", "prepared", "awaiting-confirmation", "running", "verified", "blocked", "failed", "skipped", "expired"]},
+                "evidence_path": {"type": ["string", "null"]},
+                "error": {"type": ["string", "null"]}
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "local_review_path": {"type": ["string", "null"]},
+    "sanitized": {"const": true}
+  },
+  "$defs": {"id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 100}},
+  "additionalProperties": false
+}

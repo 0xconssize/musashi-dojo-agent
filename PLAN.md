@@ -324,6 +324,13 @@ musashi-dojo-agent/
 │   ├── documentation-freshness.yaml
 │   └── knowledge-freshness.yaml
 │
+├── campaigns/
+│   ├── README.md
+│   ├── templates/
+│   │   └── campaign.yaml
+│   └── examples/
+│       └── bls-key-enrollment.yaml
+│
 ├── skills/
 │   ├── assess-host/
 │   │   ├── SKILL.md
@@ -420,7 +427,9 @@ musashi-dojo-agent/
 │   ├── scheduled-task.schema.json
 │   ├── task-run.schema.json
 │   ├── source-freshness.schema.json
-│   └── release-observation.schema.json
+│   ├── release-observation.schema.json
+│   ├── campaign.schema.json
+│   └── campaign-run.schema.json
 │
 └── templates/
     ├── workspace.yaml
@@ -492,6 +501,11 @@ The local workspace will be stored under `.musashi/`.
 │
 ├── sessions/
 ├── reports/
+├── campaigns/
+│   ├── active/
+│   ├── participants/
+│   ├── evidence/
+│   └── archive/
 ├── generated/
 │   ├── commands/
 │   ├── scripts/
@@ -1552,6 +1566,7 @@ Implementation boundary:
 - Recovery must be tied to observed evidence and applicable official guidance. It never implies a full state reset.
 - Issue reporting produces a sanitized local draft only; external publication requires a separate explicit operator instruction.
 - Scheduled SRE checks use runtime-provided scheduling and `sre-observe` in observation mode only. Release and documentation freshness observations produce local evidence and review signals, never automatic updates or publication.
+- Experimental campaigns coordinate temporary, source-bound testnet instructions through existing skills. They require verified authority, explicit approval, a single-participant pilot, independent participant states, and expiry with preserved history.
 
 Deliver:
 
@@ -1566,6 +1581,7 @@ Deliver:
 - Recover-node skill.
 - Report-issue skill.
 - SRE-observe skill and read-only scheduled task definitions.
+- Experimental campaign contracts, lifecycle documentation, and a non-active BLS key-enrollment example.
 - Supporting playbooks.
 
 The minimal supporting set is `first-node-deployment.md`, `node-not-syncing.md`, `no-peer-connections.md`, `configuration-changed.md`, `recover-failed-node.md`, and `collect-diagnostics.md`. Fleet, rolling-update, testnet-respin, and repository-reconciliation playbooks remain outside the current implementation plan.
@@ -1627,7 +1643,7 @@ The first usable release should support:
 17. Repository update reconciliation.
 18. Host-focused safety rules.
 
-Block producer registration, BLS operations, advanced orchestration, and coordinated test campaigns may follow after the relay workflow is stable.
+Advanced orchestration and broader coordinated test campaigns may follow after the relay workflow is stable. The repository now defines campaign contracts and a non-active BLS campaign example, while execution remains confirmation-controlled.
 
 ---
 
@@ -1708,8 +1724,6 @@ Branding changes should preserve:
 Possible future additions include:
 
 - Block producer onboarding.
-- BLS key procedures.
-- Coordinated test campaigns.
 - Reproducible benchmark definitions.
 - Shared anonymized diagnostic datasets.
 - Testnet topology recommendations.

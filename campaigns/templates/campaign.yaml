@@ -1,0 +1,47 @@
+schema_version: 1
+id: replace-with-campaign-id
+title: Replace with the temporary campaign title
+status: proposed
+
+authority:
+  type: official-team-instruction
+  source_url: null
+  source_ref: replace-with-announcement-or-message-reference
+  verification: unverified
+  issued_at: null
+  expires_at: null
+
+scope:
+  network: musashi
+  roles: []
+  target_policy: single-participant
+
+compatibility:
+  releases: []
+  required_capabilities: []
+
+mode: prepare-and-confirm
+
+steps:
+  - id: validate-instruction
+    skill: sre-observe
+    confirmation: none
+    risk: read-only
+  - id: replace-with-operation
+    skill: replace-with-existing-skill
+    confirmation: explicit
+    risk: declare-risk
+
+success_criteria:
+  - Declare an observable success condition.
+
+stop_conditions:
+  - The authority or target is not verified.
+  - The selected release or capability is incompatible.
+  - A step would overwrite existing sensitive material.
+  - The operation has undeclared host, transaction, or destructive impact.
+
+retirement:
+  on_expiry: stop-new-executions
+  preserve_history: true
+  superseded_by: null

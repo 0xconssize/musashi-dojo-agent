@@ -1,0 +1,67 @@
+schema_version: 1
+id: bls-key-enrollment-example
+title: Example — generate and prepare BLS material
+status: proposed
+
+authority:
+  type: official-team-instruction
+  source_url: null
+  source_ref: replace-with-verified-testnet-team-announcement
+  verification: unverified
+  issued_at: null
+  expires_at: null
+
+scope:
+  network: musashi
+  roles: [block-producer]
+  target_policy: single-participant
+
+compatibility:
+  releases: []
+  required_capabilities:
+    - cardano-cli-dijkstra
+    - bls-key-generation
+
+mode: prepare-and-confirm
+
+steps:
+  - id: validate-instruction
+    skill: sre-observe
+    confirmation: none
+    risk: read-only
+  - id: verify-cli-and-release
+    skill: sre-observe
+    confirmation: none
+    risk: read-only
+  - id: generate-bls-keys
+    skill: generate-cardano-keys
+    confirmation: explicit
+    risk: key-material
+  - id: prepare-registration
+    skill: register-stake-pool
+    confirmation: explicit
+    risk: transaction
+  - id: verify-result
+    skill: sre-observe
+    confirmation: none
+    risk: read-only
+
+success_criteria:
+  - The selected CLI and release support the declared BLS operation.
+  - No existing key material is overwritten.
+  - bls.vkey and bls.skey exist in the dedicated local key directory.
+  - Private-key permissions are restrictive and no secret content is exposed.
+  - Any registration artifact matches the intended pool and network.
+  - The result is independently verified and recorded without private key contents.
+
+stop_conditions:
+  - The official instruction cannot be authenticated.
+  - The release or CLI behavior is unknown or incompatible.
+  - Existing BLS key files are present and rotation was not explicitly approved.
+  - The target network, pool, or key directory is ambiguous.
+  - Registration requires an undeclared or unapproved transaction.
+
+retirement:
+  on_expiry: stop-new-executions
+  preserve_history: true
+  superseded_by: null

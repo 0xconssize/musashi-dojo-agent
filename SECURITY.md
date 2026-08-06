@@ -24,3 +24,5 @@ Use only connection and execution mechanisms supplied by the agent runtime or op
 Generated plans, commands, scripts, and command results belong under `.musashi/`. Review them before execution, sanitize recorded output, and never use a download-and-execute pipeline. Required confirmation is invalid after any material plan or scope change.
 
 Diagnostic reports and issue drafts must minimize evidence and remove credentials, keys, tokens, unnecessary usernames, private addresses, unrelated services, and private paths. Creating a local draft grants no permission to publish it or upload attachments.
+
+Campaign definitions and runs are shared coordination metadata, not a secret store. Keep participant-specific paths, identities, evidence, key material, credentials, and raw logs under `.musashi/campaigns/` or an operator-managed secret store. A campaign cannot reduce the confirmation, key-handling, transaction, host-safety, or publication requirements of the skill it invokes.

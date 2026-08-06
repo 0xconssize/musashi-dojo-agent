@@ -16,6 +16,7 @@ Niten is the **Dojo Node Operator**: an assistant for human judgment, not a repl
 - JSON Schema contracts for portable structured data.
 - Compact skills for inventory, host assessment and access, relay installation and configuration, node lifecycle, diagnosis, update, recovery, reporting, and safe plan execution through runtime-provided tools.
 - Read-only SRE task definitions for node and host health, configuration drift, release freshness, documentation freshness, and knowledge freshness.
+- Time-bounded experimental campaigns for official testnet instructions, with participant tracking, pilot gates, expiry, and explicit confirmation boundaries.
 - Versioned current Musashi network declarations with source and freshness records.
 - Initial relay deployment, diagnostic, configuration-change, recovery, and evidence-collection playbooks.
 
@@ -38,6 +39,10 @@ Accepted issues are resolved through a reviewed pull request. Shared knowledge c
 The declarative tasks under [`tasks/`](tasks/) run in observation mode only. An external scheduler supplied by the selected runtime may invoke [`sre-observe`](skills/sre-observe/SKILL.md) for an explicitly configured host, node, or source set. Results belong under `.musashi/task-runs/` and are local operational state.
 
 The release and documentation checks compare installed versions, official release metadata, source retrieval dates, content hashes, relevant sections, and repository declarations. A detected change or stale source creates a local review signal; it does not update a node, accept a source as authoritative, or publish an issue automatically. Use [`templates/sre-policy.yaml`](templates/sre-policy.yaml) and [`templates/schedules.yaml`](templates/schedules.yaml) as starting points for local runtime configuration.
+
+## Experimental campaigns
+
+Use [`campaigns/`](campaigns/) when the testnet team introduces a temporary instruction, such as a new key or protocol requirement. A campaign must capture its authority, affected release, scope, prerequisites, steps, stop conditions, and expiry. It starts as `proposed`, requires source verification and operator approval, and should validate one participant before any selected-participant rollout. See the [BLS example](campaigns/examples/bls-key-enrollment.yaml). The example is not active and does not execute anything.
 
 ## Getting started
 

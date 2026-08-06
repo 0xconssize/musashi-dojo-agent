@@ -44,9 +44,19 @@ mount pattern from `generate-cardano-keys`; pass the node socket/config
 explicitly and do not use `--privileged`, host networking, the Docker socket,
 or a broad host mount.
 
-Build `payment.addr` without overwriting it, fund it via the official faucet,
-then inspect all UTxOs and select an exact input. Never blindly use the first
-entry when there are multiple UTxOs.
+Build a payment-only faucet address without overwriting existing files. Use
+this address for the official faucet and as the transaction change address:
+
+```bash
+cardano-cli dijkstra address build \
+  --payment-verification-key-file payment.vkey \
+  --testnet-magic 164 \
+  --out-file faucet.addr
+```
+
+Fund `faucet.addr` via the official faucet, then inspect all UTxOs and select
+an exact input. Never blindly use the first entry when there are multiple
+UTxOs. Use `faucet.addr` as `--change-address`.
 
 ## Certificate options
 
@@ -135,7 +145,7 @@ selected exact input and change address so the CLI calculates fee/deposits:
 
 ```bash
 cardano-cli dijkstra transaction build --tx-in "$TXIN" \
-  --change-address "$(cat payment.addr)" \
+  --change-address "$(cat faucet.addr)" \
   --certificate-file stake-reg.cert --certificate-file pool-reg.cert \
   --out-file pool-reg-tx.raw
 ```

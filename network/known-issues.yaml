@@ -47,11 +47,11 @@ issues:
       - https://book.play.dev.cardano.org/adv-musashi.html
       - https://github.com/input-output-hk/ouroboros-leios/releases
 
-  - id: selected-release-node-version-unknown
-    status: unknown
+  - id: selected-release-node-provenance-verification
+    status: current
     severity: medium
-    summary: The w31a release metadata does not state the exact cardano-node version string.
-    action: Keep the value null until verified from an authoritative declaration or direct inspection of an installed selected-release binary.
+    summary: The exact Nix cardano-node version is verified by comparing the running binary git rev with the cardano-node input revision pinned in the selected release flake.lock.
+    action: Resolve /proc/<pid>/exe, run the resolved binary with --version, and compare its input-output-hk/cardano-node git rev with the selected release flake.lock. Use unknown when the binary, revision, or lock file cannot be verified.
     source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w31a
 
   - id: unpinned-nix-flake

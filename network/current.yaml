@@ -54,7 +54,7 @@ warnings:
   - This is continuously rebuilt pre-release software on a resettable prototype testnet.
   - The getting-started guide still embeds prototype-2026w30 examples; use w31a assets and release notes while retaining its non-version-specific Musashi procedures.
   - The linked Operations Book still labels prototype-2026w27 as latest; use neither page to downgrade the selected release.
-  - The official release does not state the exact cardano-node version string for prototype-2026w31a; keep it unknown until directly verified.
+  - For a Nix node, verify prototype-2026w31a by resolving /proc/<pid>/exe, extracting the cardano-node git rev with --version, and comparing it with the cardano-node input revision in that release's flake.lock; use unknown when any evidence is missing.
   - The guide documents a w30 container image; availability of a w31a image is not confirmed by the release page.
   - Never substitute Cardano mainnet operating values or procedures.
 

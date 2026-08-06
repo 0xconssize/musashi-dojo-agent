@@ -16,13 +16,28 @@
     "compatibility": {"enum": ["compatible", "incompatible", "unknown"]},
     "status": {"enum": ["current", "update-available", "release-unknown", "asset-unverified", "compatibility-unknown", "source-unreachable"]},
     "release_notes": {"type": ["string", "null"]},
-    "evidence": {"type": ["string", "null"]}
+    "evidence": {"type": ["string", "null"]},
+    "release_provenance": {"$ref": "#/$defs/releaseProvenance"}
   },
   "$defs": {
     "asset": {
       "type": "object",
       "required": ["name", "available", "checksum_available"],
       "properties": {"name": {"type": "string", "minLength": 1}, "available": {"type": "boolean"}, "checksum_available": {"type": "boolean"}},
+      "additionalProperties": false
+    },
+    "releaseProvenance": {
+      "type": "object",
+      "required": ["binary", "binary_version", "binary_commit", "binary_repository", "release_pinned_binary_commit", "comparison_method", "comparison"],
+      "properties": {
+        "binary": {"type": ["string", "null"], "minLength": 1},
+        "binary_version": {"type": ["string", "null"], "minLength": 1},
+        "binary_commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+        "binary_repository": {"type": ["string", "null"], "minLength": 1},
+        "release_pinned_binary_commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+        "comparison_method": {"type": ["string", "null"], "minLength": 1},
+        "comparison": {"enum": ["match", "mismatch", "unknown"]}
+      },
       "additionalProperties": false
     }
   },

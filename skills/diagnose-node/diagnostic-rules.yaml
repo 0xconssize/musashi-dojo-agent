@@ -21,9 +21,22 @@ rules:
     outcomes: [pass, fail, unknown]
     evidence: Sanitized identity and ownership observations.
   - id: release-provenance
-    check: Compare installed artifact provenance with the selected official release; keep the exact node version unknown when no authoritative mapping exists.
+    check: For Nix, resolve the observed process executable from /proc/<pid>/exe, run that binary with --version, extract its git rev, read the cardano-node locked rev from the selected official release flake.lock, and compare those two cardano-node commits. Use the existing artifact/version and checksum evidence for non-Nix installations.
     outcomes: [pass, fail, conflict, unknown]
-    evidence: Installed provenance, current.yaml, and official release metadata.
+    evidence: The observed executable path, sanitized --version output, binary repository, selected release flake.lock source and cardano-node pinned revision, plus an explicit commit comparison. Missing evidence is unknown.
+    semantics:
+      current: pass with comparison.status match; report release provenance as current.
+      conflict: comparison.status mismatch, or repository identity is not input-output-hk/cardano-node.
+      fail: existing non-Nix provenance failure semantics.
+      unknown: executable cannot be resolved, --version cannot be run or has no git rev, selected release flake.lock/cardano-node revision is unavailable, or either commit cannot be compared.
+    required_evidence:
+      - binary
+      - binary_version
+      - binary_commit
+      - binary_repository
+      - release_pinned_binary_commit
+      - comparison_method
+    comparison_method: Compare binary_commit with the locked rev of the cardano-node input in the selected release's flake.lock; never compare with the ouroboros-leios tag commit.
   - id: configuration-integrity
     check: Compare Musashi configuration and topology hashes with current.yaml without exposing secrets.
     outcomes: [pass, fail, conflict, unknown]
@@ -62,3 +75,36 @@ freshness:
   status: current-as-reviewed
   reviewed_at: "2026-08-05"
   stale_when: Requirements, configuration hashes, latest release, guide, known issues, or failure evidence changes.
+
+verification_examples:
+  - name: nix-release-commit-match
+    selected_release: prototype-2026w31a
+    binary: /nix/store/example-cardano-node/bin/cardano-node
+    binary_version: "cardano-node 11.1.0.164 (git rev 6971bb527288d0f362147fbe318c0e9c84312ab3)"
+    binary_commit: 6971bb527288d0f362147fbe318c0e9c84312ab3
+    binary_repository: input-output-hk/cardano-node
+    release_pinned_binary_commit: 6971bb527288d0f362147fbe318c0e9c84312ab3
+    comparison_method: flake.lock nodes.cardano-node.locked.rev
+    comparison: match
+    expected_output:
+      release_provenance: current
+      comparison: match
+      repository_comparison: input-output-hk/cardano-node
+    expected_provenance: current
+  - name: nix-release-commit-mismatch
+    comparison: mismatch
+    expected_provenance: conflict
+  - name: nix-flake-lock-missing
+    comparison: unknown
+    expected_provenance: unknown
+  - name: nix-version-rev-missing
+    comparison: unknown
+    expected_provenance: unknown
+  - name: nix-binary-unresolved
+    comparison: unknown
+    expected_provenance: unknown
+  - name: ouroboros-leios-checkout-differs
+    binary_repository: input-output-hk/cardano-node
+    comparison: match
+    note: A different local ouroboros-leios checkout commit is irrelevant; the pinned cardano-node rev is authoritative.
+    expected_provenance: current

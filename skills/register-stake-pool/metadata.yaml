@@ -3,53 +3,19 @@ skill: register-stake-pool
 phase: 6
 risk: external-onchain
 scope: [single-pool, single-node]
-inputs:
-  - working_dir
-  - synced_node_socket
-  - payment_stake_cold_vrf_bls_keys
-  - funded_payment_address
-  - public_relay_ipv4
-  - relay_port
-  - pool_parameters
-outputs:
-  - registration_certificates
-  - signed_transaction
-  - operation_report
-success: Registration transaction is submitted only after explicit confirmation and pool/stake state is independently verified on-chain.
+inputs: [working_dir, synced_node_socket, pool_keys, funded_payment_address, pool_parameters, owners, relays, optional_metadata]
+outputs: [stake_registration_certificate, pool_registration_certificate, signed_transaction, operation_report]
+success: Registration is submitted only after confirmation and independently verified on-chain.
 confirmation:
-  required_for:
-    - signing_transaction
-    - submitting_transaction
-  invalidated_by:
-    - command-change
-    - target-change
-    - path-change
-    - key-change
-    - input-change
-    - parameter-change
-    - scope-change
-sources:
-  operational:
-    url: https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/
-    sections:
-      - What you need first
-      - Payment and stake keys
-      - Node operational keys
-      - Register stake address and pool
-      - Verify registration
-    authority: authoritative
-    retrieved_at: "2026-08-06"
-    documented_release: prototype-2026w30
-  network_overview:
-    url: https://www.musashi.network/
-    retrieved_at: "2026-08-06"
-    authority: official
-  release_authority:
-    url: https://github.com/input-output-hk/ouroboros-leios/releases
-    latest_release: prototype-2026w31a
-    retrieved_at: "2026-08-06"
-freshness:
-  status: current-with-source-conflict
-  reviewed_at: "2026-08-06"
-  revalidate_before: Using any testnet-specific release, era, parameter, certificate, image, or transaction command.
-  stale_when: The official guide, selected release, network incarnation, protocol parameters, or BLS behavior changes.
+  required_for: [signing_transaction, submitting_transaction]
+  invalidated_by: [command-change, target-change, input-change, key-change, parameter-change, owner-change, relay-change, metadata-change, scope-change]
+network:
+  name: Musashi Dojo Leios testnet
+  magic: 164
+  era: Dijkstra
+  revalidate_when: [network-release, era-change, cli-help-change, protocol-parameter-change]
+cli_options:
+  relay_forms: [ipv4+port, ipv6+port, single-host-dns+optional-port, multi-host-dns-srv]
+  repeatable: [pool-owner, relay]
+  metadata: [metadata-url, metadata-hash, check-metadata-hash]
+sources: [https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/, https://github.com/0xconssize/leios, https://github.com/IntersectMBO/cardano-cli]

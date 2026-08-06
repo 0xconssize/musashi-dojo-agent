@@ -1,0 +1,25 @@
+schema_version: 1
+skill: update-stake-pool
+phase: 6
+risk: external-onchain
+scope: [single-existing-pool]
+inputs: [working_dir, synced_node_socket, existing_pool_cold_key, payment_stake_cold_bls_keys, funded_payment_address, desired_full_pool_state]
+outputs: [replacement_registration_certificate, signed_transaction, before_after_report]
+success: Replacement registration is submitted after confirmation and verified with an unchanged pool ID.
+confirmation:
+  required_for: [signing_transaction, submitting_transaction]
+  invalidated_by: [command-change, target-change, input-change, key-change, parameter-change, owner-change, relay-change, metadata-change, scope-change]
+network:
+  name: Musashi Dojo Leios testnet
+  magic: 164
+  era: Dijkstra
+  revalidate_when: [network-release, era-change, cli-help-change, protocol-parameter-change]
+behavior:
+  stake_address_registration: never_repeat
+  certificate: replacement_pool_registration
+  signing: cold_key_required
+cli_options:
+  relay_forms: [ipv4+port, ipv6+port, single-host-dns+optional-port, multi-host-dns-srv]
+  repeatable: [pool-owner, relay]
+  metadata: [metadata-url, metadata-hash, check-metadata-hash]
+sources: [https://github.com/0xconssize/leios, https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/, https://github.com/IntersectMBO/cardano-cli]

@@ -1,0 +1,29 @@
+schema_version: 1
+skill: bootstrap-node-database
+phase: 6
+risk: destructive-state
+scope: [single-node]
+inputs: [node_id, host_assessment, working_directory, database_path, runtime_identity, trusted_source_relay, source_sync_status, selected_node_version]
+outputs: [database_bootstrap_report, node_state]
+success: A checksum-verified Leios database snapshot from a trusted fully synced relay is installed and the node passes post-start validation.
+confirmation:
+  required_for: [service-stop, database-replacement, backup-or-rename, service-start]
+  examples: [stopping-running-node, replacing-nonempty-database, deleting-approved-old-state]
+sources:
+  operational:
+    url: https://github.com/0xconssize/leios/blob/main/reload-leios-db.sh
+    sections: [database reload procedure]
+    authority: operator-example
+    retrieved_at: "2026-08-06"
+  guide:
+    url: https://leios.cardano-scaling.org/docs/testnet/getting-started/
+    sections: [run a relay, confirm you are syncing]
+    authority: authoritative
+    retrieved_at: "2026-08-06"
+  release_authority:
+    url: https://github.com/input-output-hk/ouroboros-leios/releases
+    retrieved_at: "2026-08-06"
+freshness:
+  status: revalidate-before-use
+  revalidate_before: Selecting source relay, archive URL, database layout, node version, or commands.
+  stale_when: Source endpoint, archive name, checksum format, network incarnation, or node database layout changes.

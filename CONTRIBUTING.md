@@ -5,3 +5,20 @@ Contributions should preserve the declarative, runtime-neutral nature of the rep
 Changes to `AGENTS.md`, `AGENT.md`, `IDENTITY.md`, `SECURITY.md`, `HOST_SAFETY.md`, `network/`, `schemas/`, `skills/`, and `playbooks/` require careful review.
 
 Command templates must document target systems, required privileges, affected paths, shared-host impact, validation, and rollback or recovery. Network facts must include a source and verification date. Do not add executable source code, credentials, private operational state, or generated artifacts.
+
+## Feedback and issue workflow
+
+Use the GitHub **Knowledge or skill feedback** form for:
+
+- Incorrect or outdated knowledge.
+- A skill or playbook that is unclear, incomplete, or easy to misunderstand.
+- Documentation, schema, or workflow improvements.
+- New shared knowledge or capabilities.
+
+Include the affected repository-relative path, current behavior, expected behavior, a sanitized reproduction or example, and supporting sources when available. For a skill misunderstanding, describe the operator's intent, the interpretation produced by the skill, and the instruction that would have prevented the confusion.
+
+Use the local `report-issue` skill for node or host incidents. It produces a sanitized draft and evidence review under `.musashi/`; never copy operational logs into an issue before removing secrets, credentials, private addresses, private paths, and unrelated services. Publishing an issue, uploading evidence, or contacting maintainers requires separate explicit approval.
+
+Issues describe a problem or proposal. Accepted repository changes must be implemented through a reviewed pull request. Link the issue from the pull request, update `CHANGELOG.md` when behavior or shared knowledge changes, and add a manual validation example when the change addresses an ambiguity.
+
+Suggested labels are `type:knowledge`, `type:skill`, `type:documentation`, `type:operational`, `type:enhancement`, `status:needs-triage`, `status:accepted`, `status:declined`, and an applicable `area:*` label. Keep the taxonomy small and add labels only when they support triage.

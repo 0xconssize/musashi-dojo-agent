@@ -1,0 +1,85 @@
+name: Knowledge or skill feedback
+description: Report an incorrect, unclear, incomplete, or improvable part of the shared knowledge base.
+title: "[Knowledge] "
+labels:
+  - "status:needs-triage"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for corrections and improvements to skills, playbooks, schemas, network knowledge, and documentation.
+
+        Do not include credentials, signing keys, tokens, private addresses, private paths, or unredacted logs. Operational incidents with node evidence should use the local `report-issue` workflow first.
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: What kind of repository feedback is this?
+      options:
+        - Incorrect or outdated knowledge
+        - Skill is unclear or misunderstood
+        - Skill or playbook improvement
+        - Documentation improvement
+        - New knowledge or capability
+    validations:
+      required: true
+
+  - type: input
+    id: affected_path
+    attributes:
+      label: Affected file or skill
+      description: Include the repository-relative path and section, if known.
+      placeholder: skills/diagnose-node/SKILL.md — Workflow, step 3
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_behavior
+    attributes:
+      label: Current behavior
+      description: What does the repository currently say or cause someone to understand?
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected behavior
+      description: What should the documentation or skill say or do instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Example or reproduction
+      description: Explain the steps, prompt, context, or example that exposes the problem. Sanitize all operational data.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Source or evidence
+      description: Link to official documentation, release notes, a commit, or other evidence when available.
+
+  - type: input
+    id: context
+    attributes:
+      label: Context
+      description: Repository commit, release, runtime, or other context relevant to the report.
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Suggested change
+      description: Optional proposal for correcting or improving the repository.
+
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy and security review
+      options:
+        - label: I have removed secrets, credentials, private infrastructure details, and unrelated logs.
+          required: true

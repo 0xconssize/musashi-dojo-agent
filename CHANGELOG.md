@@ -12,3 +12,4 @@
 - Phase 4 current Musashi network declarations covering the latest official release, live configuration snapshot, bootstrap data, requirements, release history, known issues, and source precedence.
 - Phase 5 execution modes, verified local and remote host access, structured plans and command results, generated-artifact policy, and compact `connect-host` and `execute-node-plan` skills.
 - Phase 6 initial operations: host assessment; relay installation and Musashi configuration; node start, stop, restart, diagnosis, update, recovery, and local issue drafting; six supporting playbooks; diagnostic rules; and strengthened operation and diagnostic report contracts.
+- GitHub issue intake for sanitized operational problems and collaborative feedback on knowledge, skills, playbooks, and documentation, with an issue-to-reviewed-PR workflow.

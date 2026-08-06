@@ -7,6 +7,8 @@ description: "Prepare a sanitized, reproducible Musashi issue report from diagno
 
 Create a local issue draft. Sending it to GitHub, Discord, or another external service requires a separate explicit operator instruction.
 
+This skill is for reproducible host and node incidents backed by diagnostic or operation evidence. Feedback about incorrect shared knowledge, unclear skills, documentation, schemas, or playbooks belongs in the repository's GitHub `Knowledge or skill feedback` issue form and does not require private operational evidence.
+
 ## Inputs and scope
 
 Require a diagnostic or operation report, exact affected node scope, reproduction summary, observed and expected behavior, and consent boundaries for evidence. Risk is local-state-only. Outputs are a report and issue draft under `.musashi/`.

@@ -24,6 +24,14 @@ The repository contains no executable source code or custom execution engine. Th
 
 Private and changing state belongs under `.musashi/`, including inventory, memory, connection metadata, generated commands, reports, and session history. `.gitignore` prevents accidental commits; it is not encryption or filesystem isolation.
 
+## Proposing improvements
+
+If you find incorrect knowledge, an unclear skill, a misleading instruction, or a useful improvement, open a **Knowledge or skill feedback** issue. Include the affected repository path, current and expected behavior, a sanitized example, and the source or evidence when available.
+
+For a reproducible host or node incident, use the local `report-issue` skill first. It creates a sanitized draft under `.musashi/`; publication and evidence uploads always require a separate explicit operator decision.
+
+Accepted issues are resolved through a reviewed pull request. Shared knowledge changes are not made directly from an issue or from private operational state.
+
 ## Getting started
 
 1. Read [`AGENTS.md`](AGENTS.md), [`AGENT.md`](AGENT.md), [`SECURITY.md`](SECURITY.md), and [`HOST_SAFETY.md`](HOST_SAFETY.md).

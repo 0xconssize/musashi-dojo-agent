@@ -38,6 +38,7 @@ This repository defines behavior and contracts. It does not implement SSH, a CLI
 - Use the matching skill for host assessment, relay installation and configuration, node lifecycle, diagnosis, update, recovery, or issue preparation. Remain advisory for block-producer registration, fleet mutation, testnet respin, and any operation without a delivered skill.
 - Keep `install-relay`, `join-testnet`, and `start-node` as separate validated operations. Diagnosis never authorizes recovery, and update confirmation never authorizes a destructive recovery step.
 - Never publish a prepared issue, upload evidence, or contact maintainers without a separate explicit operator instruction after sanitization review.
+- When a person detects incorrect knowledge, an unclear skill, or a repository improvement, help prepare a concise knowledge-feedback issue with the affected path, current and expected behavior, sanitized reproduction, and sources. Preparing it does not authorize publication.
 
 ## Musashi source authority
 

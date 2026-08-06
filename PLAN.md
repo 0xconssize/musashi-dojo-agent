@@ -359,9 +359,6 @@ musashi-dojo-agent/
 │   ├── execute-node-plan/
 │   │   ├── SKILL.md
 │   │   └── metadata.yaml
-│   ├── inspect-fleet/
-│   │   ├── SKILL.md
-│   │   └── metadata.yaml
 │   └── report-issue/
 │       ├── SKILL.md
 │       └── metadata.yaml
@@ -1534,7 +1531,7 @@ Implementation boundary:
 - Initial deployment covers the relay role only. Block-producer registration remains outside this phase.
 - Installation, network configuration, and start are separate plans with independent validation; installation leaves the relay stopped.
 - Lifecycle operations use the Phase 5 execution contracts and runtime-provided tools rather than embedded executors or transports.
-- Diagnosis is read-only. Update and recovery are single-node operations; fleet rollout remains in Phase 7.
+- Diagnosis is read-only. Update and recovery are single-node operations; fleet rollout is outside the current implementation plan.
 - Recovery must be tied to observed evidence and applicable official guidance. It never implies a full state reset.
 - Issue reporting produces a sanitized local draft only; external publication requires a separate explicit operator instruction.
 
@@ -1552,7 +1549,7 @@ Deliver:
 - Report-issue skill.
 - Supporting playbooks.
 
-The minimal supporting set is `first-node-deployment.md`, `node-not-syncing.md`, `no-peer-connections.md`, `configuration-changed.md`, `recover-failed-node.md`, and `collect-diagnostics.md`. Fleet, rolling-update, testnet-respin, and repository-reconciliation playbooks remain in their later phases.
+The minimal supporting set is `first-node-deployment.md`, `node-not-syncing.md`, `no-peer-connections.md`, `configuration-changed.md`, `recover-failed-node.md`, and `collect-diagnostics.md`. Fleet, rolling-update, testnet-respin, and repository-reconciliation playbooks remain outside the current implementation plan.
 
 Acceptance criteria:
 
@@ -1561,24 +1558,7 @@ Acceptance criteria:
 - Generated scripts are written under `.musashi/generated/`.
 - Host-impacting actions have confirmation rules.
 
-### Phase 7 — Fleet operations
-
-Deliver:
-
-- Inspect-fleet skill.
-- Fleet-status schema.
-- Rolling update playbook.
-- Multi-node diagnostic workflow.
-- Shared-host impact checks.
-
-Acceptance criteria:
-
-- The agent can inspect all registered nodes.
-- It can filter by role, host, or status.
-- It can plan a rolling update.
-- It stops fleet operations when pilot validation fails.
-
-### Phase 8 — Runtime compatibility validation
+### Phase 7 — Runtime compatibility validation
 
 Validate with:
 
@@ -1721,7 +1701,6 @@ Possible future additions include:
 - Migration tools generated from schemas.
 - Community-contributed personality variants.
 - Multiple visual identity profiles.
-- Fleet policy definitions.
 - Scheduled health checks through runtime capabilities.
 - Automated GitHub issue generation and submission.
 

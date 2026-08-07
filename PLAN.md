@@ -448,6 +448,7 @@ musashi-dojo-agent/
     ├── diagnostic-report.json
     ├── fleet-status.json
     ├── operator-memory.md
+    ├── task-memory.md
     ├── host-memory.md
     ├── node-memory.md
     ├── github-issue.md
@@ -470,6 +471,7 @@ The local workspace will be stored under `.musashi/`.
 ├── agent-state.yaml
 ├── inventory.yaml
 ├── memory.md
+├── task-memory.md
 │
 ├── identity/
 │   ├── IDENTITY.md

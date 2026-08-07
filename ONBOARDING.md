@@ -58,6 +58,7 @@ If `.musashi/` does not exist, explain that it is private local operational stat
 .musashi/agent-state.yaml
 .musashi/inventory.yaml
 .musashi/memory.md
+.musashi/task-memory.md
 ```
 
 The local runtime may create host, node, session, report, and generated-artifact directories under `.musashi/` as needed. Do not add those directories to Git.

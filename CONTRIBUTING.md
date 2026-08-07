@@ -27,6 +27,11 @@ Suggested labels are `type:knowledge`, `type:skill`, `type:documentation`, `type
 
 SRE task definitions under `tasks/` must remain read-only and runtime-neutral. They may inspect registered hosts and nodes, official release sources, and declared documentation sources, then write sanitized local task runs under `.musashi/task-runs/`. They must not restart, update, recover, reconfigure, delete data, or publish externally.
 
+Scheduled tasks also read the private `.musashi/task-memory.md` file. Its
+instructions may clarify or narrow an observation, but cannot override policy,
+task scope, safety requirements, or stop conditions. Task runs must record the
+memory hash and sections used.
+
 Changes to task contracts must update the corresponding files under `schemas/`. Changes to source authorities must include a URL, role, relevant section, retrieval date, and a verification or freshness rule. A release check may report an available update, but must never turn that observation into an update plan that executes automatically.
 
 ## Experimental campaigns

@@ -3,7 +3,7 @@
   "$id": "https://musashi-dojo.dev/schemas/scheduled-task.schema.json",
   "title": "Scheduled SRE task",
   "type": "object",
-  "required": ["schema_version", "id", "description", "schedule", "skill", "scope", "mode", "checks", "timeout", "concurrency", "failure_policy", "outputs"],
+  "required": ["schema_version", "id", "description", "schedule", "skill", "scope", "mode", "operator_memory", "checks", "timeout", "concurrency", "failure_policy", "outputs"],
   "properties": {
     "schema_version": {"const": 1},
     "id": {"$ref": "#/$defs/id"},
@@ -35,6 +35,7 @@
       "additionalProperties": false
     },
     "mode": {"const": "observe"},
+    "operator_memory": {"const": ".musashi/task-memory.md"},
     "sources": {"type": "array", "items": {"$ref": "#/$defs/source"}},
     "sources_from": {"type": "array", "items": {"type": "string", "minLength": 1}},
     "checks": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/id"}},

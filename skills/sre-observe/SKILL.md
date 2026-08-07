@@ -9,11 +9,11 @@ Run a declarative SRE task in observation mode. This skill produces a validated 
 
 ## Inputs and scope
 
-Require a schema-valid task definition, an explicit single-node or single-host target, the runtime capabilities actually available, the repository commit, and any source-freshness policy. A task may inspect one registered target at a time. Do not infer fleet scope from a selector or from a scheduler invocation.
+Require a schema-valid task definition, `.musashi/task-memory.md`, an explicit single-node or single-host target, the runtime capabilities actually available, the repository commit, and any source-freshness policy. A task may inspect one registered target at a time. Do not infer fleet scope from a selector or from a scheduler invocation.
 
 ## Workflow
 
-1. Read `AGENTS.md`, `SECURITY.md`, `HOST_SAFETY.md`, the task definition, the local SRE policy, and the relevant target records.
+1. Read `AGENTS.md`, `SECURITY.md`, `HOST_SAFETY.md`, the task definition, `.musashi/task-memory.md`, the local SRE policy, and the relevant target records. Apply the global section and the section matching the task id. If the memory is absent, treat it as empty only for a backward-compatible workspace and record that it was unavailable.
 2. Resolve the exact host or node and stop on missing, duplicate, stale, or conflicting identity data.
 3. For node checks, use the read-only checks and evidence rules from `diagnose-node`. For Nix nodes, the `tip-progress` check must first apply the `runtime-tool-discovery` rule and load `diagnose-node/references/nix-cardano-cli-discovery.md`; it must not depend on the remote session PATH. Record `tip-progress: unknown` explicitly when CLI or socket discovery fails. Keep `process-state`, `peer-connectivity`, `tip-progress`, and `release-provenance` independent: healthy process or peer evidence must not be degraded merely because the CLI is unavailable. For host checks, use `assess-host` without applying its plan.
 4. For release checks, inspect the official non-draft release source, assets, checksums, compatibility, and release notes. Never treat an unverified asset or draft as an update recommendation.
@@ -44,7 +44,7 @@ Require a schema-valid task definition, an explicit single-node or single-host t
    verified CLI path for the concrete query.
 5. For documentation checks, fetch only declared sources through runtime-provided capabilities, record retrieval time and content hash, and compare relevant sections with repository declarations and skill metadata.
 6. Classify each check as `healthy`, `degraded`, `failed`, `unknown`, `current`, `update-available`, `stale`, or `source-unreachable` as applicable.
-7. Write a schema-valid task run and sanitized evidence under `.musashi/task-runs/`. Do not write external source content or private logs into the Git repository.
+7. Write a schema-valid task run and sanitized evidence under `.musashi/task-runs/`. Include the fixed memory path, its SHA-256 when available, and the task-memory sections used. Do not write external source content or private logs into the Git repository.
 8. Apply the task's alert and deduplication policy locally. A knowledge issue or an unactivated campaign candidate may be prepared as a draft, but publication and campaign activation are never part of this skill.
 
 ## Stop conditions

@@ -9,6 +9,7 @@ scope:
   type: single-node
   target_from: local-policy
 mode: observe
+operator_memory: .musashi/task-memory.md
 checks:
   - configuration-hashes
   - declared-paths

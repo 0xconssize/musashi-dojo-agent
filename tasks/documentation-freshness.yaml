@@ -9,6 +9,7 @@ scope:
   type: declared-source-set
   target_from: network/current.yaml
 mode: observe
+operator_memory: .musashi/task-memory.md
 sources_from:
   - network/current.yaml
   - network/requirements.yaml

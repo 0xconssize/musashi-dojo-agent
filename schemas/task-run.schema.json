@@ -3,7 +3,7 @@
   "$id": "https://musashi-dojo.dev/schemas/task-run.schema.json",
   "title": "Scheduled task run",
   "type": "object",
-  "required": ["schema_version", "run_id", "task_id", "started_at", "finished_at", "repository_commit", "mode", "scope", "checks", "outcome", "sanitized"],
+  "required": ["schema_version", "run_id", "task_id", "started_at", "finished_at", "repository_commit", "mode", "scope", "operator_memory", "checks", "outcome", "sanitized"],
   "properties": {
     "schema_version": {"const": 1},
     "run_id": {"$ref": "#/$defs/id"},
@@ -13,6 +13,16 @@
     "repository_commit": {"type": "string", "minLength": 7},
     "agent_runtime": {"type": ["string", "null"]},
     "mode": {"const": "observe"},
+    "operator_memory": {
+      "type": "object",
+      "required": ["path", "sha256", "sections_used"],
+      "properties": {
+        "path": {"const": ".musashi/task-memory.md"},
+        "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "sections_used": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      },
+      "additionalProperties": false
+    },
     "scope": {
       "type": "object",
       "required": ["type", "host_id", "node_id"],

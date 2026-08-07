@@ -24,7 +24,7 @@ The repository contains no executable source code or custom execution engine. Th
 
 ## Local operational state
 
-Private and changing state belongs under `.musashi/`, including inventory, memory, connection metadata, generated commands, reports, and session history. `.gitignore` prevents accidental commits; it is not encryption or filesystem isolation.
+Private and changing state belongs under `.musashi/`, including inventory, memory, scheduled-task operator instructions, connection metadata, generated commands, reports, and session history. Use `.musashi/task-memory.md` for task-specific instructions and clarifications. `.gitignore` prevents accidental commits; it is not encryption or filesystem isolation.
 
 ## Proposing improvements
 
@@ -39,6 +39,11 @@ Accepted issues are resolved through a reviewed pull request. Shared knowledge c
 The declarative tasks under [`tasks/`](tasks/) run in observation mode only. An external scheduler supplied by the selected runtime may invoke [`sre-observe`](skills/sre-observe/SKILL.md) for an explicitly configured host, node, or source set. Results belong under `.musashi/task-runs/` and are local operational state.
 
 The release and documentation checks compare installed versions, official release metadata, source retrieval dates, content hashes, relevant sections, and repository declarations. A detected change or stale source creates a local review signal; it does not update a node, accept a source as authoritative, or publish an issue automatically. Use [`templates/sre-policy.yaml`](templates/sre-policy.yaml) and [`templates/schedules.yaml`](templates/schedules.yaml) as starting points for local runtime configuration.
+
+Before each scheduled run, the runtime reads the private operator memory at
+`.musashi/task-memory.md`. It can clarify or narrow an observation, but cannot
+override safety rules, task scope, freshness requirements, or observation-only
+mode. The run records its path, hash, and sections used.
 
 ## Experimental campaigns
 

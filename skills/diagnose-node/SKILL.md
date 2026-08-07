@@ -15,8 +15,8 @@ Require one node ID, current inventory and state, runtime capabilities, symptom 
 
 1. Read current network declarations, known issues, `diagnostic-rules.yaml`, and target records; revalidate sources when a rule depends on mutable facts.
 2. Use `connect-host` when execution is available. Identify operator-supplied evidence in advisory mode.
-3. Inspect host capacity and clock, runtime identity, process state, release provenance, configuration hashes, socket or endpoint, bounded logs, tip trend, peer evidence, and shared-host impact.
-4. Use multiple time-separated observations before declaring sync stalled. Distinguish slow or bursty sync from a proven stall.
+3. Inspect host capacity and clock, runtime identity, process state, release provenance, configuration hashes, socket or endpoint, bounded logs, tip trend, peer evidence, and shared-host impact. When `installation_method` is `nix`, load `references/nix-cardano-cli-discovery.md` and complete its runtime-tool and socket discovery before any CLI query. Invoke only the verified `CARDANO_CLI` path with the resolved socket passed to that invocation.
+4. Use multiple time-separated observations before declaring sync stalled. Distinguish slow or bursty sync from a proven stall. If the CLI cannot be resolved or the socket is unknown, report `tip-progress: unknown` because the tool is unavailable; do not classify the node as `stalled`, `failed`, or down. Keep this result separate from process state, peer connectivity, and release provenance.
 5. Sanitize logs and command output. Do not collect credentials, keys, full configuration secrets, or unrelated host data.
 6. Rank findings by evidence and severity. Keep unresolved causes explicit; do not modify, restart, update, or delete state.
 7. Save a schema-valid diagnostic report and update state only from observations.

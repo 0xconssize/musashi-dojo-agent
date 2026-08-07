@@ -17,6 +17,12 @@ Generate local key material for a Musashi Dojo Leios testnet block producer. Thi
 
 Key generation is fully local and does not require a running node, a node socket, network access, or a synchronized chain. The current guide uses the `dijkstra` command group; revalidate that command group against the official guide before future operations if the network advances eras.
 
+This offline flow is separate from SRE `observe`: when targeting a running Nix
+node, use `diagnose-node`'s `nix-cardano-cli-discovery` reference and set a
+verified `CARDANO_CLI` path. The offline `dev-testnet` Nix shell may still be
+used here when explicitly selected; it must not be used to discover a running
+node's runtime.
+
 ## Choose the CLI runtime
 
 Use either a verified local `cardano-cli` or the official Musashi/Leios Docker image. The image tag currently shown in the getting-started guide is tied to the historical `prototype-2026w30` example; check the official releases and image availability before selecting a newer tag. Do not use `latest`.

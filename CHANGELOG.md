@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Nix node diagnostics now rediscover and validate `cardano-cli` and the exact node socket from the running process, independently of the SSH session `PATH`.
+
 ### Added
 
 - Phase 1 repository foundation.

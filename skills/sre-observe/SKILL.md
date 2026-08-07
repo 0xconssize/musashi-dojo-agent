@@ -15,7 +15,7 @@ Require a schema-valid task definition, an explicit single-node or single-host t
 
 1. Read `AGENTS.md`, `SECURITY.md`, `HOST_SAFETY.md`, the task definition, the local SRE policy, and the relevant target records.
 2. Resolve the exact host or node and stop on missing, duplicate, stale, or conflicting identity data.
-3. For node checks, use the read-only checks and evidence rules from `diagnose-node`. For host checks, use `assess-host` without applying its plan.
+3. For node checks, use the read-only checks and evidence rules from `diagnose-node`. For Nix nodes, the `tip-progress` check must first apply the `runtime-tool-discovery` rule and load `diagnose-node/references/nix-cardano-cli-discovery.md`; it must not depend on the remote session PATH. Record `tip-progress: unknown` explicitly when CLI or socket discovery fails. Keep `process-state`, `peer-connectivity`, `tip-progress`, and `release-provenance` independent: healthy process or peer evidence must not be degraded merely because the CLI is unavailable. For host checks, use `assess-host` without applying its plan.
 4. For release checks, inspect the official non-draft release source, assets, checksums, compatibility, and release notes. Never treat an unverified asset or draft as an update recommendation.
    For a Nix node, verify release provenance against the executable that is actually
    running, not against a repository checkout or a command found through `PATH`:
@@ -38,6 +38,10 @@ Require a schema-valid task definition, an explicit single-node or single-host t
      comparison evidence is `unknown`, never `current`.
    Non-Nix installations continue to use their existing artifact/version and
    checksum evidence rules.
+   Runtime-tool discovery is separate from this provenance check. In
+   `observe`, never run `nix develop`, install packages, download derivations,
+   or modify profiles; use only read-only process evidence and the exact
+   verified CLI path for the concrete query.
 5. For documentation checks, fetch only declared sources through runtime-provided capabilities, record retrieval time and content hash, and compare relevant sections with repository declarations and skill metadata.
 6. Classify each check as `healthy`, `degraded`, `failed`, `unknown`, `current`, `update-available`, `stale`, or `source-unreachable` as applicable.
 7. Write a schema-valid task run and sanitized evidence under `.musashi/task-runs/`. Do not write external source content or private logs into the Git repository.

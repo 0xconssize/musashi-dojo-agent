@@ -26,14 +26,21 @@ stake, or start the block producer.
 - Confirm `cardano-cli`, `jq`, payment/stake/cold/VRF/BLS files, and the testnet
   provenance of the keys. Keep `cold.skey` offline except for signing.
 
+When the synced node is a running Nix node, load
+`diagnose-node/references/nix-cardano-cli-discovery.md` and complete its exact
+CLI and socket discovery first. Set `CARDANO_CLI` to the verified path; do not
+change `PATH` or use a session `command -v cardano-cli` result. For a non-Nix
+runtime, set `CARDANO_CLI` to the separately verified local or container path.
+
 ```bash
 export WORKING_DIR=/path/to/musashi-workdir
 export CARDANO_NODE_NETWORK_ID=164
-export CARDANO_NODE_SOCKET_PATH="$WORKING_DIR/node.socket"
+SOCKET_PATH=/path/to/resolved/node.socket
 cd "$WORKING_DIR/keys"
-command -v cardano-cli jq
-test -e "$CARDANO_NODE_SOCKET_PATH"
-TIP_JSON=$(cardano-cli query tip)
+CARDANO_CLI=/path/to/verified/cardano-cli
+command -v jq
+test -e "$SOCKET_PATH"
+TIP_JSON=$(CARDANO_NODE_SOCKET_PATH="$SOCKET_PATH" "$CARDANO_CLI" query tip)
 echo "$TIP_JSON" | jq '{block,epoch,slot,era,syncProgress}'
 test "$(echo "$TIP_JSON" | jq -r .syncProgress)" = "100.00"
 test "$(echo "$TIP_JSON" | jq -r .era)" = Dijkstra
@@ -48,7 +55,7 @@ Build a payment-only faucet address without overwriting existing files. Use
 this address for the official faucet and as the transaction change address:
 
 ```bash
-cardano-cli dijkstra address build \
+"$CARDANO_CLI" dijkstra address build \
   --payment-verification-key-file payment.vkey \
   --testnet-magic 164 \
   --out-file faucet.addr
@@ -98,11 +105,11 @@ Respect the target network's schema/ticker policy and the maximum 128-character
 metadata URL. Hash locally:
 
 ```bash
-cardano-cli dijkstra stake-pool metadata-hash \
+"$CARDANO_CLI" dijkstra stake-pool metadata-hash \
   --pool-metadata-file stake-pool-metadata.json \
   --out-file stake-pool-metadata.hash
 METADATA_HASH=$(tr -d '[:space:]' < stake-pool-metadata.hash)
-cardano-cli dijkstra stake-pool metadata-hash \
+"$CARDANO_CLI" dijkstra stake-pool metadata-hash \
   --pool-metadata-url "$POOL_METADATA_URL" --expected-hash "$METADATA_HASH"
 ```
 
@@ -117,8 +124,8 @@ is intentional.
 Read the current stake deposit; never hard-code it:
 
 ```bash
-STAKE_DEPOSIT=$(cardano-cli dijkstra query gov-state | jq -er .currentPParams.stakeAddressDeposit)
-cardano-cli dijkstra stake-address registration-certificate \
+STAKE_DEPOSIT=$(CARDANO_NODE_SOCKET_PATH="$SOCKET_PATH" "$CARDANO_CLI" dijkstra query gov-state | jq -er .currentPParams.stakeAddressDeposit)
+"$CARDANO_CLI" dijkstra stake-address registration-certificate \
   --stake-verification-key-file stake.vkey \
   --key-reg-deposit-amt "$STAKE_DEPOSIT" --out-file stake-reg.cert
 ```
@@ -128,7 +135,7 @@ current Musashi command requires the BLS signing key even if the testnet
 release does not yet use BLS for selection:
 
 ```bash
-cardano-cli dijkstra stake-pool registration-certificate \
+"$CARDANO_CLI" dijkstra stake-pool registration-certificate \
   --cold-verification-key-file cold.vkey \
   --vrf-verification-key-file vrf.vkey --bls-signing-key-file bls.skey \
   --pool-pledge "$POOL_PLEDGE_LOVELACE" --pool-cost "$POOL_COST_LOVELACE" \
@@ -144,7 +151,7 @@ Adapt relay/metadata lines and repeat options as required. Build with the
 selected exact input and change address so the CLI calculates fee/deposits:
 
 ```bash
-cardano-cli dijkstra transaction build --tx-in "$TXIN" \
+"$CARDANO_CLI" dijkstra transaction build --tx-in "$TXIN" \
   --change-address "$(cat faucet.addr)" \
   --certificate-file stake-reg.cert --certificate-file pool-reg.cert \
   --out-file pool-reg-tx.raw
@@ -156,13 +163,13 @@ confirmation sign with payment, stake, and cold keys; never print key contents.
 Verify the signed plan, obtain fresh submission confirmation, then submit.
 
 ```bash
-cardano-cli dijkstra transaction sign --tx-body-file pool-reg-tx.raw \
+"$CARDANO_CLI" dijkstra transaction sign --tx-body-file pool-reg-tx.raw \
   --signing-key-file payment.skey --signing-key-file stake.skey \
   --signing-key-file cold.skey --out-file pool-reg-tx.signed
-cardano-cli dijkstra transaction submit --tx-file pool-reg-tx.signed
-POOL_ID=$(cardano-cli dijkstra stake-pool id --output-format hex \
+"$CARDANO_CLI" dijkstra transaction submit --tx-file pool-reg-tx.signed
+POOL_ID=$("$CARDANO_CLI" dijkstra stake-pool id --output-format hex \
   --cold-verification-key-file cold.vkey)
-cardano-cli dijkstra query pool-state --stake-pool-id "$POOL_ID"
+CARDANO_NODE_SOCKET_PATH="$SOCKET_PATH" "$CARDANO_CLI" dijkstra query pool-state --stake-pool-id "$POOL_ID"
 ```
 
 Verify the stake address separately. Record only sanitized IDs, parameters,

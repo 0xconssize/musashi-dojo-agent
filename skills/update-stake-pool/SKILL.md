@@ -25,15 +25,23 @@ cold key, issue an operational certificate, delegate stake, or start the node.
 - Do not include `stake-address registration-certificate`; the stake address is
   already registered.
 
+When operating against a running Nix node, load
+`diagnose-node/references/nix-cardano-cli-discovery.md` and complete its exact
+CLI and socket discovery. Set `CARDANO_CLI` to the verified path and pass the
+resolved socket only to each query invocation. Do not change `PATH` or use the
+SSH session's `command -v cardano-cli`. Non-Nix runtimes use their separately
+verified CLI path.
+
 ```bash
 export WORKING_DIR=/path/to/musashi-workdir
 export CARDANO_NODE_NETWORK_ID=164
-export CARDANO_NODE_SOCKET_PATH="$WORKING_DIR/node.socket"
+SOCKET_PATH=/path/to/resolved/node.socket
+export CARDANO_CLI=/path/to/verified/cardano-cli
 cd "$WORKING_DIR/keys"
-POOL_ID=$(cardano-cli dijkstra stake-pool id --output-format hex \
+POOL_ID=$("$CARDANO_CLI" dijkstra stake-pool id --output-format hex \
   --cold-verification-key-file cold.vkey)
-cardano-cli dijkstra query pool-state --stake-pool-id "$POOL_ID"
-cardano-cli dijkstra query utxo --address "$(cat payment.addr)"
+CARDANO_NODE_SOCKET_PATH="$SOCKET_PATH" "$CARDANO_CLI" dijkstra query pool-state --stake-pool-id "$POOL_ID"
+CARDANO_NODE_SOCKET_PATH="$SOCKET_PATH" "$CARDANO_CLI" dijkstra query utxo --address "$(cat payment.addr)"
 ```
 
 Prepare a diff of the current and complete desired state. Omitted owners and
@@ -46,10 +54,10 @@ confirmation. Validate new public relay DNS/reachability and firewall ports.
 Hash the exact local or hosted JSON and verify it before use:
 
 ```bash
-cardano-cli dijkstra stake-pool metadata-hash \
+"$CARDANO_CLI" dijkstra stake-pool metadata-hash \
   --pool-metadata-file "$POOL_METADATA_FILE" --out-file metadata.hash
 METADATA_HASH=$(tr -d '[:space:]' < metadata.hash)
-cardano-cli dijkstra stake-pool metadata-hash \
+"$CARDANO_CLI" dijkstra stake-pool metadata-hash \
   --pool-metadata-url "$POOL_METADATA_URL" --expected-hash "$METADATA_HASH"
 ```
 
@@ -63,7 +71,7 @@ state. Repeat owner and relay options as needed. Address relays require a port;
 single-host DNS has an optional port; multi-host DNS SRV has no port:
 
 ```bash
-cardano-cli dijkstra stake-pool registration-certificate \
+"$CARDANO_CLI" dijkstra stake-pool registration-certificate \
   --cold-verification-key-file cold.vkey \
   --vrf-verification-key-file vrf.vkey --bls-signing-key-file bls.skey \
   --pool-pledge "$NEW_PLEDGE_LOVELACE" --pool-cost "$NEW_COST_LOVELACE" \
@@ -84,7 +92,7 @@ Use `transaction build` so the selected release calculates fees and replacement
 registration deposit/refund rules:
 
 ```bash
-cardano-cli dijkstra transaction build --tx-in "$TXIN" \
+"$CARDANO_CLI" dijkstra transaction build --tx-in "$TXIN" \
   --change-address "$(cat payment.addr)" \
   --certificate-file pool-reg-update.cert --out-file pool-reg-update-tx.raw
 ```
@@ -96,10 +104,10 @@ cold keys (add stake signing key if required by the selected era), never print
 keys, verify the signed plan, get fresh submission confirmation, and submit:
 
 ```bash
-cardano-cli dijkstra transaction sign --tx-body-file pool-reg-update-tx.raw \
+"$CARDANO_CLI" dijkstra transaction sign --tx-body-file pool-reg-update-tx.raw \
   --signing-key-file payment.skey --signing-key-file stake.skey \
   --signing-key-file cold.skey --out-file pool-reg-update-tx.signed
-cardano-cli dijkstra transaction submit --tx-file pool-reg-update-tx.signed
+"$CARDANO_CLI" dijkstra transaction submit --tx-file pool-reg-update-tx.signed
 ```
 
 After inclusion, verify the same pool ID and every intended parameter: pledge,

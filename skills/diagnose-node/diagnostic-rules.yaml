@@ -49,6 +49,21 @@ rules:
     check: Correlate runtime state with bounded fatal or crash evidence.
     outcomes: [pass, fail, unknown]
     evidence: Process state and sanitized bounded logs.
+  - id: runtime-tool-discovery
+    check: Resolve the running node's exact Nix runtime, its inherited PATH, an exact cardano-cli, and the node socket before issuing CLI queries.
+    outcomes: [pass, conflict, unknown]
+    evidence: Installation method, exact PID origin, observed cardano-node path, PATH origin, resolved cardano-cli path, sanitized CLI version, socket origin and sanitized socket path, and the resolution method.
+    required_evidence: [installation_method, pid_origin, cardano_node_path, path_origin, cardano_cli_path, cardano_cli_version, socket_origin, socket_path, resolution_method]
+    semantics:
+      pass: CLI and socket are resolved unambiguously.
+      conflict: Multiple exact evidences identify incompatible runtimes or versions.
+      unknown: Permissions are insufficient, process PATH is unobservable, cardano-cli is not exactly resolvable, or the socket is unknown. SSH-session PATH absence is never sufficient evidence of absence.
+    constraints:
+      - Resolve PID from registered node identity; never use pgrep or broad patterns.
+      - Parse /proc/<pid>/environ and /proc/<pid>/cmdline as NUL-separated data, never as shell.
+      - Do not walk /nix/store globally, use sudo, nix develop, install packages, or persist a Nix path as identity.
+      - Validate the exact basename, regular-file and executable properties, and Nix store resolution; validate with --version and sanitize output.
+      - Prefer --socket-path from cmdline, resolve relative paths against /proc/<pid>/cwd, and otherwise use only an explicitly registered socket.
   - id: tip-trend
     check: Compare at least two time-separated tip or sync observations before classifying progress.
     outcomes: [progressing, stalled, unavailable, unknown]
@@ -77,6 +92,81 @@ freshness:
   stale_when: Requirements, configuration hashes, latest release, guide, known issues, or failure evidence changes.
 
 verification_examples:
+  - name: nix-cli-found-in-process-path
+    installation_method: nix
+    ssh_path: /usr/bin:/bin
+    process_path: /nix/store/node-runtime/bin:/nix/store/cli-runtime/bin:/usr/bin
+    pid_origin: registered-node-identity
+    cardano_node_path: /nix/store/node-runtime/bin/cardano-node
+    path_origin: proc-pid-environ
+    cardano_cli_path: /nix/store/cli-runtime/bin/cardano-cli
+    cardano_cli_version: "cardano-cli 11.1.0.164"
+    socket_origin: proc-pid-cmdline
+    socket_path: /srv/musashi/state/node.socket
+    resolution_method: inherited-process-path
+    expected_runtime_tool_discovery: pass
+  - name: nix-cli-version-validates
+    installation_method: nix
+    pid_origin: registered-node-identity
+    cardano_node_path: /nix/store/node-runtime/bin/cardano-node
+    path_origin: proc-pid-environ
+    cardano_cli_path: /nix/store/cli-runtime/bin/cardano-cli
+    cardano_cli_version: "cardano-cli 11.1.0.164"
+    socket_origin: proc-pid-cmdline
+    socket_path: /srv/musashi/state/node.socket
+    resolution_method: exact-runtime-path
+    expected_runtime_tool_discovery: pass
+  - name: nix-environ-unreadable
+    installation_method: nix
+    pid_origin: registered-node-identity
+    cardano_node_path: /nix/store/node-runtime/bin/cardano-node
+    path_origin: unavailable
+    cardano_cli_path: unknown
+    socket_origin: unavailable
+    socket_path: unknown
+    resolution_method: none
+    action: no-sudo-no-change
+    expected_runtime_tool_discovery: unknown
+  - name: nix-incompatible-exact-evidence
+    installation_method: nix
+    pid_origin: registered-node-identity
+    cardano_node_path: /nix/store/node-a/bin/cardano-node
+    path_origin: proc-pid-environ-and-registered-runtime
+    cardano_cli_path: [/nix/store/cli-a/bin/cardano-cli, /nix/store/cli-b/bin/cardano-cli]
+    cardano_cli_version: ["cardano-cli 11.1.0.160", "cardano-cli 11.1.0.164"]
+    socket_origin: proc-pid-cmdline
+    socket_path: /srv/musashi/state/node.socket
+    resolution_method: conflicting-exact-evidence
+    expected_runtime_tool_discovery: conflict
+  - name: socket-from-cmdline-state
+    installation_method: nix
+    pid_origin: registered-node-identity
+    path_origin: proc-pid-environ
+    cardano_cli_path: /nix/store/cli-runtime/bin/cardano-cli
+    cardano_cli_version: "cardano-cli 11.1.0.164"
+    socket_origin: proc-pid-cmdline
+    socket_path: /srv/musashi/state/node.socket
+    working_directory: /srv/musashi
+    cmdline_socket_path: state/node.socket
+    ignored_guess: /srv/musashi/node.socket
+    resolution_method: relative-cmdline-socket-against-proc-cwd
+    expected_runtime_tool_discovery: pass
+  - name: shell-characters-are-literal
+    installation_method: nix
+    path_value: "/nix/store/cli-runtime/bin;$(touch /tmp/should-not-exist):/usr/bin"
+    cmdline_socket_path: "state/$(touch /tmp/should-not-exist).socket"
+    resolution_method: literal-data-only
+    action: reject-invalid-candidates-without-evaluation
+    expected_runtime_tool_discovery: unknown
+  - name: non-nix-existing-behavior
+    installation_method: package-or-binary
+    resolution_method: existing-non-nix-artifact-and-checksum-rules
+    expected_runtime_tool_discovery: pass
+  - name: observe-never-enters-nix
+    installation_method: nix
+    mode: observe
+    action: no-nix-develop-no-install-no-profile-change
+    expected_runtime_tool_discovery: unknown
   - name: nix-release-commit-match
     selected_release: prototype-2026w31a
     binary: /nix/store/example-cardano-node/bin/cardano-node

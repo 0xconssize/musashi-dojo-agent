@@ -14,7 +14,7 @@ checks:
   - configuration-hashes
   - declared-paths
   - topology-and-ports
-  - installed-release
+  - release-provenance
   - inventory-consistency
 timeout: 120s
 concurrency:

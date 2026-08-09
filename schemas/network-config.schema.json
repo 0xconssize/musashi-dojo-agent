@@ -48,7 +48,19 @@
           "minProperties": 1,
           "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
         },
-        "chain": {"type": "object", "additionalProperties": true}
+        "chain": {"type": "object", "additionalProperties": true},
+        "network_identity": {
+          "type": "object",
+          "required": ["algorithm", "sha256", "fields", "source", "verified_at"],
+          "properties": {
+            "algorithm": {"const": "sha256(canonical-json)"},
+            "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+            "fields": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+            "source": {"const": "config.json"},
+            "verified_at": {"type": "string", "format": "date-time"}
+          },
+          "additionalProperties": false
+        }
       },
       "additionalProperties": false
     },

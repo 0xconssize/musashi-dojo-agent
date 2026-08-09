@@ -7,7 +7,7 @@ Create a bounded, sanitized evidence set for one node.
 - Repository commit, current network declaration, selected release, and installed artifact provenance.
 - Node and host IDs, role, installation method, runtime identity, and execution mode.
 - Timestamped host capacity and clock observations.
-- Process or service state, configuration and topology hashes, socket or endpoint ownership.
+- Process or service state, network-identity projection, topology/genesis hashes, socket or endpoint ownership.
 - At least two time-separated tip or sync observations when available.
 - Peer evidence and bounded logs around the reported event.
 - Shared-host impact observations and checks already attempted.

@@ -138,7 +138,7 @@ The command above is the runtime shape for `start-node`; installation itself sho
 After the selected artifact is installed, but before startup:
 
 1. Verify the installed `cardano-node --version` or image digest against the selected release.
-2. Verify configuration and topology provenance and hashes.
+2. Verify network-identity, genesis, and topology provenance and hashes.
 3. Verify keys, opcert, database, state, and log paths and permissions.
 4. Confirm no service, container, firewall, port binding, or existing shared-host workload was changed unexpectedly.
 5. Record method, release, artifact/checksum or image digest, paths, runtime identity, and the stopped state under `.musashi/`.

@@ -4,7 +4,7 @@ Determine why one relay has no observed peers while protecting shared networking
 
 ## Checks
 
-1. Verify the exact node, host, runtime identity, network magic, configuration hashes, and topology provenance.
+1. Verify the exact node, host, runtime identity, network magic, network-identity projection, and topology provenance.
 2. Confirm the node is running and its declared socket or endpoint belongs to it.
 3. Inspect bounded node logs or telemetry for peer-selection and connection evidence.
 4. Compare configured bootstrap data with `network/bootstrap-peers.json` and current topology hashes.

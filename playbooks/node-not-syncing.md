@@ -6,7 +6,7 @@ Diagnose an apparently stalled relay without treating normal early-testnet pause
 
 1. Resolve one node and verify its host and runtime identity.
 2. Record at least two time-separated tip, block, slot, or sync-progress observations using the node's supported interface.
-3. Record process state, bounded fatal logs, peer evidence, disk headroom, clock health, release provenance, and configuration hashes.
+3. Record process state, bounded fatal logs, peer evidence, disk headroom, clock health, release provenance, network-identity projection, and topology/genesis hashes.
 4. Compare observations with `network/known-issues.yaml`; Musashi sync may be slow and bursty because few relays serve blocks and catch-up is not optimized.
 
 ## Classification

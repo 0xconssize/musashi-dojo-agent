@@ -88,4 +88,4 @@ freshness:
   stale_when:
     - The latest official non-draft release changes.
     - Any cited operational page changes.
-    - The selected release, topology, peer snapshot, or configuration hashes change.
+    - The selected release, topology, peer snapshot, or network-identity projection changes.

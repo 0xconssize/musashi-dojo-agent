@@ -4,19 +4,19 @@ Reconcile one node after authoritative configuration or topology content changes
 
 ## Preconditions
 
-- Revalidate the live configuration source and update `network/current.yaml` through a reviewed repository change before operations rely on new hashes.
+- Revalidate the live configuration source and update `network/current.yaml` through a reviewed repository change before operations rely on new hashes. For `config.json`, update the canonical network-identity projection; do not promote node-local tracing, logging, database-path, or tuning changes to network declarations.
 - Identify the exact node, installed release, configuration source, affected files, runtime identity, and shared-host nodes.
 - Determine whether the release and configuration are compatible; stop when either authority is incomplete or conflicting.
 
 ## Sequence
 
-1. Diagnose the current node and capture configuration hashes, running state, tip, peers, and bounded logs.
+1. Diagnose the current node and capture the network-identity projection hash, topology/genesis hashes, running state, tip, peers, and bounded logs.
 2. Save the existing configuration and provenance under `.musashi/backups/` or the node backup area.
 3. Prepare a `join-testnet` plan that retrieves, inspects, verifies, stages, and atomically applies only the changed files.
 4. Explain disruption and obtain confirmation for host-level paths, ownership, firewall, or shared-network changes.
 5. Apply the plan while the node is stopped when the changed files are not safe for live replacement.
 6. Start or restart the node only through its lifecycle skill.
-7. Validate configuration hashes, network identity, runtime identity, bounded logs, tip progression, peers, and shared workloads.
+7. Validate the network-identity projection, topology/genesis hashes, network identity, runtime identity, bounded logs, tip progression, peers, and shared workloads.
 
 ## Recovery
 

@@ -38,9 +38,35 @@ rules:
       - comparison_method
     comparison_method: Compare binary_commit with the locked rev of the cardano-node input in the selected release's flake.lock; never compare with the ouroboros-leios tag commit.
   - id: configuration-integrity
-    check: Compare Musashi configuration and topology hashes with current.yaml without exposing secrets.
+    check: Compare the canonical network-identity projection of config.json, plus topology and genesis file hashes, with current.yaml; ignore node-local tuning and tracing options without exposing secrets.
     outcomes: [pass, fail, conflict, unknown]
-    evidence: File hashes, paths, and current declaration hashes.
+    evidence: Projection algorithm, selected field names, network-identity hash, file hashes, paths, and current declaration hashes.
+    network_identity:
+      algorithm: sha256(canonical-json)
+      include:
+        - Protocol
+        - ConsensusMode
+        - RequiresNetworkMagic
+        - MinNodeVersion
+        - ExperimentalHardForksEnabled
+        - ExperimentalProtocolsEnabled
+        - LastKnownBlockVersion-Alt
+        - LastKnownBlockVersion-Major
+        - LastKnownBlockVersion-Minor
+        - '*HardForkAtEpoch'
+        - '*GenesisFile'
+        - '*GenesisHash'
+      exclude:
+        - 'TraceOptions.*'
+        - 'TraceOption*'
+        - MempoolCapacityBytesOverride
+        - 'LedgerDB.QueryBatchSize'
+        - 'LedgerDB.Snapshots.*'
+        - 'LeiosDbConfig.Filepath'
+      semantics:
+        pass: The canonical projection hash matches current.yaml and all referenced genesis/topology hashes match.
+        fail: The projection or a referenced network file differs from current.yaml.
+        unknown: The projection cannot be built, the baseline is absent, or a new network-semantic field requires review.
   - id: storage-health
     check: Observe free space, writable node paths, and bounded storage errors without repairing filesystems.
     outcomes: [pass, fail, unknown]
@@ -89,7 +115,7 @@ current_release_rules:
 freshness:
   status: current-as-reviewed
   reviewed_at: "2026-08-05"
-  stale_when: Requirements, configuration hashes, latest release, guide, known issues, or failure evidence changes.
+  stale_when: Requirements, network-identity projection, latest release, guide, known issues, or failure evidence changes.
 
 verification_examples:
   - name: nix-cli-found-in-process-path

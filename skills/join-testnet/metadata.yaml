@@ -22,4 +22,4 @@ sources:
 freshness:
   status: current-with-source-conflict
   revalidate_before: Retrieving or applying configuration.
-  stale_when: Configuration hashes, topology, selected release, guide, or network incarnation change.
+  stale_when: Network-identity projection, topology/genesis hashes, selected release, guide, or network incarnation change.

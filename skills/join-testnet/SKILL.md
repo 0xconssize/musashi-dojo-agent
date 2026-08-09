@@ -13,7 +13,7 @@ Require one relay node ID, installed release provenance, installation method, ve
 
 ## Workflow
 
-1. Revalidate `network/current.yaml`, known issues, topology, configuration hashes, and official operational sources.
+1. Revalidate `network/current.yaml`, known issues, topology/genesis hashes, the network-identity projection, and official operational sources.
 2. Resolve the node, host, runtime identity, paths, and shared-host nodes; refuse non-relay roles in this phase.
 3. Inspect existing configuration and node state. Back up replaced configuration under `.musashi/` before modification.
 4. Build a schema-valid plan that retrieves configuration without immediate execution, verifies content hashes, stages files, checks paths and ownership, and atomically places validated configuration.

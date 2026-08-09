@@ -13,7 +13,7 @@ Deploy one relay as four independently validated operations. Do not collapse the
 
 1. Run `assess-host`. Stop on `unsuitable` or `inconclusive`; resolve every `conditional` finding before modification.
 2. Run `install-relay` with one supported method. Leave the relay stopped and validate artifact provenance.
-3. Run `join-testnet`. Back up any replaced configuration and validate its hashes, network identity, and topology.
+3. Run `join-testnet`. Back up any replaced configuration and validate its network-identity projection, genesis hashes, network identity, and topology.
 4. Run `start-node`. Validate the registered runtime identity, stable process state, socket or endpoint ownership, bounded logs, and time-separated tip progress.
 5. Record the operation reports, node state, release provenance, configuration provenance, and durable decisions.
 

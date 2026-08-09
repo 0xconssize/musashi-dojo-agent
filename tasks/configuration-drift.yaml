@@ -11,7 +11,7 @@ scope:
 mode: observe
 operator_memory: .musashi/task-memory.md
 checks:
-  - configuration-hashes
+  - network-configuration-integrity
   - declared-paths
   - topology-and-ports
   - release-provenance

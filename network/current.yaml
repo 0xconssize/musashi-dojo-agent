@@ -27,12 +27,29 @@ configuration:
   files:
     alonzo-genesis.json: 23bf365cae730137ad6868787f20ef4f58e446d22617d7b824f1c75695c760b5
     byron-genesis.json: 683584e464d2c54f15c2939da888bbdea7442cf4b5c8f44da386db9b33291928
-    config.json: 3e624e05cf5cbfbc90da3908badb3ea2ee02225b8866842766429ca876758df9
     conway-genesis.json: affa4227c27e14e1af2c1457a6b856d9394c2921adaa5818ca3079219f6e5cd2
     dijkstra-genesis.json: b8113964e1eb80b755a4b7b531e02eb1181035eeeee39f49b76efaada1f72a1a
     peer-snapshot.json: 85bff6b34ae1ac47181bb31dbe2acd1545927f1cc9bae3e11b28ad4e026eba41
     shelley-genesis.json: 3cce5a00c8579b9cef44e8cb5a8ca27bd4e4f523e9075297b109d8278a0ebf93
     topology.json: eaac2c4782cba20a08dd39e6ce06c2960759079801c52c2ad46ad77a59fc466d
+  network_identity:
+    algorithm: sha256(canonical-json)
+    sha256: ef644b9746c05ceaed31eb23bfb956dee5037f3e6a4150842066127a569534d5
+    fields:
+      - Protocol
+      - ConsensusMode
+      - RequiresNetworkMagic
+      - MinNodeVersion
+      - ExperimentalHardForksEnabled
+      - ExperimentalProtocolsEnabled
+      - LastKnownBlockVersion-Alt
+      - LastKnownBlockVersion-Major
+      - LastKnownBlockVersion-Minor
+      - '*HardForkAtEpoch'
+      - '*GenesisFile'
+      - '*GenesisHash'
+    source: config.json
+    verified_at: "2026-08-09T10:40:10Z"
   chain:
     system_start: "2026-07-01T00:00:00Z"
     slot_length_seconds: 1
@@ -87,6 +104,6 @@ freshness:
     - The authoritative getting-started page changes.
     - The latest official non-draft release changes.
     - The getting-started configuration or operational procedures change.
-    - The live configuration or topology content hashes change.
+    - The network-identity projection or topology/genesis content hashes change.
     - The Musashi chain is reset or configuration is re-pinned.
     - A value conflicts with direct observation or another official linked resource.

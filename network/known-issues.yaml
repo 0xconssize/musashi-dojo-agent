@@ -1,6 +1,6 @@
 schema_version: 1
 network_id: musashi
-verified_at: "2026-08-05T10:37:17Z"
+verified_at: "2026-08-12T09:46:20Z"
 
 authority:
   operational_guide: https://leios.cardano-scaling.org/docs/testnet/getting-started/
@@ -22,8 +22,22 @@ issues:
     action: Wait, retry later, or restart; report persistent stalls with version and logs.
     source: https://leios.cardano-scaling.org/docs/testnet/getting-started/#confirm-you-are-syncing
 
-  - id: selected-release-invalid-certificate-hotfix
+  - id: selected-release-musashi-respin
     status: current
+    severity: high
+    summary: prototype-2026w32 explicitly respins Musashi and invalidates local chain state from the predecessor release.
+    action: Preserve the prior database, then quarantine or remove only that node's local state and re-sync from genesis or an explicitly verified IOG sideload using the current Musashi configuration. Require separate destructive confirmation.
+    source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w32
+
+  - id: selected-release-bls-voting-key
+    status: current
+    severity: high
+    summary: A block producer on prototype-2026w32 votes only when started with --shelley-bls-key pointing to the BLS signing key whose verification key is registered on-chain.
+    action: Verify the registered BLS key and pass the exact signing-key path to the producer. Without it, the node operates as a non-voting relay.
+    source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w32
+
+  - id: selected-release-invalid-certificate-hotfix
+    status: historical
     severity: medium
     summary: prototype-2026w31a prevents invalid Leios certificate errors from crashing the node and emits InvalidBlock traces instead.
     action: If crashes continue after updating, first delete only the volatile chain state as directed by the release notes.
@@ -32,8 +46,8 @@ issues:
   - id: getting-started-release-lag
     status: current
     severity: high
-    summary: The operational guide still embeds w30 release downloads and container examples while the release repository has selected w31a.
-    action: Use w31a release assets and release notes. Retain only the guide's non-version-specific configuration and procedures, and keep unverified w31a equivalents unknown.
+    summary: The operational guide still embeds w30 release downloads and container examples while the release repository and live Musashi page select w32.
+    action: Use w32 release assets and release notes, and use the live Musashi configuration. Retain only the guide's non-version-specific procedures; keep unverified w32 container equivalents unknown.
     sources:
       - https://leios.cardano-scaling.org/docs/testnet/getting-started/
       - https://github.com/input-output-hk/ouroboros-leios/releases
@@ -41,8 +55,8 @@ issues:
   - id: operations-book-release-lag
     status: current
     severity: medium
-    summary: The linked Operations Book still calls w27 the latest release.
-    action: Use its live configuration links, but never its release label; the release repository selects w31a.
+    summary: The Operations Book and release repository can change independently; the live page currently points to w32.
+    action: Use its live configuration links only after comparing hashes with current.yaml; use the release repository to select the release.
     sources:
       - https://book.play.dev.cardano.org/adv-musashi.html
       - https://github.com/input-output-hk/ouroboros-leios/releases
@@ -52,7 +66,7 @@ issues:
     severity: medium
     summary: The exact Nix cardano-node version is verified by comparing the running binary git rev with the cardano-node input revision pinned in the selected release flake.lock.
     action: Resolve /proc/<pid>/exe, run the resolved binary with --version, and compare its input-output-hk/cardano-node git rev with the selected release flake.lock. Use unknown when the binary, revision, or lock file cannot be verified.
-    source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w31a
+    source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w32
 
   - id: unpinned-nix-flake
     status: current
@@ -69,10 +83,10 @@ issues:
     source: https://leios.cardano-scaling.org/docs/testnet/getting-started/#what-to-expect-in-the-early-days
 
   - id: bls-registration-not-active
-    status: current
+    status: historical
     severity: medium
-    summary: The Dijkstra pool registration command requires a BLS signing key, but Musashi does not utilize it yet.
-    action: Follow the producer guide exactly and do not infer production BLS behavior.
+    summary: The predecessor documentation said Musashi did not utilize the BLS key yet; prototype-2026w32 now requires it for block-producer voting.
+    action: Follow the w32 release notes and verify the producer command separately.
     source: https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/#register-stake-address-and-pool
 
   - id: live-configuration-is-mutable

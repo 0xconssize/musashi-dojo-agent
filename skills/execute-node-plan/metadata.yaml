@@ -13,14 +13,14 @@ sources:
     retrieved_at: "2026-08-05"
     supported_snapshot:
       network: Musashi Dojo public prototype testnet
-      release: prototype-2026w31a
+      release: prototype-2026w32
       node_version: null
   release_authority:
     url: https://github.com/input-output-hk/ouroboros-leios/releases
-    retrieved_at: "2026-08-05"
-    latest_release: prototype-2026w31a
+    retrieved_at: "2026-08-12"
+    latest_release: prototype-2026w32
 freshness:
   status: current
-  reviewed_at: "2026-08-05"
+  reviewed_at: "2026-08-12"
   revalidate_before: Executing any plan containing a testnet-specific command, value, asset, compatibility claim, or recovery action.
   stale_when: The latest official release, Musashi guide, network incarnation, target state, plan, or scope changes.

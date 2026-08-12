@@ -2,7 +2,7 @@
   "schema_version": 1,
   "network_id": "musashi",
   "network_magic": 164,
-  "verified_at": "2026-08-05T10:16:18Z",
+  "verified_at": "2026-08-12T09:46:20Z",
   "bootstrap_peers": [
     {
       "address": "leios-node.play.dev.cardano.org",
@@ -33,17 +33,17 @@
     {
       "url": "https://leios.cardano-scaling.org/docs/testnet/getting-started/#the-network-at-a-glance",
       "authority": "authoritative-root",
-      "retrieved_at": "2026-08-05T10:09:12Z"
+      "retrieved_at": "2026-08-12T09:46:20Z"
     },
     {
       "url": "https://book.play.dev.cardano.org/environments-pre/leios/topology.json",
-      "sha256": "eaac2c4782cba20a08dd39e6ce06c2960759079801c52c2ad46ad77a59fc466d",
-      "retrieved_at": "2026-08-05T10:16:18Z"
+      "sha256": "5b0d77068edf0c3a58ae64f1192c25e683c96a5b2528e4df689eea14041dc17b",
+      "retrieved_at": "2026-08-12T09:46:20Z"
     },
     {
       "url": "https://book.play.dev.cardano.org/environments-pre/leios/peer-snapshot.json",
-      "sha256": "85bff6b34ae1ac47181bb31dbe2acd1545927f1cc9bae3e11b28ad4e026eba41",
-      "retrieved_at": "2026-08-05T10:16:18Z"
+      "sha256": "f4d0cae44bcc10d081247424c4b5f4a6cb04c3ae789111767910d99dd478ae82",
+      "retrieved_at": "2026-08-12T09:46:20Z"
     }
   ],
   "freshness": {

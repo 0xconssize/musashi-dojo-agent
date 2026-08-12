@@ -12,29 +12,29 @@ network:
   consensus_mode: PraosMode
 
 release:
-  selected: prototype-2026w31a
+  selected: prototype-2026w32
   selection_basis: Most recently published non-draft release in the official Ouroboros Leios repository.
   node_version_reported: null
-  published_at: "2026-08-03T10:40:06Z"
-  tag_commit: 1c7cd2ad3356e89db8b7d311d085c8e48c9e2106
+  published_at: "2026-08-10T07:35:45Z"
+  tag_commit: 3534e7065419c906b35d3be7c976aeace8cf2085
   newer_available_not_selected: []
 
 configuration:
   base_url: https://book.play.dev.cardano.org/environments-pre/leios
   pin_script: https://raw.githubusercontent.com/input-output-hk/ouroboros-leios/main/testnet/pin-config.sh
-  pin_script_commit: 4c110c1ba552754174dc948f0abb3fd67c06559b
-  verified_at: "2026-08-05T10:16:18Z"
+  pin_script_commit: 91b9a643fea4faedab423a1fdd4d6e96f64c011d
+  verified_at: "2026-08-12T09:46:20Z"
   files:
     alonzo-genesis.json: 23bf365cae730137ad6868787f20ef4f58e446d22617d7b824f1c75695c760b5
-    byron-genesis.json: 683584e464d2c54f15c2939da888bbdea7442cf4b5c8f44da386db9b33291928
-    conway-genesis.json: affa4227c27e14e1af2c1457a6b856d9394c2921adaa5818ca3079219f6e5cd2
+    byron-genesis.json: 07c066c08cab2ba67d8ab061dc4f4d5d61d55892396e806c62a7378926d3540c
+    conway-genesis.json: fb689f5dad32ac99a3e5976786b1df3be789c623277aa3c8ef90562d4a09ec3b
     dijkstra-genesis.json: b8113964e1eb80b755a4b7b531e02eb1181035eeeee39f49b76efaada1f72a1a
-    peer-snapshot.json: 85bff6b34ae1ac47181bb31dbe2acd1545927f1cc9bae3e11b28ad4e026eba41
-    shelley-genesis.json: 3cce5a00c8579b9cef44e8cb5a8ca27bd4e4f523e9075297b109d8278a0ebf93
-    topology.json: eaac2c4782cba20a08dd39e6ce06c2960759079801c52c2ad46ad77a59fc466d
+    peer-snapshot.json: f4d0cae44bcc10d081247424c4b5f4a6cb04c3ae789111767910d99dd478ae82
+    shelley-genesis.json: 32829228e250ec6061e6e6c638cb3920687e9d871642a96313a58d0084c9c844
+    topology.json: 5b0d77068edf0c3a58ae64f1192c25e683c96a5b2528e4df689eea14041dc17b
   network_identity:
     algorithm: sha256(canonical-json)
-    sha256: ef644b9746c05ceaed31eb23bfb956dee5037f3e6a4150842066127a569534d5
+    sha256: 5b74353b0bcc85bc03a8317fdc716d1e1b81d8c1ac4aa93b34e0be4ab1947fb1
     fields:
       - Protocol
       - ConsensusMode
@@ -49,7 +49,7 @@ configuration:
       - '*GenesisFile'
       - '*GenesisHash'
     source: config.json
-    verified_at: "2026-08-09T10:40:10Z"
+    verified_at: "2026-08-12T09:46:20Z"
   chain:
     system_start: "2026-07-01T00:00:00Z"
     slot_length_seconds: 1
@@ -61,44 +61,45 @@ configuration:
     leios_database_backend: SQLite
     leios_database_path: leios.db
     experimental_protocols_enabled: true
-    config_minimum_node_version: 11.1.0-prototype-2026w27
+    config_minimum_node_version: 11.1.0-prototype-2026w32
 
 requirements:
   file: requirements.yaml
-  verified_at: "2026-08-05T10:37:17Z"
+  verified_at: "2026-08-12T09:46:20Z"
 
 warnings:
   - This is continuously rebuilt pre-release software on a resettable prototype testnet.
-  - The getting-started guide still embeds prototype-2026w30 examples; use w31a assets and release notes while retaining its non-version-specific Musashi procedures.
-  - The linked Operations Book still labels prototype-2026w27 as latest; use neither page to downgrade the selected release.
-  - For a Nix node, verify prototype-2026w31a by resolving /proc/<pid>/exe, extracting the cardano-node git rev with --version, and comparing it with the cardano-node input revision in that release's flake.lock; use unknown when any evidence is missing.
-  - The guide documents a w30 container image; availability of a w31a image is not confirmed by the release page.
+  - The prototype-2026w32 release explicitly respins Musashi; preserve old local state before removing it and re-sync with the current configuration.
+  - The getting-started guide still embeds prototype-2026w30 examples; use w32 assets, release notes, and the live Musashi configuration while retaining its non-version-specific procedures.
+  - For a Nix node, verify prototype-2026w32 by resolving /proc/<pid>/exe, extracting the cardano-node git rev with --version, and comparing it with the cardano-node input revision in that release's flake.lock; use unknown when any evidence is missing.
+  - The guide documents a w30 container image; availability of a w32 image is not confirmed by the release page.
+  - A block producer must pass --shelley-bls-key with the registered BLS signing key to participate in voting under prototype-2026w32.
   - Never substitute Cardano mainnet operating values or procedures.
 
 sources:
   operational_root:
     url: https://leios.cardano-scaling.org/docs/testnet/getting-started/
-    retrieved_at: "2026-08-05T10:09:12Z"
+    retrieved_at: "2026-08-12T09:46:20Z"
     last_modified: "2026-07-30T20:27:38Z"
     sha256: 6821444f79b5863b2424a7ceefaf20c59f8d34671106b317fdcd730442d64b91
   release_authority:
     url: https://github.com/input-output-hk/ouroboros-leios/releases
     api_url: https://api.github.com/repos/input-output-hk/ouroboros-leios/releases
-    retrieved_at: "2026-08-05T10:37:17Z"
-    latest_release: prototype-2026w31a
+    retrieved_at: "2026-08-12T09:46:20Z"
+    latest_release: prototype-2026w32
   linked_official:
     - url: https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/
       role: Block-producer requirements and Dijkstra procedures.
-      retrieved_at: "2026-08-05T10:09:59Z"
+      retrieved_at: "2026-08-12T09:46:20Z"
       sha256: e2999a0e03901ef31b0f1c39eebca07e339db500acd5ca7603bce36af6e8299e
     - url: https://book.play.dev.cardano.org/adv-musashi.html
       role: Deployed Musashi configuration index.
-      retrieved_at: "2026-08-05T10:10:10Z"
-      sha256: fc5b24438c8f27708b4fe33a740ed48fa1afc638544f98a494ef18b24385f4cf
+      retrieved_at: "2026-08-12T09:46:20Z"
+      sha256: 5ca65479c94966274ed4343e0d6c5a5e5df793f0e276ee66b95d0a49818b7f1b
 
 freshness:
   status: current-as-reviewed
-  verified_at: "2026-08-05T10:37:17Z"
+  verified_at: "2026-08-12T09:46:20Z"
   review_before_use: true
   stale_when:
     - The authoritative getting-started page changes.

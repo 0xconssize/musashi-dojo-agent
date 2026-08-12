@@ -1,16 +1,24 @@
 {
   "schema_version": 1,
-  "verified_at": "2026-08-05T10:37:17Z",
+  "verified_at": "2026-08-12T09:46:20Z",
   "operational_guide": "https://leios.cardano-scaling.org/docs/testnet/getting-started/",
   "release_source": "https://github.com/input-output-hk/ouroboros-leios/releases",
   "selection_policy": "Select the most recently published non-draft release from the official repository, including a pre-release. A lagging operational guide does not downgrade it.",
-  "selected_release": "prototype-2026w31a",
+  "selected_release": "prototype-2026w32",
   "releases": [
+    {
+      "tag": "prototype-2026w32",
+      "published_at": "2026-08-10T07:35:45Z",
+      "tag_commit": "3534e7065419c906b35d3be7c976aeace8cf2085",
+      "status": "latest-selected",
+      "summary": "Respins Musashi, requires fresh local state, and requires a registered BLS signing key for block-producer voting.",
+      "state_action": "Preserve the prior local state, then remove or quarantine it and re-sync from genesis with the current Musashi configuration. Start producers with --shelley-bls-key."
+    },
     {
       "tag": "prototype-2026w31a",
       "published_at": "2026-08-03T10:40:06Z",
       "tag_commit": "1c7cd2ad3356e89db8b7d311d085c8e48c9e2106",
-      "status": "latest-selected",
+      "status": "historical-compatible-predecessor",
       "summary": "Hotfix changes invalid Leios certificate failures from node crashes to InvalidBlock traces.",
       "state_action": "If crashes continue after updating, first delete only volatile chain state."
     },
@@ -106,23 +114,22 @@
   "selected_release_assets": {
     "linux_x86_64": {
       "archive": "cardano-node-leios-x86_64-linux.tar.gz",
-      "sha256": "5ee6f73faa0824d6c2ad37783d629eabea4bfbbb8e718018cb86b1734308ac62",
+      "sha256": "58d9c4219aaf3000faabf04fd7af0db577dda288ba4e808d60462b4bd7f63e21",
       "status": "available"
     },
     "macos_aarch64": {
       "archive": "cardano-node-leios-aarch64-darwin.tar.gz",
-      "sha256": "00e57030e0f67342c25f50bf06804489ed6daadd556e1c959a502e8937174bb4",
+      "sha256": "2d38fc8c2a545dfce8cee41be902ba8ce09cc240328fdb409c6807912eaf46bf",
       "status": "available"
     },
     "linux_aarch64": {
       "archive": "cardano-node-leios-aarch64-linux.tar.gz",
-      "sha256": "e730d8a1c25f18cf206ea2a477efbe72bb034504c4db96a98c25d8eaea1932f6",
+      "sha256": "3608c0d350ee779d841edaee6ebbc01f05220ef31ccaed0916ac406ade36472e",
       "status": "available"
     }
   },
   "conflicts": [
-    "The getting-started guide still embeds prototype-2026w30 examples while the official release repository selects prototype-2026w31a by recency.",
-    "The linked Operations Book still calls prototype-2026w27 latest.",
-    "The exact cardano-node version string for prototype-2026w31a is not stated by its release metadata."
+    "The getting-started guide still embeds prototype-2026w30 examples while the official release repository and live Musashi configuration select prototype-2026w32.",
+    "The exact cardano-node version string is verified from the running w32 flake environment; the network configuration declares MinNodeVersion 11.1.0-prototype-2026w32."
   ]
 }

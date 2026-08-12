@@ -12,12 +12,13 @@ sources:
   operational:
     url: https://leios.cardano-scaling.org/docs/testnet/getting-started/
     sections: [Run a relay, Confirm you are syncing]
-    retrieved_at: "2026-08-05"
+    retrieved_at: "2026-08-12"
   release_authority:
     url: https://github.com/input-output-hk/ouroboros-leios/releases
-    latest_release: prototype-2026w31a
-    retrieved_at: "2026-08-05"
+    latest_release: prototype-2026w32
+    retrieved_at: "2026-08-12"
 freshness:
   status: current-as-reviewed
-  revalidate_before: Using a testnet-specific startup or validation procedure.
+  reviewed_at: "2026-08-12"
+  revalidate_before: Using a testnet-specific startup, validation procedure, operational certificate, or BLS requirement.
   stale_when: Runtime identity, configuration, target state, guide, or selected release changes.

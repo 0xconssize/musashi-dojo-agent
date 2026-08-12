@@ -3,19 +3,28 @@ skill: register-stake-pool
 phase: 6
 risk: external-onchain
 scope: [single-pool, single-node]
-inputs: [working_dir, synced_node_socket, pool_keys, funded_payment_address, pool_parameters, owners, relays, optional_metadata]
-outputs: [stake_registration_certificate, pool_registration_certificate, signed_transaction, operation_report]
-success: Registration is submitted only after confirmation and independently verified on-chain.
+inputs: [working_dir, synced_node_socket, pool_keys, funded_payment_address, pool_parameters, owners, relays, optional_metadata, current_network_fingerprint, respin_evidence]
+outputs: [stake_registration_certificate, pool_registration_certificate, signed_transaction, operation_report, respin_revalidation_evidence, operational_certificate_handoff]
+success: Registration is submitted only after confirmation, independently verified on-chain, and handed off to current operational-certificate issuance.
 confirmation:
   required_for: [signing_transaction, submitting_transaction]
-  invalidated_by: [command-change, target-change, input-change, key-change, parameter-change, owner-change, relay-change, metadata-change, scope-change]
+  invalidated_by: [command-change, target-change, input-change, key-change, parameter-change, owner-change, relay-change, metadata-change, scope-change, network-respin, network-incarnation-change, genesis-hash-change, system-start-change, slots-per-kes-period-change, kes-period-expiry, opcert-output-change]
 network:
   name: Musashi Dojo Leios testnet
   magic: 164
   era: Dijkstra
-  revalidate_when: [network-release, era-change, cli-help-change, protocol-parameter-change]
+  selected_release: prototype-2026w32
+  revalidate_when: [network-release, era-change, cli-help-change, protocol-parameter-change, network-respin, network-incarnation-change, genesis-hash-change, system-start-change, slots-per-kes-period-change]
+dependencies:
+  after_registration_verification: issue-operational-certificate
+  producer_handoff_requires: [current_operational_certificate, certificate_evidence_sidecar, registered_bls_key]
 cli_options:
   relay_forms: [ipv4+port, ipv6+port, single-host-dns+optional-port, multi-host-dns-srv]
   repeatable: [pool-owner, relay]
   metadata: [metadata-url, metadata-hash, check-metadata-hash]
 sources: [https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/, https://github.com/0xconssize/leios, https://github.com/IntersectMBO/cardano-cli]
+freshness:
+  status: current-as-reviewed
+  reviewed_at: "2026-08-12"
+  revalidate_before: Registration, pool-state verification, or certificate handoff.
+  stale_when: Network release, network incarnation, genesis hashes, system start, slotsPerKESPeriod, CLI help, or protocol parameters change.

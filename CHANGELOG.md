@@ -4,9 +4,14 @@
 
 ### Changed
 
+- Stake-pool registration now treats a respin as a new network incarnation and requires current-chain verification before handing off to producer setup.
+
 - Nix node diagnostics now rediscover and validate `cardano-cli` and the exact node socket from the running process, independently of the SSH session `PATH`.
 
 ### Added
+
+- A separate operational-certificate workflow that recalculates the KES period from the current tip, preserves prior certificates, and advances opcert.counter monotonically.
+- A known issue documenting stale operational certificates after a Musashi respin, plus provenance and BLS gates for block-producer installation.
 
 - Private operator memory for scheduled-task instructions and clarifications, with task-run provenance.
 - Phase 1 repository foundation.

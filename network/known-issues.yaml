@@ -29,6 +29,15 @@ issues:
     action: Preserve the prior database, then quarantine or remove only that node's local state and re-sync from genesis or an explicitly verified IOG sideload using the current Musashi configuration. Require separate destructive confirmation.
     source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w32
 
+  - id: operational-certificate-stale-after-respin
+    status: current
+    severity: high
+    summary: A Musashi respin changes the network incarnation and current tip context; an operational certificate issued before the respin must not be reused by the new producer.
+    action: Preserve the prior certificate and evidence, wait for syncProgress 100.00 on the current configuration, calculate floor(tip.slot / slotsPerKESPeriod) from the current Shelley genesis, issue a new certificate, and increment opcert.counter without resetting it.
+    sources:
+      - https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w32
+      - https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/#operational-certificate
+
   - id: selected-release-bls-voting-key
     status: current
     severity: high

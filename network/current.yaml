@@ -74,6 +74,7 @@ warnings:
   - For a Nix node, verify prototype-2026w32 by resolving /proc/<pid>/exe, extracting the cardano-node git rev with --version, and comparing it with the cardano-node input revision in that release's flake.lock; use unknown when any evidence is missing.
   - The guide documents a w30 container image; availability of a w32 image is not confirmed by the release page.
   - A block producer must pass --shelley-bls-key with the registered BLS signing key to participate in voting under prototype-2026w32.
+  - Operational certificates issued before a respin are stale until a fully synced current tip is used to recalculate the KES period and issue a new certificate with the monotonic opcert.counter.
   - Never substitute Cardano mainnet operating values or procedures.
 
 sources:

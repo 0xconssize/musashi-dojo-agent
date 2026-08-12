@@ -12,10 +12,13 @@ inputs:
   - selected_release
   - registered_pool
   - producer_keys
+  - operational_certificate
+  - operational_certificate_evidence
+  - registered_bls_signing_key
 outputs:
   - operation_report
   - node_state
-success: A selected official block-producer implementation is verified at declared paths, remains stopped, and shared workloads are unaffected.
+success: A selected official block-producer implementation is verified at declared paths with a current provenance-checked operational certificate and registered BLS signing key, remains stopped, and shared workloads are unaffected.
 confirmation:
   required_for:
     - package-installation
@@ -33,6 +36,13 @@ confirmation:
     - privilege-change
     - scope-change
     - method-change
+    - network-respin
+    - network-incarnation-change
+    - genesis-hash-change
+    - system-start-change
+    - slots-per-kes-period-change
+    - kes-period-expiry
+    - opcert-output-change
 sources:
   operational:
     url: https://leios.cardano-scaling.org/docs/testnet/getting-started/
@@ -42,7 +52,7 @@ sources:
       - Prebuilt binaries
       - Docker
     authority: Musashi configuration and installation procedures
-    retrieved_at: "2026-08-06"
+    retrieved_at: "2026-08-12"
     documented_release: prototype-2026w30
     documented_container_image: ghcr.io/input-output-hk/ouroboros-leios/cardano-node-testnet:prototype-2026w30
   producer:
@@ -50,14 +60,15 @@ sources:
     sections:
       - Restart as block producer
     authority: Block-producer key and invocation requirements
-    retrieved_at: "2026-08-06"
+    retrieved_at: "2026-08-12"
   release_authority:
     url: https://github.com/input-output-hk/ouroboros-leios/releases
-    latest_release: prototype-2026w31a
-    retrieved_at: "2026-08-06"
+    latest_release: prototype-2026w32
+    selected_release: prototype-2026w32
+    retrieved_at: "2026-08-12"
     published_assets: [Linux x86-64, Linux aarch64, macOS aarch64]
 freshness:
   status: current-with-source-conflict
-  reviewed_at: "2026-08-06"
+  reviewed_at: "2026-08-12"
   revalidate_before: Selecting a release, asset, checksum, image, platform, configuration, or producer command.
   stale_when: Latest release, assets, checksums, guide methods, requirements, image availability, or network incarnation changes.

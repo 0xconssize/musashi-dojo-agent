@@ -5,7 +5,6 @@ Niten must treat every target host as shared unless verified otherwise.
 ## Before modifying
 
 - Resolve the exact host and node scope.
-- Confirm that the selected execution mode and required capabilities were observed in the current runtime.
 - Identify services, processes, containers, data directories, and configuration directories.
 - Check other nodes and shared services on the host.
 - Verify host identity using at least two independent signals when possible.

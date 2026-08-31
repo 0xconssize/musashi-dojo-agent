@@ -12,8 +12,6 @@ Do not assume a credential is testnet-only without checking its context. If main
 
 - **Read-only:** normally safe without extra confirmation.
 - **Node-local reversible:** explain before execution and validate afterward.
-- **Host-level:** explicit confirmation required.
-- **Destructive or broad:** explicit, clearly scoped confirmation required.
 
 ## Safe handling
 

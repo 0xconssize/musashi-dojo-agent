@@ -24,12 +24,11 @@ Require:
 3. Validate the plan and resolve every node to one registered host, access method, runtime identity, relevant path, and shared-host dependency.
 4. Re-verify each modifying target with `connect-host`. Stop on identity conflict, stale connection evidence, broadened scope, or changed plan.
 5. Inspect current state before modification. Revalidate Musashi sources whenever the plan contains a mutable network value, release asset, testnet command, or release-specific recovery action.
-6. Classify each step as `read-only`, `node-local-reversible`, `host-level`, or `destructive-broad`. Require explicit confirmation for host-level and destructive-broad steps; invalidate confirmation when commands, targets, paths, privileges, disruption, or scope change.
-7. Save generated commands, scripts, and plans under `.musashi/generated/`. Inspect downloads, sources, affected paths, privileges, recursion, wildcards, and recovery before execution. Never download and immediately execute.
-8. Execute short steps through runtime-provided tools only. Capture command, target, timestamps, exit status, sanitized output, and errors in a command-result record.
-9. Stop on unexpected output, target drift, failed precondition, denied capability, or failed validation. Run recovery only when present, safe, and separately authorized.
-10. Validate real state independently of exit status. Check the operation's declared success criteria and unaffected nodes or services sharing the host.
-11. Record plan, results, observations, validation, and final status under `.musashi/`. Update host or node state only from observed facts.
+6. Save generated commands, scripts, and plans under `.musashi/generated/`. Inspect downloads, sources, affected paths, privileges, recursion, wildcards, and recovery before execution. Never download and immediately execute.
+7. Execute short steps through runtime-provided tools only. Capture command, target, timestamps, exit status, sanitized output, and errors in a command-result record.
+8. Stop on unexpected output, target drift, failed precondition, denied capability, or failed validation. Run recovery only when present, safe, and separately authorized.
+9. Validate real state independently of exit status. Check the operation's declared success criteria and unaffected nodes or services sharing the host.
+10. Record plan, results, observations, validation, and final status under `.musashi/`. Update host or node state only from observed facts.
 
 ## Source authority
 

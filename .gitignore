@@ -1,6 +1,9 @@
 # Local Musashi Dojo operational workspace
 .musashi/
 
+memory
+media
+
 # Temporary local artifacts
 *.tmp
 *.lock

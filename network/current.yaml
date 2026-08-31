@@ -12,11 +12,11 @@ network:
   consensus_mode: PraosMode
 
 release:
-  selected: prototype-2026w32
+  selected: prototype-2026w34
   selection_basis: Most recently published non-draft release in the official Ouroboros Leios repository.
-  node_version_reported: null
-  published_at: "2026-08-10T07:35:45Z"
-  tag_commit: 3534e7065419c906b35d3be7c976aeace8cf2085
+  node_version_reported: 11.1.0.164
+  published_at: null
+  tag_commit: 875a19ca9065268832931c2d285fb17d3a37f630
   newer_available_not_selected: []
 
 configuration:
@@ -69,11 +69,12 @@ requirements:
 
 warnings:
   - This is continuously rebuilt pre-release software on a resettable prototype testnet.
+  - prototype-2026w34 was applied in place to all three registered nodes on 2026-08-24; database, configuration, and keys were preserved.
   - The prototype-2026w32 release explicitly respins Musashi; preserve old local state before removing it and re-sync with the current configuration.
   - The getting-started guide still embeds prototype-2026w30 examples; use w32 assets, release notes, and the live Musashi configuration while retaining its non-version-specific procedures.
-  - For a Nix node, verify prototype-2026w32 by resolving /proc/<pid>/exe, extracting the cardano-node git rev with --version, and comparing it with the cardano-node input revision in that release's flake.lock; use unknown when any evidence is missing.
+  - For a Nix node, verify prototype-2026w34 by resolving /proc/<pid>/exe, extracting the cardano-node git rev with --version, and comparing it with the cardano-node input revision in that release's flake.lock; use unknown when any evidence is missing.
   - The guide documents a w30 container image; availability of a w32 image is not confirmed by the release page.
-  - A block producer must pass --shelley-bls-key with the registered BLS signing key to participate in voting under prototype-2026w32.
+  - A block producer must pass --shelley-bls-key with the registered BLS signing key to participate in voting under prototype-2026w34.
   - Operational certificates issued before a respin are stale until a fully synced current tip is used to recalculate the KES period and issue a new certificate with the monotonic opcert.counter.
   - Never substitute Cardano mainnet operating values or procedures.
 
@@ -87,7 +88,7 @@ sources:
     url: https://github.com/input-output-hk/ouroboros-leios/releases
     api_url: https://api.github.com/repos/input-output-hk/ouroboros-leios/releases
     retrieved_at: "2026-08-12T09:46:20Z"
-    latest_release: prototype-2026w32
+    latest_release: prototype-2026w34
   linked_official:
     - url: https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/
       role: Block-producer requirements and Dijkstra procedures.

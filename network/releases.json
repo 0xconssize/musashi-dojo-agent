@@ -1,16 +1,24 @@
 {
   "schema_version": 1,
-  "verified_at": "2026-08-12T09:46:20Z",
+  "verified_at": "2026-08-24T11:15:00Z",
   "operational_guide": "https://leios.cardano-scaling.org/docs/testnet/getting-started/",
   "release_source": "https://github.com/input-output-hk/ouroboros-leios/releases",
   "selection_policy": "Select the most recently published non-draft release from the official repository, including a pre-release. A lagging operational guide does not downgrade it.",
-  "selected_release": "prototype-2026w32",
+  "selected_release": "prototype-2026w34",
   "releases": [
+    {
+      "tag": "prototype-2026w34",
+      "published_at": "2026-08-23",
+      "tag_commit": "875a19ca9065268832931c2d285fb17d3a37f630",
+      "status": "latest-selected",
+      "summary": "In-place update from prototype-2026w32; all three registered nodes were validated on the w34 cardano-node commit.",
+      "state_action": "Preserve database, configuration, and keys; update the launcher and validate service, synchronization, BLS argument, and bounded logs."
+    },
     {
       "tag": "prototype-2026w32",
       "published_at": "2026-08-10T07:35:45Z",
       "tag_commit": "3534e7065419c906b35d3be7c976aeace8cf2085",
-      "status": "latest-selected",
+      "status": "historical-compatible-predecessor",
       "summary": "Respins Musashi, requires fresh local state, and requires a registered BLS signing key for block-producer voting.",
       "state_action": "Preserve the prior local state, then remove or quarantine it and re-sync from genesis with the current Musashi configuration. Start producers with --shelley-bls-key."
     },
@@ -129,7 +137,7 @@
     }
   },
   "conflicts": [
-    "The getting-started guide still embeds prototype-2026w30 examples while the official release repository and live Musashi configuration select prototype-2026w32.",
-    "The exact cardano-node version string is verified from the running w32 flake environment; the network configuration declares MinNodeVersion 11.1.0-prototype-2026w32."
+    "The getting-started guide still embeds prototype-2026w30 examples while the official release repository and live Musashi configuration select prototype-2026w34.",
+    "The exact cardano-node version string is verified from the running w34 flake environment; the deployed network configuration remains the verified Musashi configuration used by the in-place update."
   ]
 }

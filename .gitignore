@@ -1,8 +1,15 @@
 # Local Musashi Dojo operational workspace
 .musashi/
 
+# Openclaw
+
 memory
 media
+HEARTBEAT.md
+openclaw-workspace-state.json
+SOUL.md
+TOOLS.md
+USER.md
 
 # Temporary local artifacts
 *.tmp

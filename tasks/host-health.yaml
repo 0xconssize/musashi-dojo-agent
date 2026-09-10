@@ -13,7 +13,7 @@ operator_memory: .musashi/task-memory.md
 checks:
   - disk-headroom
   - inode-headroom
-  - memory-and-load
+  - memory-health
   - clock-health
   - shared-services
   - expected-port-ownership

@@ -16,7 +16,9 @@ checks:
   - peer-connectivity
   - recent-fatal-errors
   - release-provenance
-timeout: 90s
+# The generated fleet runner observes three nodes sequentially; each tip check
+# keeps two observations 180 seconds apart.
+timeout: 1200s
 concurrency:
   policy: forbid-overlap
 failure_policy:

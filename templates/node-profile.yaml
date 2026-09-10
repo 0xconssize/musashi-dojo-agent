@@ -9,6 +9,8 @@ node:
   runtime_type: null
   service_identity: null
   data_directory: null
+  chain_database_directory: null
   configuration_directory: null
+  protected_static_paths: []
   workspace_path: null
   enabled: true

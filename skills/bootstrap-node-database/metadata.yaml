@@ -7,8 +7,9 @@ inputs: [node_id, host_assessment, working_directory, database_path, runtime_ide
 outputs: [database_bootstrap_report, node_state]
 success: A checksum-verified Leios database snapshot from a trusted fully synced relay is installed and the node passes post-start validation.
 confirmation:
-  required_for: [service-stop, database-replacement, backup-or-rename, service-start]
-  examples: [stopping-running-node, replacing-nonempty-database, deleting-approved-old-state]
+  exempt_when: [single-node, complete-registered-chain-database-reload, verified-stopped-writer, protected-path-disjointness, no-shared-host-impact, checksum-and-layout-preflight]
+  required_for: [host-level-impact, shared-service-impact, protected-path-change, partial-state-deletion, ambiguous-database-path]
+  method_when_required: four-digit-code
 sources:
   operational:
     url: https://github.com/0xconssize/leios/blob/main/reload-leios-db.sh

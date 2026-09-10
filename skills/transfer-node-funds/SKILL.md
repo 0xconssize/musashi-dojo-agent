@@ -32,13 +32,13 @@ Transfer the spendable balance owned by one registered Musashi node to the verif
 - Build an unsigned transaction using every approved source input and the verified destination as the explicit change address. Do not add certificates, withdrawals, minting, metadata, scripts, governance actions, collateral, or unrelated outputs.
 - Inspect the unsigned body and require exactly the approved inputs, one destination-owned output, the reviewed fee, no source output unless explicitly approved, and no extra action.
 - Create a schema-valid plan under `.musashi/generated/` containing exact commands, inputs and values, destination, fee, output, keys by path, affected chain state, shared-host nodes, validation, recovery, and a SHA-256 digest.
-- Explicit digest-bound confirmation is required before signing. Any change to source, destination, input, output, fee, path, key, command, network, privilege, disruption, or scope invalidates confirmation.
+- Explicit four-digit plan-digest challenge confirmation is required before signing. Any change to source, destination, input, output, fee, path, key, command, network, privilege, disruption, or scope invalidates confirmation.
 
 ## Sign, confirm, and submit
 
 - Sign only with the source `payment.skey`. Never print, copy, or move key contents.
 - After signing, record the signed SHA-256 and txid; re-query source inputs, source/destination balances, tips, and any relevant pending pool state.
-- Require a second fresh digest-bound confirmation immediately before one submission attempt.
+- Require a second fresh four-digit plan-digest challenge immediately before one submission attempt.
 - Submit once through the explicitly verified source socket. Never resubmit blindly.
 
 ## Validation and recovery

@@ -4,6 +4,9 @@
 
 ### Changed
 
+- The complete registered Musashi chain database is now classified as disposable experimental state: a diagnosed, single-node, exact-path reload can proceed without confirmation or database backup, while static node material and all host protections remain protected.
+- Required plan confirmations now use a fresh digest-derived four-digit decimal challenge while retaining the full SHA-256 plan digest for scope binding and audit.
+
 - Updated internal release declarations and operational metadata to the official `prototype-2026w36` release, including its respin, BLS, asset, and release-history guidance.
 
 - Stake-pool registration now treats a respin as a new network incarnation and requires current-chain verification before handing off to producer setup.

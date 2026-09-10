@@ -90,7 +90,7 @@ network, privilege, disruption, or scope invalidates confirmation.
 
 ## Confirm, sign, and submit
 
-Require explicit digest-bound confirmation before signing. Signing requires only
+Require the explicit four-digit plan-digest challenge before signing. Signing requires only
 the target payment key and pool cold key unless the verified era CLI proves
 otherwise:
 
@@ -103,7 +103,7 @@ otherwise:
 ```
 
 After signing, calculate and present the transaction ID, re-query tip,
-pool-state, and the selected input, and require a second fresh confirmation
+pool-state, and the selected input, and require a second fresh four-digit plan-digest challenge
 immediately before submission. Do not submit if the input was spent, the pool
 state or epoch changed incompatibly, the node lost sync, or signed transaction
 inspection differs from the approved plan.

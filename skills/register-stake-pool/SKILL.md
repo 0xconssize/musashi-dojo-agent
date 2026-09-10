@@ -12,9 +12,9 @@ stake, or start the block producer.
 
 ## Safety and prerequisites
 
-- Read the repository safety instructions and get confirmation for the exact
+- Read the repository safety instructions and get the four-digit plan-digest challenge for the exact
   network, workspace, parameters, owners, relays, metadata, and signing keys.
-  Get a second, fresh confirmation immediately before submission.
+  Get a second, fresh four-digit challenge immediately before submission.
 - Use only Musashi testnet magic 164. Never use `--mainnet` or silently inherit
   another network. Current examples use `cardano-cli dijkstra ...`; re-check
   `query tip` and CLI help if the era or release changes.

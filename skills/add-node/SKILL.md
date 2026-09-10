@@ -18,7 +18,7 @@ Collect or confirm:
 - Existing host ID.
 - Installation method and runtime type when known.
 - Service, process, or container identity when known.
-- Data, configuration, and workspace paths when known.
+- Data, exact chain-database, configuration, protected static, and workspace paths when known.
 - Enabled state.
 
 Unknown values remain null. Never copy defaults from stale documentation.
@@ -30,14 +30,15 @@ Unknown values remain null. Never copy defaults from stale documentation.
 3. Recheck the official source when metadata is stale, obsolete, or its supported release differs from the current source. Registration may continue with operator-supplied facts, but do not present unverified testnet facts as current.
 4. Require an existing host ID. Do not create a host implicitly.
 5. Reject unsafe IDs, duplicate IDs, and paths escaping `.musashi/nodes/<node-id>/`.
-6. Show the normalized record and ask the operator to resolve conflicts. Updating an existing node or moving it between hosts requires explicit confirmation.
-7. Create or update, from existing templates:
+6. Record `chain_database_directory` only when it is an exact absolute path distinct from configuration and protected static paths. Do not infer it from a broader data or workspace directory. Record keys, certificates, configuration, topology/genesis, and other static node material in `protected_static_paths` when known.
+7. Show the normalized record and ask the operator to resolve conflicts. Updating an existing node or moving it between hosts requires explicit confirmation.
+8. Create or update, from existing templates:
    - `.musashi/nodes/<node-id>/profile.yaml`
    - `.musashi/nodes/<node-id>/state.yaml`
    - `.musashi/nodes/<node-id>/memory.md`
-8. Add the node ID once to `.musashi/inventory.yaml` and to the selected host profile. On an approved host move, remove it from the old host profile. Preserve all unrelated entries.
-9. Validate the node profile, state, host profile, and inventory against their schemas.
-10. Report files changed, unknown fields, shared-host nodes, and whether this node is now the active read-only context.
+9. Add the node ID once to `.musashi/inventory.yaml` and to the selected host profile. On an approved host move, remove it from the old host profile. Preserve all unrelated entries.
+10. Validate the node profile, state, host profile, and inventory against their schemas.
+11. Report files changed, unknown fields, shared-host nodes, and whether this node is now the active read-only context.
 
 ## Scope and safety
 

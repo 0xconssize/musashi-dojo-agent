@@ -46,7 +46,7 @@ Require:
    - surgical updates to shared inventory/host files;
    - one minimal sanitized tombstone recording that an authorized purge occurred, its scope, accepted losses, result, and timestamp;
    - independent post-delete checks.
-8. Compute the digest from the immutable plan. Explain that confirmation authorizes permanent deletion and that no rollback is promised. Do nothing destructive until the operator confirms the exact digest.
+8. Compute the digest from the immutable plan. Explain that confirmation authorizes permanent deletion and that no rollback is promised. Use the four-digit challenge derived by `execute-node-plan`; do nothing destructive until the operator confirms that fresh challenge.
 9. Immediately before execution, rerun the preflight. Any changed PID ownership, realpath, scope, command, path, privilege, loss, or shared-host state invalidates confirmation.
 10. Execute in short stages:
     - stop only the exact target supervisor;

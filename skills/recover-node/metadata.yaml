@@ -7,7 +7,9 @@ inputs: [node_id, diagnostic_report, selected_failure, recovery_authority, verif
 outputs: [operation_report, node_state]
 success: The diagnosed fault is resolved by the narrowest authorized action without scope broadening.
 confirmation:
-  required_for: [host-level, destructive-broad]
+  exempt_when: [single-node, complete-registered-chain-database-reload, verified-disposable-database-exemption]
+  required_for: [host-level, destructive-broad, partial-state-deletion, protected-state-change]
+  method_when_required: four-digit-code
   prior_confirmation_reusable: false
 sources:
   operational:

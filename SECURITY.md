@@ -2,6 +2,12 @@
 
 Musashi Dojo is a testnet, but the host is not disposable. Protect the host environment above replaceable testnet credentials.
 
+## Data classes
+
+The registered complete chain database for a Musashi testnet node is disposable experimental state. Do not back it up, rename it for retention, or treat it as a recovery asset. It may be removed and rebuilt only through the validated single-node, exact-path `disposable-chain-database-reload` exemption.
+
+Configuration, topology/genesis files, keys, credentials, operational certificates, `.musashi/` state, reports, and all non-database host data are protected static material. Never include them in the exemption; preserve or back them up whenever the selected operation requires it.
+
 ## Sensitive material
 
 Credentials, keys, tokens, SSH metadata, certificates, generated scripts, logs, and private reports belong under `.musashi/` or an operator-managed secret store. Never commit them or print complete signing keys in chat, issues, or reports.
@@ -15,11 +21,13 @@ Do not assume a credential is testnet-only without checking its context. If main
 
 ## Safe handling
 
-Inspect downloaded artifacts before execution. Verify sources where possible. Use least privilege, avoid broad wildcards and recursive operations, and preserve rollback or backup paths for changes.
+Inspect downloaded artifacts before execution. Verify sources where possible. Use least privilege, avoid broad wildcards and recursive operations, and preserve rollback or backup paths whenever protected state or a rollback requirement is affected.
 
 Use only connection and execution mechanisms supplied by the agent runtime or operator. Do not implement transports, embed credentials in plans, or treat a registered connection reference as a secret store.
 
 Generated plans, commands, scripts, and command results belong under `.musashi/`. Review them before execution, sanitize recorded output, and never use a download-and-execute pipeline. Required confirmation is invalid after any material plan or scope change.
+
+For a required confirmation, show the reviewed operation summary and derive a fresh four-digit decimal challenge from the canonical plan digest as specified by `execute-node-plan`. The full digest stays in the plan and audit record. The challenge is an acknowledgement, not a secret or credential, and a changed plan requires fresh confirmation even if its displayed code repeats.
 
 Diagnostic reports and issue drafts must minimize evidence and remove credentials, keys, tokens, unnecessary usernames, private addresses, unrelated services, and private paths. Creating a local draft grants no permission to publish it or upload attachments.
 

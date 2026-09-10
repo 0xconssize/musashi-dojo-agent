@@ -17,7 +17,7 @@ Require one node ID, installed release provenance, target release, installation 
 2. Inspect current version and provenance, node health, data and configuration paths, free space, shared-host nodes, and rollback feasibility.
 3. Stop if the installed release cannot be identified or if the authoritative upgrade path is incomplete.
 4. Build a schema-valid plan to acquire and inspect assets under `.musashi/generated/`, verify checksums, back up configuration and recovery metadata, stop, replace only declared artifacts, start, and validate.
-5. Require confirmation for host-level changes and any state deletion or irreversible migration. Never infer a database wipe.
+5. Require the four-digit plan-digest challenge for host-level changes and any state deletion or irreversible migration. Never infer a database wipe.
 6. Execute through `execute-node-plan`. Apply release-specific recovery only when its exact trigger is observed and separately authorized.
 7. Validate artifact provenance, running identity, configuration integrity, fatal logs, tip progression, peers, and shared-host workloads.
 8. Record the report, upgrade history, and observed state.

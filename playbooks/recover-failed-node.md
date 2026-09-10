@@ -13,15 +13,15 @@ Recover one diagnosed failure without broadening the action.
 1. Preserve bounded pre-recovery evidence and record the current node and host state.
 2. Revalidate the recovery authority against the installed and selected releases.
 3. Build a schema-valid recovery plan containing the narrowest action, exact paths, privileges, impact, stop conditions, validation, and recovery-of-recovery.
-4. Obtain a new confirmation for every host-level or destructive step. Earlier install, update, or diagnostic approval is not reusable.
+4. Obtain a new four-digit confirmation for every host-level or destructive step. Earlier install, update, or diagnostic approval is not reusable. The only exception is a complete chain-database replacement that passes the disposable-chain-database exemption in `execute-node-plan`.
 5. Execute short steps through `execute-node-plan`; stop after any unexpected result.
 6. Validate runtime identity, configuration integrity, database accessibility, bounded logs, tip progression, peers, and shared workloads.
 7. Record affected data, backups, evidence, and outcome.
 
 ## Current narrow exception
 
-For `prototype-2026w31a`, the official release notes permit deleting only volatile chain state when invalid Leios certificate crashes persist after updating. Confirm the exact trigger and path, preserve evidence, and require destructive confirmation. This does not authorize deleting the full database.
+For `prototype-2026w31a`, the official release notes permit deleting only volatile chain state when invalid Leios certificate crashes persist after updating. Confirm the exact trigger and path, preserve evidence, and require the four-digit destructive confirmation. This partial-state action does not qualify for the complete chain-database exemption.
 
 ## Stop conditions
 
-Stop on unknown cause, non-applicable instructions, missing target identity, unbounded wildcard or recursive deletion, absent required backup, or repeated recovery failure. Prepare an issue report instead of improvising.
+Stop on unknown cause, non-applicable instructions, missing target identity, unbounded wildcard or recursive deletion, missing protected-state or rollback backup, or repeated recovery failure. Prepare an issue report instead of improvising.

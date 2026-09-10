@@ -1007,7 +1007,9 @@ The plan should state:
 - Host-level change: require explicit confirmation.
 - Broad or destructive change: require explicit and scoped confirmation.
 
-Required confirmation must be bound to the reviewed plan digest. Changing commands, targets, paths, privileges, expected disruption, or scope invalidates the confirmation.
+Required confirmation must be bound to the reviewed plan digest. Display a fresh four-digit decimal challenge derived from that digest and accept it as the operator acknowledgement while retaining the complete digest in the plan record. Changing commands, targets, paths, privileges, expected disruption, or scope invalidates the confirmation.
+
+The only modifying exception is a complete chain-database replacement that passes the `disposable-chain-database-reload` validation in `execute-node-plan`: one registered node, exact registered database directory, no protected static path overlap, stopped verified writer, no shared-host impact, and verified replacement preflight. It does not authorize partial state deletion or any host, configuration, certificate, credential, or `.musashi/` change.
 
 ### Step 5 — Execute incrementally
 
@@ -1180,6 +1182,8 @@ Examples:
 - Stopping multiple unrelated services.
 
 Explicit and clearly scoped confirmation is required.
+
+An exact registered complete chain-database replacement that satisfies the disposable-state exception above is not a generic database deletion and is exempt from confirmation.
 
 ---
 

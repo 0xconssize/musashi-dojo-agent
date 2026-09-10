@@ -12,9 +12,9 @@ cold key, issue an operational certificate, delegate stake, or start the node.
 
 ## Preconditions and safety
 
-- Read repository safety instructions and obtain confirmation for the exact pool,
+- Read repository safety instructions and obtain the four-digit plan-digest challenge for the exact pool,
   full before/after state, network, input, and keys. Obtain a second fresh
-  confirmation immediately before submission; any change invalidates it.
+  four-digit challenge immediately before submission; any change invalidates it.
 - Use Musashi magic 164 and the selected era (`dijkstra` in the current guide).
   Use a synced node for pool state, UTxOs, balancing, and verification. A node
   is not needed merely to create the replacement certificate.

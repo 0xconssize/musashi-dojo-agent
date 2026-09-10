@@ -1,16 +1,32 @@
 {
   "schema_version": 1,
-  "verified_at": "2026-08-24T11:15:00Z",
+  "verified_at": "2026-09-07T11:29:24Z",
   "operational_guide": "https://leios.cardano-scaling.org/docs/testnet/getting-started/",
   "release_source": "https://github.com/input-output-hk/ouroboros-leios/releases",
   "selection_policy": "Select the most recently published non-draft release from the official repository, including a pre-release. A lagging operational guide does not downgrade it.",
-  "selected_release": "prototype-2026w34",
+  "selected_release": "prototype-2026w36",
   "releases": [
+    {
+      "tag": "prototype-2026w36",
+      "published_at": "2026-09-07T11:29:24Z",
+      "tag_commit": "4c030ceee6eb0e7e3d495599d74ca11c8078dfbb",
+      "status": "latest-selected",
+      "summary": "Adds protocol parameters, epoch-boundary Leios committee selection with expiring voting keys, a bounded forge loop, and corrected BLS proof of possession; requires a Musashi respin.",
+      "state_action": "Preserve prior local state, delete or quarantine it only with confirmation, and re-sync from genesis or an official sideload using the current Musashi configuration. Revalidate BLS proofs and registrations with the w36 cardano-cli."
+    },
+    {
+      "tag": "prototype-2026w35",
+      "published_at": "2026-08-31T09:16:56Z",
+      "tag_commit": "932f15f94bea778b33813f7c5ddbbbe52dd63a3b",
+      "status": "historical-compatible-predecessor",
+      "summary": "Fixes the #998 syncing stall path, improves EB diffusion and LeiosDB liveness; changes the LeiosDB schema without migration.",
+      "state_action": "Preserve the prior database, quarantine it, create fresh local state, and re-sync from genesis or an official sideload."
+    },
     {
       "tag": "prototype-2026w34",
       "published_at": "2026-08-23",
       "tag_commit": "875a19ca9065268832931c2d285fb17d3a37f630",
-      "status": "latest-selected",
+      "status": "historical-compatible-predecessor",
       "summary": "In-place update from prototype-2026w32; all three registered nodes were validated on the w34 cardano-node commit.",
       "state_action": "Preserve database, configuration, and keys; update the launcher and validate service, synchronization, BLS argument, and bounded logs."
     },
@@ -122,22 +138,22 @@
   "selected_release_assets": {
     "linux_x86_64": {
       "archive": "cardano-node-leios-x86_64-linux.tar.gz",
-      "sha256": "58d9c4219aaf3000faabf04fd7af0db577dda288ba4e808d60462b4bd7f63e21",
+      "sha256": "b70902e2c827c61cb056287a088308d16cf14e15d7a28905a2047829f3f1b07e",
       "status": "available"
     },
     "macos_aarch64": {
       "archive": "cardano-node-leios-aarch64-darwin.tar.gz",
-      "sha256": "2d38fc8c2a545dfce8cee41be902ba8ce09cc240328fdb409c6807912eaf46bf",
+      "sha256": "2e366141018a86b525f7c1b4677d015979825933eaa742a4800e66416a74b6e6",
       "status": "available"
     },
     "linux_aarch64": {
       "archive": "cardano-node-leios-aarch64-linux.tar.gz",
-      "sha256": "3608c0d350ee779d841edaee6ebbc01f05220ef31ccaed0916ac406ade36472e",
+      "sha256": "c3af1384d7e1cedb1070870cf97f708f705b62b19b79a25d7e88ea50f82b441c",
       "status": "available"
     }
   },
   "conflicts": [
-    "The getting-started guide still embeds prototype-2026w30 examples while the official release repository and live Musashi configuration select prototype-2026w34.",
-    "The exact cardano-node version string is verified from the running w34 flake environment; the deployed network configuration remains the verified Musashi configuration used by the in-place update."
+    "The getting-started guide still embeds prototype-2026w30 examples while the official release repository selects prototype-2026w36.",
+    "The live Musashi configuration and deployment state must be revalidated after the prototype-2026w36 respin; the selected release requires a w36 cardano-cli for BLS proof and registration operations."
   ]
 }

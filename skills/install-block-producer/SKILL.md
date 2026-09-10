@@ -71,10 +71,10 @@ The shell provides `cardano-node` and `cardano-cli`; it does not authorize host 
 
 ## Prebuilt binaries
 
-Use only assets from the selected official release and verify the matching checksum before extraction. The guide's historical example uses `prototype-2026w30`; the repository currently selects `prototype-2026w31a`, so revalidate exact asset names and checksums at execution time:
+Use only assets from the selected official release and verify the matching checksum before extraction. The guide's historical example uses `prototype-2026w30`; the repository currently selects `prototype-2026w36`, so revalidate exact asset names and checksums at execution time:
 
 ```bash
-export RELEASE=prototype-2026w31a
+export RELEASE=prototype-2026w36
 export BASE="https://github.com/input-output-hk/ouroboros-leios/releases/download/$RELEASE"
 export ARCHIVE=cardano-node-leios-x86_64-linux.tar.gz
 export CHECKSUM=cardano-node-leios-x86_64-linux.sha256
@@ -99,7 +99,7 @@ The official guide documents a historical image:
 ghcr.io/input-output-hk/ouroboros-leios/cardano-node-testnet:prototype-2026w30
 ```
 
-The repository warns that availability of a matching image for `prototype-2026w31a` is not confirmed. Select and verify an explicit image tag before use; never use `latest`:
+The repository warns that availability of a matching image for `prototype-2026w36` is not confirmed. Select and verify an explicit image tag before use; never use `latest`:
 
 ```bash
 export MUSASHI_IMAGE=ghcr.io/input-output-hk/ouroboros-leios/cardano-node-testnet:prototype-2026w30

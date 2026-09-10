@@ -4,6 +4,8 @@
 
 ### Changed
 
+- Updated internal release declarations and operational metadata to the official `prototype-2026w36` release, including its respin, BLS, asset, and release-history guidance.
+
 - Stake-pool registration now treats a respin as a new network incarnation and requires current-chain verification before handing off to producer setup.
 
 - Nix node diagnostics now rediscover and validate `cardano-cli` and the exact node socket from the running process, independently of the SSH session `PATH`.

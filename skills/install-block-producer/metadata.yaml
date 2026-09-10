@@ -63,12 +63,12 @@ sources:
     retrieved_at: "2026-08-12"
   release_authority:
     url: https://github.com/input-output-hk/ouroboros-leios/releases
-    latest_release: prototype-2026w32
-    selected_release: prototype-2026w32
-    retrieved_at: "2026-08-12"
+    latest_release: prototype-2026w36
+    selected_release: prototype-2026w36
+    retrieved_at: "2026-09-07"
     published_assets: [Linux x86-64, Linux aarch64, macOS aarch64]
 freshness:
   status: current-with-source-conflict
-  reviewed_at: "2026-08-12"
+  reviewed_at: "2026-09-07"
   revalidate_before: Selecting a release, asset, checksum, image, platform, configuration, or producer command.
   stale_when: Latest release, assets, checksums, guide methods, requirements, image availability, or network incarnation changes.

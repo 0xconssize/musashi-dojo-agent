@@ -15,8 +15,8 @@ sources:
     retrieved_at: "2026-08-12"
   release_authority:
     url: https://github.com/input-output-hk/ouroboros-leios/releases
-    latest_release: prototype-2026w32
-    retrieved_at: "2026-08-12"
+    latest_release: prototype-2026w36
+    retrieved_at: "2026-09-07"
 freshness:
   status: current-as-reviewed
   reviewed_at: "2026-08-12"

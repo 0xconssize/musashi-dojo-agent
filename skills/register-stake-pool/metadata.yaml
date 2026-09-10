@@ -13,7 +13,7 @@ network:
   name: Musashi Dojo Leios testnet
   magic: 164
   era: Dijkstra
-  selected_release: prototype-2026w32
+  selected_release: prototype-2026w36
   revalidate_when: [network-release, era-change, cli-help-change, protocol-parameter-change, network-respin, network-incarnation-change, genesis-hash-change, system-start-change, slots-per-kes-period-change]
 dependencies:
   after_registration_verification: issue-operational-certificate
@@ -25,6 +25,6 @@ cli_options:
 sources: [https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/, https://github.com/0xconssize/leios, https://github.com/IntersectMBO/cardano-cli]
 freshness:
   status: current-as-reviewed
-  reviewed_at: "2026-08-12"
+  reviewed_at: "2026-09-07"
   revalidate_before: Registration, pool-state verification, or certificate handoff.
   stale_when: Network release, network incarnation, genesis hashes, system start, slotsPerKESPeriod, CLI help, or protocol parameters change.

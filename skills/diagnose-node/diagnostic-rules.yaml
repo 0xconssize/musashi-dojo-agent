@@ -106,11 +106,11 @@ rules:
 current_release_rules:
   - id: w31a-invalid-certificate-crash
     applies_when:
-      selected_release: prototype-2026w31a
+      selected_release: prototype-2026w36
       symptom: Invalid Leios certificate crash persists after update.
     diagnosis: Confirm release provenance and exact crash evidence before recommending recovery.
     recommendation: Use recover-node to remove only volatile chain state after separate destructive confirmation.
-    source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w31a
+    source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w36
 
 freshness:
   status: current-as-reviewed
@@ -194,7 +194,7 @@ verification_examples:
     action: no-nix-develop-no-install-no-profile-change
     expected_runtime_tool_discovery: unknown
   - name: nix-release-commit-match
-    selected_release: prototype-2026w31a
+    selected_release: prototype-2026w36
     binary: /nix/store/example-cardano-node/bin/cardano-node
     binary_version: "cardano-node 11.1.0.164 (git rev 6971bb527288d0f362147fbe318c0e9c84312ab3)"
     binary_commit: 6971bb527288d0f362147fbe318c0e9c84312ab3

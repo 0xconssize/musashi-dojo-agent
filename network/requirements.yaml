@@ -47,10 +47,10 @@ installation_methods:
   docker:
     documented_image: ghcr.io/input-output-hk/ouroboros-leios/cardano-node-testnet:prototype-2026w30
     selected_release_image: null
-    warning: The operational guide documents w30; the w32 release page does not confirm a container image tag.
+    warning: The operational guide documents w30; the w36 release page does not confirm a container image tag.
     includes_observability: false
   process_compose:
-    selected_release_script: prototype-2026w32:testnet/run.sh
+    selected_release_script: prototype-2026w36:testnet/run.sh
     required_commands:
       - process-compose
       - cardano-node
@@ -74,7 +74,7 @@ block_producer:
     - KES
     - VRF
     - BLS
-  bls_status: Required for block-producer voting in prototype-2026w32; pass the registered signing key with --shelley-bls-key.
+  bls_status: prototype-2026w36 requires revalidation of BLS proof of possession and registration with the w36 cardano-cli; voting keys expire and must be rotated like KES keys. Pass the registered signing key with --shelley-bls-key.
   faucet_amount_test_ada: 10000
   stake_address_deposit_ada: 2
   stake_pool_deposit_ada: 500
@@ -85,7 +85,7 @@ sources:
   operational_guide: https://leios.cardano-scaling.org/docs/testnet/getting-started/
   producer_guide: https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/
   nix_setup: https://github.com/input-output-hk/iogx/blob/main/doc/nix-setup-guide.md
-  selected_release_script: https://github.com/input-output-hk/ouroboros-leios/blob/prototype-2026w32/testnet/run.sh
+  selected_release_script: https://github.com/input-output-hk/ouroboros-leios/blob/prototype-2026w36/testnet/run.sh
   releases: https://github.com/input-output-hk/ouroboros-leios/releases
 
 freshness:

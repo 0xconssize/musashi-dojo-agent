@@ -17,7 +17,7 @@ sources:
       network_magic: 164
       era: Dijkstra
       guide_examples_release: prototype-2026w30
-      selected_release: prototype-2026w32
+      selected_release: prototype-2026w36
       guide_referenced_container_image: ghcr.io/input-output-hk/ouroboros-leios/cardano-node-testnet:prototype-2026w30
       container_image_status: guide-referenced; revalidate before use
   network_overview:
@@ -26,6 +26,6 @@ sources:
     authority: official
 freshness:
   status: current
-  reviewed_at: "2026-08-12"
+  reviewed_at: "2026-09-07"
   revalidate_before: Generating keys or relying on any era, release, network, or BLS behavior.
   stale_when: The official guide, linked configuration, supported release, network incarnation, or operational-certificate procedure changes.

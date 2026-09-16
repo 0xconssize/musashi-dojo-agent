@@ -23,14 +23,14 @@ configuration:
   base_url: https://book.play.dev.cardano.org/environments-pre/leios
   pin_script: https://raw.githubusercontent.com/input-output-hk/ouroboros-leios/main/testnet/pin-config.sh
   pin_script_commit: 91b9a643fea4faedab423a1fdd4d6e96f64c011d
-  verified_at: "2026-08-12T09:46:20Z"
+  verified_at: "2026-09-10T09:41:17Z"
   files:
     alonzo-genesis.json: 23bf365cae730137ad6868787f20ef4f58e446d22617d7b824f1c75695c760b5
     byron-genesis.json: 07c066c08cab2ba67d8ab061dc4f4d5d61d55892396e806c62a7378926d3540c
     conway-genesis.json: fb689f5dad32ac99a3e5976786b1df3be789c623277aa3c8ef90562d4a09ec3b
     dijkstra-genesis.json: b8113964e1eb80b755a4b7b531e02eb1181035eeeee39f49b76efaada1f72a1a
     peer-snapshot.json: f4d0cae44bcc10d081247424c4b5f4a6cb04c3ae789111767910d99dd478ae82
-    shelley-genesis.json: 32829228e250ec6061e6e6c638cb3920687e9d871642a96313a58d0084c9c844
+    shelley-genesis.json: da8508afc546a0b1824d93629a7a5fc8c0898d85095c2cf1b25730eb99d5a151
     topology.json: 5b0d77068edf0c3a58ae64f1192c25e683c96a5b2528e4df689eea14041dc17b
   network_identity:
     algorithm: sha256(canonical-json)
@@ -49,11 +49,11 @@ configuration:
       - '*GenesisFile'
       - '*GenesisHash'
     source: config.json
-    verified_at: "2026-08-12T09:46:20Z"
+    verified_at: "2026-09-10T09:41:17Z"
   chain:
-    system_start: "2026-07-01T00:00:00Z"
+    system_start: "2026-09-07T00:00:00Z"
     slot_length_seconds: 1
-    epoch_length_slots: 86400
+    epoch_length_slots: 21600
     security_parameter: 432
     active_slots_coefficient: 0.05
     slots_per_kes_period: 129600
@@ -65,7 +65,7 @@ configuration:
 
 requirements:
   file: requirements.yaml
-  verified_at: "2026-08-12T09:46:20Z"
+  verified_at: "2026-09-10T09:41:17Z"
 
 warnings:
   - This is continuously rebuilt pre-release software on a resettable prototype testnet.
@@ -101,7 +101,7 @@ sources:
 
 freshness:
   status: current-as-reviewed
-  verified_at: "2026-08-12T09:46:20Z"
+  verified_at: "2026-09-10T09:41:17Z"
   review_before_use: true
   stale_when:
     - The authoritative getting-started page changes.

@@ -40,11 +40,24 @@ Reject the exemption for any ambiguity, partial volatile-state deletion, protect
 3. Validate the plan and resolve every node to one registered host, access method, runtime identity, relevant path, and shared-host dependency. Recompute the canonical plan digest. For `four-digit-code`, recompute and verify the four-digit challenge; for the disposable-chain-database exemption, validate every exemption condition above.
 4. Re-verify each modifying target with `connect-host`. Stop on identity conflict, stale connection evidence, broadened scope, or changed plan.
 5. Inspect current state before modification. Revalidate Musashi sources whenever the plan contains a mutable network value, release asset, testnet command, or release-specific recovery action.
-6. Save generated commands, scripts, and plans under `.musashi/generated/`. Inspect downloads, sources, affected paths, privileges, recursion, wildcards, and recovery before execution. Never download and immediately execute.
-7. Execute short steps through runtime-provided tools only. Capture command, target, timestamps, exit status, sanitized output, and errors in a command-result record.
-8. Stop on unexpected output, target drift, failed precondition, denied capability, or failed validation. Run recovery only when present, safe, and separately authorized.
-9. Validate real state independently of exit status. Check the operation's declared success criteria and unaffected nodes or services sharing the host.
-10. Record plan, results, observations, validation, and final status under `.musashi/`. Update host or node state only from observed facts.
+6. Save generated commands, scripts, and plans under `.musashi/generated/`. Inspect downloads, sources, affected paths, privileges, recursion, wildcards, and recovery before execution. Never download and immediately execute. Apply the generated-shell quality gate below before computing the final digest or requesting confirmation.
+7. Execute short steps through runtime-provided tools only. Bound each step below the caller or transport timeout; split longer observation windows into resumable read-only polls. Capture command, target, timestamps, exit status, sanitized output, and errors in a command-result record.
+8. Mark mutation boundaries and irreversible external effects explicitly. After a service start, transaction, signed submission, or another externally visible effect, persist the observed commit point before auxiliary validation. A later rollback does not erase that effect.
+9. Stop on unexpected output, target drift, failed precondition, denied capability, or failed validation. Run recovery only when present, safe, and separately authorized. If the transport or executor is interrupted after a possible mutation, first reconcile the exact remote state; do not assume rollback ran, retry the action, or request confirmation for a replacement plan while state is unknown.
+10. Validate real state independently of exit status. Check the operation's declared success criteria and unaffected nodes or services sharing the host. Distinguish operation failure from validation-harness failure and inconclusive observation.
+11. Record plan, results, observations, validation, rollback outcome, irreversible effects, and final status under `.musashi/`. Update host or node state only from observed facts.
+
+## Generated-shell quality gate
+
+Before binding confirmation to a plan that executes generated shell:
+
+- Run the applicable shell syntax checker on every generated script and embedded shell body. Run `shellcheck` when already available; do not install it as part of the operation.
+- Use strict mode deliberately. Declare or pass every variable before first use, and keep the same variable name across local assignments, remote environment maps, heredocs, validation, and rollback. Review all `set -u` paths, including failure traps.
+- Validate embedded `jq`, regular expressions, quoting, and nested heredoc expansion against the actual bounded input or a sanitized fixture. Do not assume a string that is valid in one quoting layer survives another.
+- Resolve executable paths from observed runtime evidence. Do not assume an interactive `PATH`, adjacency to another executable, or unprivileged readability of `/proc` and protected files.
+- Exercise the complete read-only preflight and validation paths before confirmation. For modifying branches, use non-mutating fixtures or an isolated staging target to prove parsing, variable plumbing, ownership checks, and rollback predicates without touching the live destination.
+- Put privileged reads, redirections, pipelines, and parsing wholly in the required privilege context. `sudo command > protected-file` and `sudo read | unprivileged-parser` do not elevate the shell redirection or parser.
+- Record the validated script digest in the plan and compare it again immediately before execution. Any script change invalidates the plan digest and confirmation.
 
 ## Source authority
 

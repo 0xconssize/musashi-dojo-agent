@@ -1,0 +1,59 @@
+schema_version: 1
+skill: install-metsuke
+phase: 6
+risk: variable-impact
+scope: [single-node]
+inputs:
+  - node_id
+  - host_assessment
+  - verified_access
+  - runtime_identity
+  - target_path
+  - host_platform
+  - installation_method
+  - selected_node_release
+  - selected_metsuke_client_release
+  - selected_asset
+  - official_checksum
+outputs:
+  - operation_report
+success: A selected official Metsuke client binary is checksum-verified at the declared path with verified provenance and version, remains stopped and unconfigured, and the node and shared-host workloads are unaffected.
+confirmation:
+  governed_by:
+    - SECURITY.md
+    - HOST_SAFETY.md
+    - skills/execute-node-plan/SKILL.md
+sources:
+  operational:
+    url: https://metsuke-leios.play.dev.cardano.org/
+    sections:
+      - Try it
+      - How you'll run it for real
+      - Install the agent
+    authority: Supported installation procedure and deployed-service compatibility
+    retrieved_at: "2026-09-14"
+    documented_client_version: 0.2.1
+  details:
+    url: https://metsuke-leios.play.dev.cardano.org/details
+    sections:
+      - Which key signs
+      - The pipe
+      - NixOS
+    authority: Integration boundaries and security tradeoffs used to keep installation separate
+    retrieved_at: "2026-09-14"
+  release_authority:
+    url: https://github.com/input-output-hk/metsuke/releases
+    release_family: client-v*
+    tag_pattern: ^client-v[0-9]+\.[0-9]+\.[0-9]+$
+    latest_release: client-v0.2.1
+    selected_release: client-v0.2.1
+    published_at: "2026-09-11T12:03:10Z"
+    retrieved_at: "2026-09-14"
+    published_assets:
+      metsuke-static-x86_64-linux: d20d3b3ab1dcc2406b00c209195b217d012792d3f51a0ac7d192f567c29ce56e
+      metsuke-static-aarch64-linux: 0ea24692f60528eeb70a8081018abe8b17676e74f96be49d91f99fbd66970b82
+freshness:
+  status: current
+  reviewed_at: "2026-09-14"
+  revalidate_before: Selecting or downloading any Metsuke release, asset, checksum, architecture, target path, or command.
+  stale_when: The deployed service version, latest official client release, release assets, checksums, supported platforms, installation procedure, or target state changes.

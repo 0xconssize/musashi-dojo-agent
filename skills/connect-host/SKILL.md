@@ -25,10 +25,13 @@ Require:
    - `local-execution`: verify the runtime is on the registered local host.
    - `remote-execution`: use only an operator-provided runtime connection mechanism.
 4. Keep unverified capabilities false or unknown. Never build a custom transport or infer credentials.
-5. Perform read-only identity checks before any later modification. For a remote host, compare at least two independent signals where available: inventory endpoint, host-reported hostname, remote user, OS identity, host key or alias, cloud instance ID, expected runtime identity, or expected node path.
-6. Stop on missing, duplicate, or conflicting identity. Ask the operator to reconcile inventory; do not silently rewrite it.
-7. Record the observed endpoint, user, connection type, identity signals, timestamp, and verification outcome in the host connection profile. Store no secret material.
-8. Report available privileges and capabilities without escalating privileges or changing the host.
+5. Construct the remote target once from the registered endpoint, exact remote user, connection profile, key reference, known-hosts policy, and runtime options; reuse that immutable invocation for checks and later plans. Do not manually reconstruct or autocorrect usernames between commands or reports.
+6. Perform read-only identity checks before any later modification. For a remote host, compare at least two independent signals where available: inventory endpoint, host-reported hostname, remote user, OS identity, host key or alias, cloud instance ID, expected runtime identity, or expected node path.
+7. On connection failure, classify DNS resolution, TCP reachability, host-key verification, local key availability, authentication, and remote command failure separately. Verify locally, without printing secret material, that the selected private/public key pair and fingerprint match the registered reference. A single authentication rejection does not prove that `authorized_keys` changed.
+8. If the exact invocation succeeded recently and then fails, make at most a small bounded retry with unchanged parameters and inspect sanitized client diagnostics before asking for server-side changes. Treat the connection state as uncertain until reproduced. Never recommend replacing `authorized_keys` as fact without matching server-side evidence; present it only as one possible cause after local invocation, username, key, permissions, and host-key selection are verified.
+9. Stop on missing, duplicate, or conflicting identity. Ask the operator to reconcile inventory; do not silently rewrite it.
+10. Record the observed endpoint, exact user, connection type, identity signals, timestamp, failure class or verification outcome in the host connection profile. Store no secret material.
+11. Report available privileges and capabilities without escalating privileges or changing the host. For `sudo`, distinguish group membership, interactive authorization, and an observed non-interactive command scope; none implies the others.
 
 ## Safety
 

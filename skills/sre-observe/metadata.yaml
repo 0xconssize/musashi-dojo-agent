@@ -9,3 +9,19 @@ success: All declared read-only checks complete or are explicitly unknown and a 
 confirmation:
   required_for: [restart, update, recovery, configuration-change, external-publication]
   publication_in_scope: false
+sources:
+  metsuke_operational:
+    url: https://metsuke-leios.play.dev.cardano.org/
+    sections: [Check it, Staying up to date]
+    authority: Metsuke startup, submission, retry, spool, and version observations
+    retrieved_at: "2026-09-14"
+  metsuke_details:
+    url: https://metsuke-leios.play.dev.cardano.org/details
+    sections: [The node's metrics endpoint, The pipe, The journal]
+    authority: Metrics-source and integration-mode health semantics
+    retrieved_at: "2026-09-14"
+freshness:
+  status: current
+  reviewed_at: "2026-09-14"
+  revalidate_before: Interpreting Metsuke logs, effective timing, integration topology, release compatibility, or submission outcomes.
+  stale_when: The Metsuke service documentation, client behavior, integration mode, effective configuration, or selected release changes.

@@ -1,6 +1,6 @@
 ---
 name: sre-observe
-description: "Run scheduled, read-only SRE checks for registered Musashi hosts, nodes, releases, and knowledge sources."
+description: "Run scheduled, read-only SRE checks for registered Musashi hosts, nodes, auxiliary components, releases, and knowledge sources."
 ---
 
 # SRE observe
@@ -18,6 +18,7 @@ Require a schema-valid task definition, `.musashi/task-memory.md`, an explicit s
 3. For node checks, use the read-only checks and evidence rules from `diagnose-node`. For Nix nodes, the `tip-progress` check must first apply the `runtime-tool-discovery` rule and load `diagnose-node/references/nix-cardano-cli-discovery.md`; it must not depend on the remote session PATH. Record `tip-progress: unknown` explicitly when CLI or socket discovery fails. Keep `process-state`, `peer-connectivity`, `tip-progress`, and `release-provenance` independent: healthy process or peer evidence must not be degraded merely because the CLI is unavailable. For host checks, use `assess-host` without applying its plan.
 
    When checking a node service, discover the actual supervisor before classifying service health. Do not treat an inactive or missing system-manager unit as authoritative when the process is owned by a per-user systemd manager or another verified supervisor. Correlate the discovered unit with the live process: the unit must be loaded and active/running, its `MainPID` must match the `cardano-node` PID, `/proc/<pid>/exe` must resolve to the expected executable, `/proc/<pid>/cmdline` must contain the expected Musashi paths and port, and the expected listening port must be owned by that same PID. A matching live process without an owning supervisor is degraded as unmanaged; missing or contradictory process, unit, executable, arguments, or port evidence is failed/unknown as appropriate. Record the wrong/inactive unit separately rather than using it to create a false degraded result.
+   When the task explicitly declares Metsuke checks for a node with a registered Metsuke auxiliary component, load `references/metsuke-health.md` and apply only the requested checks. Resolve the component's exact integration mode, runtime identity, paths, source endpoint, spool, and associated node from current observed and registered evidence; do not discover it with broad process or path patterns. Keep Metsuke process state, metrics source, submission progress, trace progress, spool state, release status, and node isolation independent. A healthy node does not imply healthy Metsuke, an active Metsuke process does not imply an accepted submission, and a pending trace window does not degrade an otherwise healthy metrics path.
 4. For release checks, inspect the official non-draft release source, assets, checksums, compatibility, and release notes. Never treat an unverified asset or draft as an update recommendation.
    For a Nix node, verify release provenance against the executable that is actually
    running, not against a repository checkout or a command found through `PATH`:

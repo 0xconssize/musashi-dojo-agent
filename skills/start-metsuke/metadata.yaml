@@ -1,0 +1,46 @@
+schema_version: 1
+skill: start-metsuke
+phase: 6
+risk: variable-impact
+scope: [single-node]
+inputs:
+  - node_id
+  - host_assessment
+  - verified_access
+  - metsuke_runtime_identity
+  - installed_metsuke_evidence
+  - configured_metsuke_evidence
+  - registered_leios_key_role
+  - submission_eligibility
+  - validation_criteria
+outputs:
+  - operation_report
+success: The exact standalone Metsuke service remains enabled and running, its first metrics submission is accepted, trace status is evidenced or explicitly conditional, and the node and shared-host workloads remain healthy.
+confirmation:
+  governed_by:
+    - SECURITY.md
+    - HOST_SAFETY.md
+    - skills/execute-node-plan/SKILL.md
+  reason: Starting Metsuke enables a host service and initiates signed external submissions.
+sources:
+  operational:
+    url: https://metsuke-leios.play.dev.cardano.org/
+    sections:
+      - Run it
+      - Check it
+      - Staying up to date
+    authority: Startup, observable submission behavior, and service compatibility
+    retrieved_at: "2026-09-14"
+  details:
+    url: https://metsuke-leios.play.dev.cardano.org/details
+    sections:
+      - Which key signs
+      - The node's metrics endpoint
+      - The journal
+    authority: Credential, metrics-source, and journal-mode constraints
+    retrieved_at: "2026-09-14"
+freshness:
+  status: current
+  reviewed_at: "2026-09-14"
+  revalidate_before: Starting a service, authorizing a first signed submission, or selecting validation windows and expected log evidence.
+  stale_when: The service documentation, selected client compatibility, effective configuration, credential role, runtime identity, destination, or target state changes.

@@ -1,0 +1,47 @@
+schema_version: 1
+skill: configure-metsuke
+phase: 6
+risk: variable-impact
+scope: [single-node]
+inputs:
+  - node_id
+  - host_assessment
+  - verified_access
+  - runtime_identity
+  - installed_metsuke_evidence
+  - pool_registration
+  - registered_leios_signing_key
+  - integration_mode
+  - configuration_paths
+outputs:
+  - operation_report
+success: One installed Metsuke client is configured for one registered block producer with protected credentials and a validated runtime definition, while Metsuke remains inactive and existing workloads are unchanged.
+confirmation:
+  governed_by:
+    - SECURITY.md
+    - HOST_SAFETY.md
+    - skills/execute-node-plan/SKILL.md
+sources:
+  operational:
+    url: https://metsuke-leios.play.dev.cardano.org/
+    sections:
+      - How you'll run it for real
+      - Configure it
+      - Run it
+    authority: Supported configurations, templates, and runtime integration procedure
+    retrieved_at: "2026-09-14"
+  details:
+    url: https://metsuke-leios.play.dev.cardano.org/details
+    sections:
+      - Which key signs
+      - The node's metrics endpoint
+      - What the node has to emit for trace lines
+      - The pipe
+      - The journal
+    authority: Key choice, loopback metrics, trace prerequisites, and integration tradeoffs
+    retrieved_at: "2026-09-14"
+freshness:
+  status: current
+  reviewed_at: "2026-09-14"
+  revalidate_before: Selecting or rendering a configuration, runtime template, source mode, endpoint, credential path, unit, drop-in, spool, or node integration.
+  stale_when: The service documentation, templates, client compatibility, node runtime, pool registration, key role, endpoint, or target state changes.

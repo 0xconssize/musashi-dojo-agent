@@ -16,6 +16,16 @@ checks:
   - peer-connectivity
   - recent-fatal-errors
   - release-provenance
+  # Metsuke checks apply to the exact registered auxiliary component for each
+  # node; metrics-only trace status is recorded as conditional/unknown and is
+  # not allowed to create a false node-health failure.
+  - metsuke-process-state
+  - metsuke-metrics-source
+  - metsuke-submission-progress
+  - metsuke-trace-progress
+  - metsuke-spool-state
+  - metsuke-release-status
+  - metsuke-node-isolation
 # The generated fleet runner observes three nodes sequentially; each tip check
 # keeps two observations 180 seconds apart.
 timeout: 1200s

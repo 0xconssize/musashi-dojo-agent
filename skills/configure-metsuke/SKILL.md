@@ -14,13 +14,13 @@ Configure only the Metsuke auxiliary component associated with one registered bl
 3. Resolve the exact configuration, credential, state, unit or inactive drop-in paths; owners and modes; required privilege; current node process and supervisor; and every other registered node and relevant service on the host. Use `connect-host` when its evidence is required by the workspace policy.
 4. Revalidate the current Metsuke quickstart, details page, configuration template, runtime template, and service compatibility before constructing a plan. Treat downloaded templates as input to inspect and render, never as commands to execute.
 
-Configuration changes host state. Declare every affected path, privilege, service-manager reload, rollback artifact, expected disruption, validation, and shared-host check in the operation plan. Authorization and execution are governed by `SECURITY.md`, `HOST_SAFETY.md`, and `execute-node-plan`; this skill does not redefine their confirmation mechanism.
+Configuration changes host state. Verify affected paths, privileges, service-manager reload, rollback artifacts, disruption, validation, and shared-host health under `SECURITY.md`, `HOST_SAFETY.md`, and `execute-node-plan`.
 
 ## Boundaries
 
 - Use only the already installed, provenance-verified Metsuke binary. Do not install or replace it.
 - Accept only an existing key registered as the selected block producer's Leios signing key. Do not generate, rotate, transform, print, or inspect its secret payload. Refuse a cold key or an unverified key-role claim.
-- Obtain the pool ID from the verified current pool registration and mutable service values from their current authoritative sources. Do not copy eligibility codes, network constants, confirmation rules, or mutable release values into this skill.
+- Obtain the pool ID from the verified current pool registration and mutable service values from their current authoritative sources. Do not copy eligibility codes, network constants, or mutable release values into this skill.
 - Require `metrics_url` to use an IP-literal loopback address. Refuse hostnames, wildcard addresses, non-loopback addresses, redirects, credentials in the URL, or an endpoint not owned by the selected node.
 - Do not edit the Cardano node configuration or tracing settings. If the required metrics endpoint or trace namespaces are absent, stop and report the prerequisite change separately.
 - Do not start, enable, restart, reload, or stop Metsuke or the node. A bounded service-manager daemon reload may register an installed unit but must not alter running workloads.
@@ -48,8 +48,8 @@ Inspect the real target without changing it:
 3. Render or stage the current official runtime template for the selected mode. Inspect every directive and substitute only resolved identities and paths. Never execute a downloaded template directly.
 4. Build a schema-valid plan for `execute-node-plan` that creates only exact parents, installs the rendered configuration and runtime definition atomically, places a protected copy of the existing Leios signing key only when the selected runtime requires it, and performs only the mode-appropriate daemon reload. Preserve recoverable copies of replaced protected configuration under `.musashi/`; refuse to overwrite a different credential or unmanaged integration. Pass every value used by a strict remote shell under one exact variable name; validation and rollback must not depend on an implicit interactive environment.
 5. For `pipe`, require the node to be stopped before placing the drop-in in its live unit search path. Preserve the effective pre-change unit and validate the rendered command, quoting, specifiers, service type, watchdog, reload behavior, restart policy, credential exposure, state directories, and exact node executable. Activation remains a separate `start-node` operation.
-6. Hand the unchanged plan to `execute-node-plan` for authorization, target revalidation, short-step execution, validation, and audit. Never broaden from the selected node to its host or other nodes.
-7. If placement or validation fails, use only the exact rollback in the authorized plan. Do not delete pre-existing configuration, keys, state, units, or node data.
+6. Hand the scoped operation to `execute-node-plan` for target revalidation, short-step execution, validation, and audit. Never broaden from the selected node to its host or other nodes.
+7. If placement or validation fails, reconcile current state and use only the exact safe rollback. Do not delete pre-existing configuration, keys, state, units, or node data.
 
 ## Validation and handoff
 

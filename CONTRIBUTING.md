@@ -36,6 +36,6 @@ Changes to task contracts must update the corresponding files under `schemas/`. 
 
 ## Experimental campaigns
 
-Use `campaigns/` for temporary, source-bound instructions from the testnet team. A campaign must remain `proposed` until its authority is verified and an operator approves its scope. It must declare its affected release, capabilities, steps, risk, confirmation requirements, success criteria, stop conditions, and expiry. Run one pilot participant first; a failed pilot stops further rollout.
+Use `campaigns/` for temporary, source-bound instructions from the testnet team. A campaign remains `proposed` until its authority and exact requested scope are verified. Declare release, capabilities, steps, risk, success criteria, stop conditions, and expiry. Run one pilot participant first; a failed pilot stops further rollout.
 
 Campaigns may call existing skills but cannot weaken their safety requirements. Keep participant identities, paths, evidence, and run state under `.musashi/campaigns/`. Never place key contents, credentials, tokens, private logs, or raw operational evidence in shared campaign files. Convert durable lessons into a reviewed issue and pull request instead of silently changing a campaign into permanent knowledge.

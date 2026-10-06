@@ -10,7 +10,7 @@
     "campaign_id": {"$ref": "#/$defs/id"},
     "started_at": {"type": "string", "format": "date-time"},
     "finished_at": {"type": ["string", "null"], "format": "date-time"},
-    "state": {"enum": ["not-started", "prepared", "awaiting-confirmation", "running", "verified", "blocked", "failed", "skipped", "expired"]},
+    "state": {"enum": ["not-started", "prepared", "running", "verified", "blocked", "failed", "skipped", "expired"]},
     "repository_commit": {"type": "string", "minLength": 7},
     "participants": {
       "type": "array",
@@ -21,7 +21,7 @@
           "participant_id": {"$ref": "#/$defs/id"},
           "host_id": {"type": ["string", "null"]},
           "node_id": {"type": ["string", "null"]},
-          "state": {"enum": ["not-started", "prepared", "awaiting-confirmation", "running", "verified", "blocked", "failed", "skipped", "expired"]},
+          "state": {"enum": ["not-started", "prepared", "running", "verified", "blocked", "failed", "skipped", "expired"]},
           "steps": {
             "type": "array",
             "items": {
@@ -29,7 +29,7 @@
               "required": ["step_id", "state"],
               "properties": {
                 "step_id": {"$ref": "#/$defs/id"},
-                "state": {"enum": ["not-started", "prepared", "awaiting-confirmation", "running", "verified", "blocked", "failed", "skipped", "expired"]},
+                "state": {"enum": ["not-started", "prepared", "running", "verified", "blocked", "failed", "skipped", "expired"]},
                 "evidence_path": {"type": ["string", "null"]},
                 "error": {"type": ["string", "null"]}
               },

@@ -6,8 +6,7 @@ scope: [single-node]
 inputs: [node_id, verified_access, runtime_identity, current_state, validation_criteria]
 outputs: [operation_report, node_state]
 success: The same node returns to a validated running state within the declared window.
-confirmation:
-  required_for: [host-level, destructive-broad, shared-service-disruption]
+
 sources:
   operational:
     url: https://leios.cardano-scaling.org/docs/testnet/getting-started/

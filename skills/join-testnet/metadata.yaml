@@ -6,9 +6,7 @@ scope: [single-node]
 inputs: [node_id, release_provenance, installation_method, configuration_path, verified_access]
 outputs: [operation_report, node_state]
 success: A stopped relay has hash-verified current Musashi configuration and preserved recovery material.
-confirmation:
-  required_for: [host-level, destructive-broad]
-  invalidated_by: [command-change, target-change, path-change, privilege-change, scope-change]
+
 sources:
   operational:
     url: https://leios.cardano-scaling.org/docs/testnet/getting-started/

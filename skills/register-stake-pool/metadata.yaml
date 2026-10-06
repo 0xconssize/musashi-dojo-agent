@@ -5,10 +5,7 @@ risk: external-onchain
 scope: [single-pool, single-node]
 inputs: [working_dir, synced_node_socket, pool_keys, funded_payment_address, pool_parameters, owners, relays, optional_metadata, current_network_fingerprint, respin_evidence]
 outputs: [stake_registration_certificate, pool_registration_certificate, signed_transaction, operation_report, respin_revalidation_evidence, operational_certificate_handoff]
-success: Registration is submitted only after confirmation, independently verified on-chain, and handed off to current operational-certificate issuance.
-confirmation:
-  required_for: [signing_transaction, submitting_transaction]
-  invalidated_by: [command-change, target-change, input-change, key-change, parameter-change, owner-change, relay-change, metadata-change, scope-change, network-respin, network-incarnation-change, genesis-hash-change, system-start-change, slots-per-kes-period-change, kes-period-expiry, opcert-output-change]
+success: Registration is submitted within the requested outcome, independently verified on-chain, and handed off to current operational-certificate issuance.
 network:
   name: Musashi Dojo Leios testnet
   magic: 164

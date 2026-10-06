@@ -28,7 +28,7 @@ Never infer credentials, capabilities, system requirements, or mutable testnet v
 2. If `.musashi/` is absent, stop and complete onboarding first.
 3. Recheck the official source when metadata is stale, obsolete, or its supported release differs from the current source. Registration may continue with operator-supplied facts, but do not present unverified requirements as current.
 4. Reject unsafe IDs, duplicate IDs, and paths escaping `.musashi/hosts/<host-id>/`.
-5. Show the normalized record and ask the operator to resolve conflicts. Updating an existing host requires explicit confirmation.
+5. Check the normalized record against existing hosts. Resolve genuine identity conflicts with the operator; safely update an unambiguous existing host within the requested outcome.
 6. Create or update, from existing templates:
    - `.musashi/hosts/<host-id>/profile.yaml`
    - `.musashi/hosts/<host-id>/connection.yaml`

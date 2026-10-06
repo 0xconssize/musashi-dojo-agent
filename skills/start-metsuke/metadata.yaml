@@ -16,12 +16,7 @@ inputs:
 outputs:
   - operation_report
 success: The exact standalone Metsuke service remains enabled and running, its first metrics submission is accepted, trace status is evidenced or explicitly conditional, and the node and shared-host workloads remain healthy.
-confirmation:
-  governed_by:
-    - SECURITY.md
-    - HOST_SAFETY.md
-    - skills/execute-node-plan/SKILL.md
-  reason: Starting Metsuke enables a host service and initiates signed external submissions.
+
 sources:
   operational:
     url: https://metsuke-leios.play.dev.cardano.org/

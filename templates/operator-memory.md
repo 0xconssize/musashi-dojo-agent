@@ -5,7 +5,7 @@
 - Name:
 - Preferred language:
 - Experience level:
-- Confirmation preferences:
+- Risk and recovery preferences:
 
 ## Goals
 

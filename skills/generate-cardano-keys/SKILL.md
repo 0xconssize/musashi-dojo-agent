@@ -10,10 +10,10 @@ Generate local key material for a Musashi Dojo Leios testnet block producer. Thi
 ## Preconditions
 
 1. Read `AGENTS.md`, `SECURITY.md`, and `HOST_SAFETY.md`.
-2. Confirm that the operator explicitly wants local key generation and identify one dedicated Musashi testnet working directory.
+2. Ensure key generation is within the requested outcome and identify one dedicated Musashi testnet working directory.
 3. Confirm that the target is disposable testnet infrastructure, not a mainnet or production directory.
 4. Verify `cardano-cli` and its version using the official Musashi Leios release or the `dev-testnet` Nix shell.
-5. Stop if target key files already exist unless the operator explicitly chooses a new directory or confirms deliberate rotation.
+5. Never overwrite existing key files. Choose a new directory; request a separate explicit rotation decision if replacing keys is unavoidable.
 
 Key generation is fully local and does not require a running node, a node socket, network access, or a synchronized chain. The current guide uses the `dijkstra` command group; revalidate that command group against the official guide before future operations if the network advances eras.
 
@@ -79,7 +79,7 @@ The container must not receive the node socket or any directory containing unrel
 - Keep `cold.skey` offline and encrypted except when explicitly needed to issue an operational certificate or sign pool registration.
 - Store generated keys and sanitized operation records under `.musashi/`; never place them in the versioned repository.
 - Do not use generated testnet keys on mainnet.
-- Explain the impact and confirm the exact target before writing private material.
+- Verify the exact dedicated target before writing private material; never overwrite an existing key.
 
 ## Prepare the target
 
@@ -100,7 +100,7 @@ for file in payment.vkey payment.skey stake.vkey stake.skey cold.vkey cold.skey 
 done
 ```
 
-Before execution, state the exact target directory and files to be created. Require fresh confirmation if the directory, command, or scope changes.
+Before execution, verify the exact directory and files to create. Recheck scope and key collision if the directory or command changes.
 
 ## Generate payment and stake keys
 

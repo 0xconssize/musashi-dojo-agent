@@ -18,7 +18,7 @@ Use this as a bounded pilot or fallback, not as an implicit replacement for a re
 - Source template: the current official journald configuration.
 - Runtime template: the current official hardened journald service.
 - Preconditions: the node runs as an exact systemd unit, emits the required machine-format traces to a journal readable from the planned service context, and the absolute `journalctl` executable is verified.
-- Privilege: the published unit grants journal-reading access that can expose entries from other units on the host. State this host-level impact before authorization.
+- Privilege: the published unit grants journal-reading access that can expose entries from other units on the host. Assess this host-level impact before applying the configuration.
 - Required rendering: set the exact node unit and exact `journalctl` path; a nonexistent unit may otherwise yield a running Metsuke process with no trace submissions.
 - Isolation: Metsuke has its own service and can restart without restarting the node.
 - Handoff: `start-metsuke` may activate the standalone service.

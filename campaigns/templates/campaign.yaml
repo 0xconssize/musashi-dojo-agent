@@ -20,16 +20,14 @@ compatibility:
   releases: []
   required_capabilities: []
 
-mode: prepare-and-confirm
+mode: prepare
 
 steps:
   - id: validate-instruction
     skill: sre-observe
-    confirmation: none
     risk: read-only
   - id: replace-with-operation
     skill: replace-with-existing-skill
-    confirmation: explicit
     risk: declare-risk
 
 success_criteria:

@@ -6,8 +6,7 @@ scope: [single-node]
 inputs: [node_id, verified_access, runtime_identity, configuration, validation_criteria]
 outputs: [operation_report, node_state]
 success: The intended node remains running and passes independent health checks.
-confirmation:
-  required_for: [host-level, destructive-broad, shared-resource-change]
+
 sources:
   operational:
     url: https://leios.cardano-scaling.org/docs/testnet/getting-started/

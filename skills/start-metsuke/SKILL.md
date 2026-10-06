@@ -14,7 +14,7 @@ Start only one installed and configured standalone Metsuke auxiliary component. 
 3. Accept only the standalone `metrics-only` or `journald` integration modes prepared by `configure-metsuke`. A `pipe` integration starts with the node and must be activated through `start-node`; containers, shells, and other supervisors are outside this MVP.
 4. Revalidate the current service documentation and selected client compatibility before planning. Resolve all other nodes and relevant services on the host and use `connect-host` when required by workspace policy.
 
-Starting Metsuke creates outbound signed submissions and enabling a service changes host state. The reviewed plan must state the exact service, paths, privileges, external destination, submitted data classes, expected timing, rollback, node impact, and shared-host validation. The operator must explicitly authorize the first signed transmission through the governing `SECURITY.md`, `HOST_SAFETY.md`, and `execute-node-plan` workflow; this skill does not define the confirmation format.
+Starting Metsuke creates outbound signed submissions and changes host state. Verify the exact service, paths, privileges, destination, data classes, timing, rollback, node impact, and shared-host health. Start signed transmission only when the requested outcome includes it; reconcile any accepted submission before retrying.
 
 ## Preflight
 
@@ -33,11 +33,11 @@ If the service is already active, do not restart it. Validate it using the check
 ## Workflow
 
 1. Build a schema-valid `execute-node-plan` plan that names only the exact standalone Metsuke service and the enable/start operations supported by its registered system manager. Include bounded observations for startup, the first scrape submission, process stability, node continuity, and shared-host isolation. Use the service invocation ID or an equivalent exact cursor so validation cannot count submissions from an earlier attempt.
-2. Hand the unchanged plan to `execute-node-plan` for authorization, target revalidation, short-step execution, and audit. Do not use broad process matching or invent a runtime identity.
+2. Hand the validated operation to `execute-node-plan` for target revalidation, short-step execution, and audit. Do not use broad process matching or invent a runtime identity.
 3. Enable and start only the selected Metsuke service. Do not daemon-reload unless the reviewed plan explicitly requires it because the already configured unit has not been loaded; any changed unit or configuration invalidates this startup plan and must return to `configure-metsuke`.
 4. Keep activation and observation as short, explicit phases. The activation phase may enable/start and wait only for service stability plus the first accepted submission. Run process inspection, node progress, and shared-host continuity as separate read-only observations whose individual duration fits the execution transport. Do not place a long polling loop behind an `EXIT` trap that can stop a healthy service merely because the caller timed out.
 5. Treat the first accepted signed submission as an irreversible commit point. Record it immediately. A later rollback can stop future submissions but cannot undo the accepted one, and any retry requires first reconciling the exact service state and logs so it does not create an unnecessary additional submission.
-6. Roll back a newly activated service only for an activation-critical failure or observed Metsuke-caused node/shared-host degradation, when that rollback was pre-authorized. If submission was accepted and a later auxiliary check fails because of observer permissions, quoting, transport timeout, or inconclusive node progress, do not automatically stop or restart Metsuke. Reconcile state, report partial validation, and diagnose with read-only checks. Preserve configuration, credential, spool, and node state; do not loop restarts or improvise recovery.
+6. Roll back a newly activated service only for an activation-critical failure or observed Metsuke-caused node/shared-host degradation, after checking impact. If submission was accepted and a later auxiliary check fails because of observer permissions, quoting, transport timeout, or inconclusive node progress, do not automatically stop or restart Metsuke. Reconcile state, report partial validation, and diagnose with read-only checks. Preserve configuration, credential, spool, and node state; do not loop restarts or improvise recovery.
 
 ## Validation
 

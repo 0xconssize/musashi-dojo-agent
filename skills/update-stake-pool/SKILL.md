@@ -12,9 +12,7 @@ cold key, issue an operational certificate, delegate stake, or start the node.
 
 ## Preconditions and safety
 
-- Read repository safety instructions and obtain the four-digit plan-digest challenge for the exact pool,
-  full before/after state, network, input, and keys. Obtain a second fresh
-  four-digit challenge immediately before submission; any change invalidates it.
+- Read repository safety instructions. Updating and submitting must be within the requested outcome; verify the exact pool, full before/after state, network, input, and keys immediately before signing and submission. Stop on drift.
 - Use Musashi magic 164 and the selected era (`dijkstra` in the current guide).
   Use a synced node for pool state, UTxOs, balancing, and verification. A node
   is not needed merely to create the replacement certificate.
@@ -47,7 +45,7 @@ CARDANO_NODE_SOCKET_PATH="$SOCKET_PATH" "$CARDANO_CLI" dijkstra query utxo --add
 Prepare a diff of the current and complete desired state. Omitted owners and
 relays are not assumed to be preserved: the replacement certificate describes
 the full new state. Treat missing metadata as removal only with explicit
-confirmation. Validate new public relay DNS/reachability and firewall ports.
+preflight. Validate new public relay DNS/reachability and firewall ports.
 
 ## Metadata and replacement certificate
 
@@ -97,11 +95,11 @@ registration deposit/refund rules:
   --certificate-file pool-reg-update.cert --out-file pool-reg-update-tx.raw
 ```
 
-Before signing show the before/after diff, unchanged pool ID, exact input,
-change address, certificate, fee, and net deposit/refund. Confirm that no stake
-registration certificate is present. After confirmation sign with payment and
+Before signing check the before/after diff, unchanged pool ID, exact input,
+change address, certificate, fee, and net deposit/refund. Verify that no stake
+registration certificate is present. After final preflight, sign with payment and
 cold keys (add stake signing key if required by the selected era), never print
-keys, verify the signed plan, get fresh submission confirmation, and submit:
+keys, verify the signed transaction, and submit only within the requested outcome:
 
 ```bash
 "$CARDANO_CLI" dijkstra transaction sign --tx-body-file pool-reg-update-tx.raw \

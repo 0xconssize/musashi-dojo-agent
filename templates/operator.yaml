@@ -5,7 +5,3 @@ operator:
   preferred_language: null
   experience_level: null
   goals: []
-  confirmation_preferences:
-    explain_reversible_changes: true
-    confirm_host_level_changes: true
-    confirm_destructive_changes: true

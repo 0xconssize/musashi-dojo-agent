@@ -19,7 +19,7 @@ Deploy one relay as four independently validated operations. Do not collapse the
 
 ## Stop conditions
 
-Stop on source staleness, target drift, unverified download, checksum failure, occupied path or port, missing confirmation, failed validation, or unexpected impact to a shared workload. Diagnose before attempting recovery; never retry a modifying step blindly.
+Stop on source staleness, target drift, unverified download, checksum failure, occupied path or port, failed validation, or unexpected impact to a shared workload. Diagnose before attempting recovery; never retry a modifying step blindly.
 
 ## Completion
 

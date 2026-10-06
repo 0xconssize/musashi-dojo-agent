@@ -50,8 +50,6 @@
       "required": [
         "allow_read_only_commands",
         "explain_reversible_changes",
-        "confirm_host_level_changes",
-        "confirm_destructive_changes",
         "require_target_verification",
         "validate_independently",
         "save_generated_scripts",
@@ -61,8 +59,6 @@
       "properties": {
         "allow_read_only_commands": {"type": "boolean"},
         "explain_reversible_changes": {"const": true},
-        "confirm_host_level_changes": {"const": true},
-        "confirm_destructive_changes": {"const": true},
         "require_target_verification": {"const": true},
         "validate_independently": {"const": true},
         "save_generated_scripts": {"type": "boolean"},

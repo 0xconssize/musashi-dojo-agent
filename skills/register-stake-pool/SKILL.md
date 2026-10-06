@@ -12,9 +12,7 @@ stake, or start the block producer.
 
 ## Safety and prerequisites
 
-- Read the repository safety instructions and get the four-digit plan-digest challenge for the exact
-  network, workspace, parameters, owners, relays, metadata, and signing keys.
-  Get a second, fresh four-digit challenge immediately before submission.
+- Read repository safety instructions. Registration and submission must be within the requested outcome; verify the exact network, pool, parameters, owners, relays, metadata, and signing keys immediately before signing and submission. Never submit when those inputs drift.
 - Use only Musashi testnet magic 164. Never use `--mainnet` or silently inherit
   another network. Current examples use `cardano-cli dijkstra ...`; re-check
   `query tip` and CLI help if the era or release changes.
@@ -157,10 +155,10 @@ selected exact input and change address so the CLI calculates fee/deposits:
   --out-file pool-reg-tx.raw
 ```
 
-Before signing, show the operator network, input, change, certificates, fee,
+Before signing, check the network, input, change, certificates, fee,
 deposits, pledge/cost/margin, every owner/relay, and metadata URL/hash. After
-confirmation sign with payment, stake, and cold keys; never print key contents.
-Verify the signed plan, obtain fresh submission confirmation, then submit.
+preflight, sign with payment, stake, and cold keys; never print key contents.
+Verify the signed transaction and destination, then submit only when registration is the requested outcome.
 
 ```bash
 "$CARDANO_CLI" dijkstra transaction sign --tx-body-file pool-reg-tx.raw \

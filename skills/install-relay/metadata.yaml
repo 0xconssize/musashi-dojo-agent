@@ -6,9 +6,7 @@ scope: [single-node]
 inputs: [node_id, host_assessment, installation_method, target_paths, runtime_identity, selected_release]
 outputs: [operation_report, node_state]
 success: A checksum-verified official relay artifact is installed and remains stopped.
-confirmation:
-  required_for: [host-level, destructive-broad]
-  examples: [package-installation, system-service, system-directory, user-or-group, firewall, ownership]
+
 sources:
   operational:
     url: https://leios.cardano-scaling.org/docs/testnet/getting-started/

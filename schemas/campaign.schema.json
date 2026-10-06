@@ -8,7 +8,7 @@
     "schema_version": {"const": 1},
     "id": {"$ref": "#/$defs/id"},
     "title": {"type": "string", "minLength": 1},
-    "status": {"enum": ["proposed", "approved", "pilot", "active", "paused", "completed", "cancelled", "expired"]},
+    "status": {"enum": ["proposed", "ready", "pilot", "active", "paused", "completed", "cancelled", "expired"]},
     "authority": {
       "type": "object",
       "required": ["type", "source_url", "source_ref", "verification", "issued_at", "expires_at"],
@@ -41,17 +41,16 @@
       },
       "additionalProperties": false
     },
-    "mode": {"enum": ["observe", "prepare-and-confirm", "execute-with-confirmation"]},
+    "mode": {"enum": ["observe", "prepare", "execute-scoped"]},
     "steps": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["id", "skill", "confirmation", "risk"],
+        "required": ["id", "skill", "risk"],
         "properties": {
           "id": {"$ref": "#/$defs/id"},
           "skill": {"type": "string", "minLength": 1},
-          "confirmation": {"enum": ["none", "explicit"]},
           "risk": {"enum": ["read-only", "local-reversible", "key-material", "host-change", "transaction", "destructive"]}
         },
         "additionalProperties": false

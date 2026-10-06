@@ -1,4 +1,6 @@
-# Musashi Dojo Agent — Implementation Plan
+# Musashi Dojo Agent
+
+> Historical implementation plan only. For current behavior follow `AGENTS.md`, `SECURITY.md`, `HOST_SAFETY.md`, the current skills, and schemas. Legacy approval examples below are not operational rules.
 
 ## 1. Project Identity
 
@@ -265,7 +267,7 @@ Guiding principle:
 
 The agent should explain relevant actions before executing them.
 
-Confirmation requirements should be based on host impact, not merely on the sensitivity of testnet credentials.
+Assess host impact and protected-state recovery independently of testnet credential sensitivity.
 
 ### 5.7 Observe before modifying
 
@@ -285,14 +287,13 @@ The repository must remain intentionally concise and readable for a human operat
 - Prefer extending an existing, well-scoped document over adding another document with overlapping purpose.
 - Do not create speculative scaffolding, empty directories, duplicate identity documents, or runtime-specific copies of canonical guidance.
 - Keep mutable operator branding, generated artifacts, and operational state in `.musashi/` rather than expanding the versioned repository.
-- If an implementation requires adding a new directory or materially expanding a directory tree from this plan, ask Juan for explicit confirmation before creating it.
-- The confirmation request must name the proposed paths, explain why the existing structure is insufficient, and state what will remain out of scope.
+- Add directories only when the requested outcome requires them; document their purpose and keep unrelated structure untouched.
 
 ---
 
 ## 6. Repository Structure
 
-The following tree is an architectural reference. Implementations must follow the minimal-footprint rule above and may not expand it without explicit confirmation.
+The following tree is an architectural reference, not a requirement to create speculative scaffolding.
 
 ```text
 musashi-dojo-agent/
@@ -552,7 +553,7 @@ It should contain:
 - Experience level.
 - Preferred installation methods.
 - General goals.
-- Confirmation preferences.
+- Recovery preferences.
 - Naming conventions.
 - Fleet-wide decisions.
 - Current high-level objectives.
@@ -783,8 +784,6 @@ capabilities:
 policy:
   allow_read_only_commands: true
   explain_reversible_changes: true
-  confirm_host_level_changes: true
-  confirm_destructive_changes: true
   require_target_verification: true
   validate_independently: true
   save_generated_scripts: true
@@ -917,7 +916,7 @@ When execution access is available, Niten may perform the following categories o
 - Generate an installation plan.
 - Download required artifacts.
 - Inspect source and expected version.
-- Install dependencies when approved.
+- Install verified dependencies within the requested outcome and host boundary.
 - Create node-specific directories.
 - Generate configuration.
 - Start the node.
@@ -950,8 +949,8 @@ When execution access is available, Niten may perform the following categories o
 
 - Restart failed services.
 - Restore a previous configuration.
-- Recreate disposable testnet credentials.
-- Clear or rebuild node data when explicitly approved.
+- Preserve existing keys and credentials; never replace them as a generic recovery action.
+- Rebuild only diagnosed disposable node data at verified exact paths.
 - Rejoin after a testnet respin.
 - Roll back an unsuccessful update when a supported path exists.
 
@@ -1000,16 +999,9 @@ The plan should state:
 - Validation steps.
 - Recovery options.
 
-### Step 4 — Apply confirmation policy
+### Step 4 — Verify scope and recovery
 
-- Read-only inspection: normally no extra confirmation.
-- Node-local reversible change: explain before execution.
-- Host-level change: require explicit confirmation.
-- Broad or destructive change: require explicit and scoped confirmation.
-
-Required confirmation must be bound to the reviewed plan digest. Display a fresh four-digit decimal challenge derived from that digest and accept it as the operator acknowledgement while retaining the complete digest in the plan record. Changing commands, targets, paths, privileges, expected disruption, or scope invalidates the confirmation.
-
-The only modifying exception is a complete chain-database replacement that passes the `disposable-chain-database-reload` validation in `execute-node-plan`: one registered node, exact registered database directory, no protected static path overlap, stopped verified writer, no shared-host impact, and verified replacement preflight. It does not authorize partial state deletion or any host, configuration, certificate, credential, or `.musashi/` change.
+Read-only checks do not modify the target. Before modifications, verify exact scope, identity, protected data, shared-host impact, and a viable recovery route. Complete chain-database replacement follows the exact-path preflight in `execute-node-plan`; never generalize it to protected state.
 
 ### Step 5 — Execute incrementally
 
@@ -1144,7 +1136,7 @@ Examples:
 - Check disk usage.
 - List containers.
 
-Normally no explicit confirmation is required.
+No target mutation is performed.
 
 #### Reversible modification
 
@@ -1168,7 +1160,7 @@ Examples:
 - Write to system directories.
 - Change users, groups, or permissions.
 
-Explicit confirmation is required.
+Verify impact on shared workloads and preserve rollback before changing host resources.
 
 #### Destructive or broad modification
 
@@ -1181,9 +1173,7 @@ Examples:
 - Database deletion.
 - Stopping multiple unrelated services.
 
-Explicit and clearly scoped confirmation is required.
-
-An exact registered complete chain-database replacement that satisfies the disposable-state exception above is not a generic database deletion and is exempt from confirmation.
+Do not run broad deletions or touch unrelated data. An exact registered chain-database reload follows its own preflight, not a generic deletion rule.
 
 ---
 
@@ -1248,7 +1238,7 @@ skills/<skill-id>/
 - Required operator information.
 - Procedure.
 - Safety considerations.
-- Confirmation requirements.
+- Scope and recovery requirements.
 - Success criteria.
 - Failure conditions.
 - Expected outputs.
@@ -1264,7 +1254,6 @@ version: 0.1.0
 
 risk:
   host_impact: read_only
-  confirmation_required: false
 
 scope:
   supported:
@@ -1469,7 +1458,7 @@ Acceptance criteria:
 - No onboarding skill, duplicate onboarding document, or permanent onboarding scaffolding is created.
 - `ONBOARDING.md` is deleted after successful onboarding.
 
-Phase implementations must first check whether the existing root `IDENTITY.md`, templates, and runtime instructions are sufficient. This phase is intentionally implemented in one temporary root document; any additional directory or substantial new file group requires the confirmation described in Section 5.9.
+Phase implementations should first check whether root `IDENTITY.md`, templates, and runtime instructions suffice. Add only files required by the requested outcome.
 
 ### Phase 3 — Multi-host and multi-node model
 
@@ -1572,7 +1561,7 @@ Implementation boundary:
 - Recovery must be tied to observed evidence and applicable official guidance. It never implies a full state reset.
 - Issue reporting produces a sanitized local draft only; external publication requires a separate explicit operator instruction.
 - Scheduled SRE checks use runtime-provided scheduling and `sre-observe` in observation mode only. Release and documentation freshness observations produce local evidence and review signals, never automatic updates or publication.
-- Experimental campaigns coordinate temporary, source-bound testnet instructions through existing skills. They require verified authority, explicit approval, a single-participant pilot, independent participant states, and expiry with preserved history.
+- Experimental campaigns coordinate temporary, source-bound testnet instructions through existing skills. They require verified authority and requested scope, a single-participant pilot, independent participant states, and expiry with preserved history.
 
 Deliver:
 
@@ -1597,7 +1586,7 @@ Acceptance criteria:
 - Each skill declares inputs, scope, risks, outputs, and success criteria.
 - Commands are documentation or templates only.
 - Generated scripts are written under `.musashi/generated/`.
-- Host-impacting actions have confirmation rules.
+- Host-impacting actions have scope and recovery checks.
 
 ### Phase 7 — Runtime compatibility validation
 
@@ -1649,7 +1638,7 @@ The first usable release should support:
 17. Repository update reconciliation.
 18. Host-focused safety rules.
 
-Advanced orchestration and broader coordinated test campaigns may follow after the relay workflow is stable. The repository now defines campaign contracts and a non-active BLS campaign example, while execution remains confirmation-controlled.
+Advanced orchestration and broader coordinated test campaigns may follow after the relay workflow is stable. The repository defines campaign contracts and a non-active BLS campaign example; execution stays within verified scope and safety boundaries.
 
 ---
 
@@ -1670,7 +1659,7 @@ The MVP is complete when an operator can clone the repository and ask a compatib
 11. Prepare an installation plan for one relay.
 12. Generate required commands or scripts locally.
 13. Explain host-level risks.
-14. Execute only after the appropriate confirmation.
+14. Execute after verifying identity, impact, and recovery.
 15. Start or restart one selected node.
 16. Inspect the node after installation.
 17. Validate the real operational result.

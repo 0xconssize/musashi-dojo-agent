@@ -71,6 +71,11 @@ rules:
     check: Observe free space, writable node paths, and bounded storage errors without repairing filesystems.
     outcomes: [pass, fail, unknown]
     evidence: Timestamped capacity, ownership, and error observations.
+  - id: invalid-chain-database-reload-candidate
+    check: Only when current logs or release notes establish that the complete chain database is invalid, measure apparent bytes under the exact registered chain_database_directory without following symlinks or reading keys.
+    outcomes: [snapshot-preferred, other-recovery, unknown]
+    evidence: Exact registered path, observed invalidity trigger, apparent byte count, timestamp, and whether bytes exceed 200000000; size alone is not evidence of invalidity.
+    recommendation: When bytes exceed 200000000, route to recover-node and bootstrap-node-database for a compatible checksum-verified HTTP(S) snapshot; otherwise choose recovery on evidence. Diagnosis never downloads or replaces state.
   - id: startup-health
     check: Correlate runtime state with bounded fatal or crash evidence.
     outcomes: [pass, fail, unknown]
@@ -109,7 +114,7 @@ current_release_rules:
       selected_release: prototype-2026w36
       symptom: Invalid Leios certificate crash persists after update.
     diagnosis: Confirm release provenance and exact crash evidence before recommending recovery.
-    recommendation: Use recover-node to remove only volatile chain state after separate destructive confirmation.
+    recommendation: Use recover-node for the exact diagnosed volatile chain state; do not infer a complete database reset.
     source: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w36
 
 freshness:

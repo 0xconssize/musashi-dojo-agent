@@ -5,10 +5,7 @@ risk: external-onchain
 scope: [single-existing-pool]
 inputs: [working_dir, synced_node_socket, existing_pool_cold_key, payment_stake_cold_bls_keys, funded_payment_address, desired_full_pool_state]
 outputs: [replacement_registration_certificate, signed_transaction, before_after_report]
-success: Replacement registration is submitted after confirmation and verified with an unchanged pool ID.
-confirmation:
-  required_for: [signing_transaction, submitting_transaction]
-  invalidated_by: [command-change, target-change, input-change, key-change, parameter-change, owner-change, relay-change, metadata-change, scope-change]
+success: Replacement registration is submitted within the requested outcome and verified with an unchanged pool ID.
 network:
   name: Musashi Dojo Leios testnet
   magic: 164

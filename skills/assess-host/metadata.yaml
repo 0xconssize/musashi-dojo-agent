@@ -6,9 +6,7 @@ scope: [single-host]
 inputs: [host_id, intended_role, installation_method, runtime_capabilities]
 outputs: [operation_report, host_state]
 success: Evidence-backed suitability outcome with no host modification.
-confirmation:
-  required: false
-  stop_if: A proposed check would modify the host.
+
 sources:
   operational:
     url: https://leios.cardano-scaling.org/docs/testnet/getting-started/

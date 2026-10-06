@@ -16,7 +16,7 @@ Require one node ID, verified host access, runtime identity, shutdown method, an
 1. Resolve the exact node, host, runtime identity, shared processes, volumes, networks, and dependent nodes.
 2. Inspect current state and refuse broad selectors, ambiguous process matches, or a shared identity.
 3. Build a schema-valid plan for graceful shutdown, bounded waiting, and escalation only as a separately explained step.
-4. Explain disruption. Require confirmation if stopping affects other nodes, shared services, or host-level resources.
+4. Assess disruption. Stop if the operation would unexpectedly affect other nodes, shared services, or host-level resources; isolate the target or escalate.
 5. Execute with `execute-node-plan`; do not kill by pattern or remove containers, data, volumes, or services.
 6. Validate the registered process or service is stopped, no writer remains on node data, and unrelated workloads remain healthy.
 7. Record the report and observed state.

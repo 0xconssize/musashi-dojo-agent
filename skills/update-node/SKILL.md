@@ -14,11 +14,11 @@ Require one node ID, installed release provenance, target release, installation 
 ## Workflow
 
 1. Revalidate the latest release, assets, checksums, compatibility, intermediate release notes, guide procedures, configuration, and known issues.
-2. Inspect current version and provenance, node health, data and configuration paths, free space, shared-host nodes, and rollback feasibility.
+2. Inspect current version and provenance, node health, data and configuration paths, free space, shared-host nodes, and rollback feasibility. If release notes require a complete database rebuild, measure the exact chain database before replacement; above 200,000,000 bytes, prefer the verified HTTP(S) snapshot flow in `bootstrap-node-database` over node replay, after compatibility and checksum preflight.
 3. Stop if the installed release cannot be identified or if the authoritative upgrade path is incomplete.
 4. Build a schema-valid plan to acquire and inspect assets under `.musashi/generated/`, verify checksums, back up configuration and recovery metadata, stop, replace only declared artifacts, start, and validate.
-5. Require the four-digit plan-digest challenge for host-level changes and any state deletion or irreversible migration. Never infer a database wipe.
-6. Execute through `execute-node-plan`. Apply release-specific recovery only when its exact trigger is observed and separately authorized.
+5. Assess host impact, protect static material, and establish recovery before any migration or state deletion. Never infer a database wipe.
+6. Execute through `execute-node-plan`. Apply release-specific recovery only when its exact trigger is observed and the recovery remains within the requested outcome.
 7. Validate artifact provenance, running identity, configuration integrity, fatal logs, tip progression, peers, and shared-host workloads.
 8. Record the report, upgrade history, and observed state.
 

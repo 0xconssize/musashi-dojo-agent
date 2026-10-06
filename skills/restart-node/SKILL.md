@@ -15,10 +15,10 @@ Require one node ID, verified host access, runtime identity, current state, and 
 
 1. Resolve the exact node and inspect its current state, dependencies, shared-host nodes, disk, ports, and configuration freshness.
 2. Build one schema-valid plan with graceful stop, observed stopped state, start, and bounded validation.
-3. Explain downtime and require confirmation when dependencies, shared services, or host-level resources may be affected.
+3. Assess downtime and dependencies; preserve shared services and isolate host-level impact.
 4. Execute through `execute-node-plan`. Never replace restart with destructive recreation or repeated unbounded retries.
 5. Validate process identity, socket or endpoint ownership, fatal logs, tip progression when applicable, peer evidence, and unaffected shared workloads.
-6. On failure, stop the plan and preserve evidence; invoke `recover-node` only after diagnosis and a new approved plan.
+6. On failure, preserve evidence and diagnose before invoking a separate, narrowly scoped `recover-node` workflow within the requested outcome.
 7. Record the report and state.
 
 ## Failure and success

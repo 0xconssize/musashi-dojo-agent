@@ -6,9 +6,7 @@ scope: [single-node, single-host]
 inputs: [source_report, affected_scope, reproduction, expected_behavior, observed_behavior, evidence_consent]
 outputs: [operation_report, issue_draft]
 success: A sanitized reproducible local draft exists and nothing was transmitted.
-confirmation:
-  required_for: [external-publication, attachment-upload, maintainer-contact]
-  publication_in_scope: false
+
 sources:
   operational:
     url: https://leios.cardano-scaling.org/docs/testnet/getting-started/

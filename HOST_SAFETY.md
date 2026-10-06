@@ -9,24 +9,22 @@ Niten must treat every target host as shared unless verified otherwise.
 - Check other nodes and shared services on the host.
 - Verify host identity using at least two independent signals when possible.
 - Inspect current status, versions, disk, memory, ports, permissions, and recent logs.
-- State expected disruption, required privileges, affected paths, validation, and recovery.
+- Determine expected disruption, required privileges, affected paths, validation, and recovery; report material impact concisely.
 
 For remote access, compare the registered endpoint with host-reported identity, remote user, OS, runtime identity, expected node paths, host key or alias, or cloud instance ID. Stop on conflict. Connection success alone is not identity verification or authorization.
 
-## Confirmation required
+## Modification boundary
 
-Require explicit confirmation before installing packages, writing system directories, changing systemd, users, permissions, firewall rules, exposed ports, shared networks, or deleting data. The same applies to actions that may affect multiple nodes or unrelated services.
+Apply only changes necessary for the requested outcome on verified targets. Prefer reversible, node-scoped actions; preserve recoverable copies of protected configuration before overwriting. If a destructive step lacks a proven exact target and viable recovery, stop and escalate. Never change unrelated services or expand to other nodes implicitly.
 
 ## Validation
 
 After a change, verify the intended service, version, ports, peers, synchronization, logs, and the continued operation of other nodes sharing the host. A successful exit status is not sufficient.
 
-Confirmation applies only to the exact reviewed plan. If its commands, targets, paths, privileges, disruption, or scope change, obtain confirmation again.
-
-Required confirmations use the four-digit decimal challenge derived from the plan digest by `execute-node-plan`; retain the full digest in the plan and audit record.
+If commands, targets, paths, privileges, or scope change, recheck identity, impact, and recovery before continuing.
 
 ## Forbidden assumptions
 
 Do not assume a host is dedicated, a node is the only node, a path is disposable, a credential is testnet-only, or a remembered network value is current.
 
-Do not select processes, containers, services, paths, or volumes with broad patterns. Stopping a node does not authorize removing it. Updating a node does not authorize deleting state. Recovery must name the exact diagnosed component and data class. A release note that permits partial volatile-state removal never permits deleting the full database; the only full-database exception is the separately validated registered `disposable-chain-database-reload` path.
+Do not select processes, containers, services, paths, or volumes with broad patterns. Stopping a node does not authorize removing it. Updating a node does not authorize deleting state. Recovery must name the exact diagnosed component and data class. A release note permitting partial volatile-state removal does not justify deleting the full database; use only the validated registered chain-database reload workflow for that.

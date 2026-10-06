@@ -3,7 +3,7 @@
   "$id": "https://musashi-dojo.dev/schemas/execution-plan.schema.json",
   "title": "Execution plan",
   "type": "object",
-  "required": ["schema_version", "plan", "status", "execution_mode", "scope", "targets", "steps", "confirmation", "validation", "recovery"],
+  "required": ["schema_version", "plan", "status", "execution_mode", "scope", "targets", "steps", "validation", "recovery"],
   "properties": {
     "schema_version": {"const": 1},
     "plan": {
@@ -17,7 +17,7 @@
       },
       "additionalProperties": false
     },
-    "status": {"enum": ["draft", "approved", "executing", "completed", "failed", "stopped"]},
+    "status": {"enum": ["draft", "ready", "executing", "completed", "failed", "stopped"]},
     "execution_mode": {"enum": ["advisory", "local-execution", "remote-execution"]},
     "scope": {
       "type": "object",
@@ -92,61 +92,6 @@
         "additionalProperties": false
       }
     },
-    "confirmation": {
-      "type": "object",
-      "required": ["required", "reason", "plan_digest", "method", "challenge", "exemption", "granted_by", "granted_at"],
-      "properties": {
-        "required": {"type": "boolean"},
-        "reason": {"type": ["string", "null"], "minLength": 1},
-        "plan_digest": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
-        "method": {"type": ["string", "null"], "enum": ["four-digit-code", "disposable-chain-database-exemption", null]},
-        "challenge": {"type": ["string", "null"], "pattern": "^[0-9]{4}$"},
-        "exemption": {"type": ["string", "null"], "enum": ["disposable-chain-database-reload", null]},
-        "granted_by": {"type": ["string", "null"], "minLength": 1},
-        "granted_at": {"type": ["string", "null"], "format": "date-time"}
-      },
-      "allOf": [
-        {
-          "if": {"properties": {"required": {"const": true}}},
-          "then": {
-            "properties": {
-              "reason": {"type": "string", "minLength": 1},
-              "plan_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
-              "method": {"const": "four-digit-code"},
-              "challenge": {"type": "string", "pattern": "^[0-9]{4}$"},
-              "exemption": {"const": null}
-            }
-          },
-          "else": {
-            "anyOf": [
-              {
-                "properties": {
-                  "reason": {"const": null},
-                  "plan_digest": {"const": null},
-                  "method": {"const": null},
-                  "challenge": {"const": null},
-                  "exemption": {"const": null},
-                  "granted_by": {"const": null},
-                  "granted_at": {"const": null}
-                }
-              },
-              {
-                "properties": {
-                  "reason": {"type": "string", "minLength": 1},
-                  "plan_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
-                  "method": {"const": "disposable-chain-database-exemption"},
-                  "challenge": {"const": null},
-                  "exemption": {"const": "disposable-chain-database-reload"},
-                  "granted_by": {"const": null},
-                  "granted_at": {"const": null}
-                }
-              }
-            ]
-          }
-        }
-      ],
-      "additionalProperties": false
-    },
     "validation": {
       "type": "array",
       "items": {
@@ -166,12 +111,11 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "trigger", "action", "confirmation_required"],
+        "required": ["id", "trigger", "action"],
         "properties": {
           "id": {"$ref": "#/$defs/id"},
           "trigger": {"type": "string", "minLength": 1},
-          "action": {"type": "string", "minLength": 1},
-          "confirmation_required": {"type": "boolean"}
+          "action": {"type": "string", "minLength": 1}
         },
         "additionalProperties": false
       }
@@ -193,25 +137,6 @@
           "targets": {"minItems": 1},
           "steps": {"minItems": 1},
           "validation": {"minItems": 1}
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "status": {"enum": ["approved", "executing", "completed", "failed"]},
-          "confirmation": {"properties": {"required": {"const": true}}}
-        }
-      },
-      "then": {
-        "properties": {
-          "confirmation": {
-            "properties": {
-              "granted_by": {"type": "string", "minLength": 1},
-              "granted_at": {"type": "string", "format": "date-time"},
-              "challenge": {"type": "string", "pattern": "^[0-9]{4}$"}
-            }
-          }
         }
       }
     },

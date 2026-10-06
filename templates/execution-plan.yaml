@@ -11,14 +11,5 @@ scope:
   nodes: []
 targets: []
 steps: []
-confirmation:
-  required: false
-  reason: null
-  plan_digest: null
-  method: null
-  challenge: null
-  exemption: null
-  granted_by: null
-  granted_at: null
 validation: []
 recovery: []

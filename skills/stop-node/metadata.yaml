@@ -6,8 +6,7 @@ scope: [single-node]
 inputs: [node_id, verified_access, runtime_identity, shutdown_method, current_state]
 outputs: [operation_report, node_state]
 success: Only the intended node stops and persistent data remains intact.
-confirmation:
-  required_for: [host-level, destructive-broad, shared-service-disruption]
+
 sources:
   operational:
     url: https://leios.cardano-scaling.org/docs/testnet/getting-started/

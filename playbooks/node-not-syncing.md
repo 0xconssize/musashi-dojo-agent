@@ -21,7 +21,8 @@ Diagnose an apparently stalled relay without treating normal early-testnet pause
 - For `progressing`, continue observation without modification.
 - For an isolated runtime failure, prepare a bounded `restart-node` plan.
 - For outdated or conflicting provenance, use `update-node` only after validating the upgrade path.
-- For a release-specific failure, use `recover-node` only with the exact documented trigger and separate confirmation.
+- For a release-specific failure, use `recover-node` only with the exact documented trigger, current evidence, and a separate scoped recovery workflow.
+- When diagnosis establishes that the complete database is invalid and needs resynchronization, measure its exact registered directory. Above 200,000,000 bytes, prefer `bootstrap-node-database`'s verified HTTP(S) snapshot flow over node replay; do not treat slow but progressing sync as invalid data.
 - When the cause remains unknown, create a sanitized diagnostic report and issue draft rather than deleting state.
 
 Never infer that a stalled display requires a database wipe, configuration replacement, or repeated restart loop.

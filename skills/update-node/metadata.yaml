@@ -6,9 +6,7 @@ scope: [single-node]
 inputs: [node_id, installed_release, target_release, installation_method, verified_access, recovery]
 outputs: [operation_report, node_state]
 success: The node runs the selected verified release or stops safely with recovery material preserved.
-confirmation:
-  required_for: [host-level, destructive-broad, state-deletion, irreversible-migration]
-  separate_for_recovery: true
+
 sources:
   operational:
     url: https://leios.cardano-scaling.org/docs/testnet/getting-started/

@@ -5,12 +5,7 @@ risk: variable-impact
 scope: [single-node]
 inputs: [node_id, diagnostic_report, selected_failure, recovery_authority, verified_access, backups]
 outputs: [operation_report, node_state]
-success: The diagnosed fault is resolved by the narrowest authorized action without scope broadening.
-confirmation:
-  exempt_when: [single-node, complete-registered-chain-database-reload, verified-disposable-database-exemption]
-  required_for: [host-level, destructive-broad, partial-state-deletion, protected-state-change]
-  method_when_required: four-digit-code
-  prior_confirmation_reusable: false
+success: The diagnosed fault is resolved by the narrowest safe action without scope broadening.
 sources:
   operational:
     url: https://leios.cardano-scaling.org/docs/testnet/getting-started/
@@ -20,7 +15,7 @@ sources:
     url: https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w36
     latest_release: prototype-2026w36
     retrieved_at: "2026-09-07"
-    current_narrow_recovery: Follow the w36 release notes; its respin requires preserving and then replacing only the affected local state after separate destructive confirmation.
+    current_narrow_recovery: Revalidate the selected release notes and observed trigger; preserve protected state and replace only diagnosed, exact-path disposable state.
 freshness:
   status: current-as-reviewed
   revalidate_before: Selecting or executing every recovery action.

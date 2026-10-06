@@ -15,7 +15,7 @@ Determine why one relay has no observed peers while protecting shared networking
 
 - Reapply configuration only through `join-testnet` when the current files are proven stale or inconsistent.
 - Restart only when evidence points to a runtime state issue and the target identity is unambiguous.
-- Treat firewall, port exposure, route, shared container network, and system resolver changes as host-level modifications requiring explicit confirmation.
+- Check firewall, port exposure, routes, shared container networks, and resolver changes for host and shared-workload impact; change only what the requested outcome requires.
 - Do not substitute Cardano mainnet peers, ports, topology, or network values.
 
 ## Completion

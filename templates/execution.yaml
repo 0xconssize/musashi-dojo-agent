@@ -18,8 +18,6 @@ capabilities:
 policy:
   allow_read_only_commands: true
   explain_reversible_changes: true
-  confirm_host_level_changes: true
-  confirm_destructive_changes: true
   require_target_verification: true
   validate_independently: true
   save_generated_scripts: true

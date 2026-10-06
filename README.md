@@ -6,17 +6,17 @@
 
 Musashi Dojo Agent is a portable, declarative repository that gives AI agents the identity, knowledge, procedures, safety rules, configuration conventions, and data contracts needed to help operators deploy and operate Cardano Leios Musashi Dojo testnet nodes.
 
-Niten is the **Dojo Node Operator**: an assistant for human judgment, not a replacement for it.
+Niten is the **Dojo Node Operator**: an autonomous operator for the user's requested outcomes, with strict key and host protections.
 
 ## What this repository contains
 
 - Runtime-neutral instructions and personality guidance.
-- Host-focused safety and confirmation policies.
+- Host-focused safety and recovery rules.
 - Templates for operator, host, node, execution, and operational state.
 - JSON Schema contracts for portable structured data.
 - Compact skills for inventory, host assessment and access, relay installation and configuration, node lifecycle, diagnosis, update, recovery, reporting, and safe plan execution through runtime-provided tools.
 - Read-only SRE task definitions for node and host health, configuration drift, release freshness, documentation freshness, and knowledge freshness.
-- Time-bounded experimental campaigns for official testnet instructions, with participant tracking, pilot gates, expiry, and explicit confirmation boundaries.
+- Time-bounded experimental campaigns with participant tracking, pilot gates, and expiry.
 - Versioned current Musashi network declarations with source and freshness records.
 - Initial relay deployment, diagnostic, configuration-change, recovery, and evidence-collection playbooks.
 
@@ -47,12 +47,12 @@ mode. The run records its path, hash, and sections used.
 
 ## Experimental campaigns
 
-Use [`campaigns/`](campaigns/) when the testnet team introduces a temporary instruction, such as a new key or protocol requirement. A campaign must capture its authority, affected release, scope, prerequisites, steps, stop conditions, and expiry. It starts as `proposed`, requires source verification and operator approval, and should validate one participant before any selected-participant rollout. See the [BLS example](campaigns/examples/bls-key-enrollment.yaml). The example is not active and does not execute anything.
+Use [`campaigns/`](campaigns/) for temporary, source-bound testnet instructions. A campaign starts `proposed`; verified authority, exact requested scope, expiry, and a successful pilot precede selected-participant rollout. See the inactive [BLS example](campaigns/examples/bls-key-enrollment.yaml).
 
 ## Getting started
 
 1. Read [`AGENTS.md`](AGENTS.md), [`AGENT.md`](AGENT.md), [`SECURITY.md`](SECURITY.md), and [`HOST_SAFETY.md`](HOST_SAFETY.md).
-2. Follow [`PLAN.md`](PLAN.md) for the project model and delivery phases.
+2. Use [`PLAN.md`](PLAN.md) as historical design context; current policies and schemas take precedence.
 3. Initialize local state from [`templates/`](templates/) only when needed.
 4. Treat [`network/current.yaml`](network/current.yaml) as the source of mutable Musashi facts only while its freshness record is current, and read [`network/known-issues.yaml`](network/known-issues.yaml) before operational use.
 
@@ -62,4 +62,4 @@ Musashi's official getting-started guide and its linked official resources are t
 
 > Operate the Dojo. Protect the host.
 
-Observe before modifying, identify the exact target, explain impact, confirm host-level or destructive changes, execute incrementally, and validate the real outcome.
+Observe before modifying, verify the exact target, protect keys and unrelated workloads, prefer reversible steps, iterate independently, and validate the real outcome.

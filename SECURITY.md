@@ -4,9 +4,9 @@ Musashi Dojo is a testnet, but the host is not disposable. Protect the host envi
 
 ## Data classes
 
-The registered complete chain database for a Musashi testnet node is disposable experimental state. Do not back it up, rename it for retention, or treat it as a recovery asset. It may be removed and rebuilt only through the validated single-node, exact-path `disposable-chain-database-reload` exemption.
+The registered complete chain database for a Musashi testnet node is disposable experimental state. It may be removed and rebuilt only after confirming the exact single-node path, a stopped writer, a compatible restoration source, and isolation from protected data. Preserve a viable recovery route; do not retain disposable database copies by default.
 
-Configuration, topology/genesis files, keys, credentials, operational certificates, `.musashi/` state, reports, and all non-database host data are protected static material. Never include them in the exemption; preserve or back them up whenever the selected operation requires it.
+Configuration, topology/genesis files, keys, credentials, operational certificates, `.musashi/` state, reports, and all non-database host data are protected static material. Never include them in database reloads; preserve or back them up whenever the selected operation requires it.
 
 ## Sensitive material
 
@@ -16,8 +16,8 @@ Do not assume a credential is testnet-only without checking its context. If main
 
 ## Impact classes
 
-- **Read-only:** normally safe without extra confirmation.
-- **Node-local reversible:** explain before execution and validate afterward.
+- **Observation:** inspect and record without mutating the node.
+- **Modification:** constrain to the requested outcome, verify scope and prerequisites, preserve recovery for protected state, then independently validate.
 
 ## Safe handling
 
@@ -25,10 +25,8 @@ Inspect downloaded artifacts before execution. Verify sources where possible. Us
 
 Use only connection and execution mechanisms supplied by the agent runtime or operator. Do not implement transports, embed credentials in plans, or treat a registered connection reference as a secret store.
 
-Generated plans, commands, scripts, and command results belong under `.musashi/`. Review them before execution, sanitize recorded output, and never use a download-and-execute pipeline. Required confirmation is invalid after any material plan or scope change.
-
-For a required confirmation, show the reviewed operation summary and derive a fresh four-digit decimal challenge from the canonical plan digest as specified by `execute-node-plan`. The full digest stays in the plan and audit record. The challenge is an acknowledgement, not a secret or credential, and a changed plan requires fresh confirmation even if its displayed code repeats.
+Generated commands, scripts, and results belong under `.musashi/`. Review them before execution, sanitize recorded output, and never use a download-and-execute pipeline. Re-evaluate scope and safety when a command or target changes; no plan digest or routine challenge is needed.
 
 Diagnostic reports and issue drafts must minimize evidence and remove credentials, keys, tokens, unnecessary usernames, private addresses, unrelated services, and private paths. Creating a local draft grants no permission to publish it or upload attachments.
 
-Campaign definitions and runs are shared coordination metadata, not a secret store. Keep participant-specific paths, identities, evidence, key material, credentials, and raw logs under `.musashi/campaigns/` or an operator-managed secret store. A campaign cannot reduce the confirmation, key-handling, transaction, host-safety, or publication requirements of the skill it invokes.
+Campaign definitions and runs are shared coordination metadata, not a secret store. Keep participant-specific paths, identities, evidence, key material, credentials, and raw logs under `.musashi/campaigns/` or an operator-managed secret store. A campaign cannot reduce key-handling, transaction, host-safety, or publication safeguards.

@@ -31,12 +31,12 @@ Unknown values remain null. Never copy defaults from stale documentation.
 4. Require an existing host ID. Do not create a host implicitly.
 5. Reject unsafe IDs, duplicate IDs, and paths escaping `.musashi/nodes/<node-id>/`.
 6. Record `chain_database_directory` only when it is an exact absolute path distinct from configuration and protected static paths. Do not infer it from a broader data or workspace directory. Record keys, certificates, configuration, topology/genesis, and other static node material in `protected_static_paths` when known.
-7. Show the normalized record and ask the operator to resolve conflicts. Updating an existing node or moving it between hosts requires explicit confirmation.
+7. Compare the normalized record with inventory. Resolve genuine identity or host conflicts with the operator; update an unambiguous existing node within the requested outcome.
 8. Create or update, from existing templates:
    - `.musashi/nodes/<node-id>/profile.yaml`
    - `.musashi/nodes/<node-id>/state.yaml`
    - `.musashi/nodes/<node-id>/memory.md`
-9. Add the node ID once to `.musashi/inventory.yaml` and to the selected host profile. On an approved host move, remove it from the old host profile. Preserve all unrelated entries.
+9. Add the node ID once to `.musashi/inventory.yaml` and to the selected host profile. On a verified host move within the requested outcome, remove it from the old host profile. Preserve all unrelated entries.
 10. Validate the node profile, state, host profile, and inventory against their schemas.
 11. Report files changed, unknown fields, shared-host nodes, and whether this node is now the active read-only context.
 

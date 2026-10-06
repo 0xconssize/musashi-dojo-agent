@@ -17,8 +17,8 @@ Require one relay node ID, assessed host, chosen supported installation method, 
 2. Refuse unconfirmed image tags, unsupported platforms, stale procedures, non-relay roles, or ambiguous paths.
 3. Inspect the host, existing installation, path ownership, ports, services, containers, and shared-host nodes.
 4. Prepare a schema-valid plan to acquire the selected release, save downloads under `.musashi/generated/`, inspect them, verify official checksums, create only declared directories, and install using the chosen method.
-5. Never download and immediately execute. Package installation, users, system services, system directories, firewall, and permissions are host-level and require explicit confirmation.
-6. Execute through `execute-node-plan` in short steps. Do not delete or overwrite an existing node without a separately approved recovery plan.
+5. Never download and immediately execute. Assess package installation, users, system services, system directories, firewall, permissions, and shared-host impact before changes.
+6. Execute through `execute-node-plan` in short steps. Do not delete or overwrite an existing node without a separate evidence-backed recovery workflow.
 7. Validate installed artifact provenance and invocation, paths, permissions, and shared-host isolation. Leave the relay stopped.
 8. Record the operation report and observed facts.
 

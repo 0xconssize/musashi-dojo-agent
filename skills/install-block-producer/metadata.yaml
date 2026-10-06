@@ -19,30 +19,7 @@ outputs:
   - operation_report
   - node_state
 success: A selected official block-producer implementation is verified at declared paths with a current provenance-checked operational certificate and registered BLS signing key, remains stopped, and shared workloads are unaffected.
-confirmation:
-  required_for:
-    - package-installation
-    - system-directory
-    - service-definition
-    - container-creation
-    - ownership-change
-    - firewall-change
-    - host-level
-    - destructive-broad
-  invalidated_by:
-    - command-change
-    - target-change
-    - path-change
-    - privilege-change
-    - scope-change
-    - method-change
-    - network-respin
-    - network-incarnation-change
-    - genesis-hash-change
-    - system-start-change
-    - slots-per-kes-period-change
-    - kes-period-expiry
-    - opcert-output-change
+
 sources:
   operational:
     url: https://leios.cardano-scaling.org/docs/testnet/getting-started/

@@ -5,9 +5,11 @@ description: "Bootstrap a Musashi Leios relay or block-producer node from a chec
 
 # Bootstrap node database
 
-Use this skill when a new relay or block producer would otherwise need to replay the complete chain from genesis. It replaces only the node database with a snapshot from a trusted, fully synced relay, then hands the node back to the normal lifecycle workflow.
+Use this skill to bootstrap a new node or to reload a diagnosed invalid chain database. For an existing invalid database larger than **200,000,000 bytes (200 MB)**, prefer a verified HTTP(S) snapshot over replaying the chain through the node. Size alone never diagnoses corruption or authorizes replacement; at or below the threshold, choose recovery on evidence rather than forcing a snapshot.
 
-This replaces disposable experimental chain state. When the disposable chain-database exemption is validated by `execute-node-plan`, it requires no operator confirmation. It never changes keys, operational certificates, configuration, topology/genesis files, `.musashi/` state, or unrelated nodes.
+`reload-leios-db.sh` is an operator example to inspect, **not a script to run verbatim**: it stops a user service, refreshes configuration, removes `leios.*` and `db`, downloads `leios.tar.zst` with `leios.tar.zst.sha256` from `https://leios1-rel-a-1.play.dev.cardano.org/`, extracts into `tmp-testnet`, and starts the service. Adapt only its verified snapshot source, checksum and archive layout to the registered node; never inherit its relative paths, broad deletions, config overwrite, or fixed service name. Recheck the live script and endpoint before each use.
+
+This replaces disposable experimental chain state only after the registered chain-database boundary in `execute-node-plan` is validated. It never changes keys, operational certificates, configuration, topology/genesis files, `.musashi/` state, or unrelated nodes.
 
 ## Preconditions
 
@@ -20,21 +22,24 @@ Require and record:
 - matching Musashi network incarnation, node version, config/topology/genesis hashes, and database layout;
 - sufficient free disk for archive, extracted database, and temporary data;
 - bounded diagnostic evidence that a complete chain database replacement is appropriate.
+- for an existing invalid database, a read-only byte count of the **exact registered chain database directory** before stopping or deleting it; record whether it exceeds 200,000,000 bytes. Do not measure the whole working directory or count keys/configuration. If the directory is missing, record size as unknown and use the diagnosed recovery path without inventing a threshold result.
+
+Measure apparent bytes on the verified host with the exact resolved directory (for example `du --apparent-size --block-size=1 --summarize -- "$CHAIN_DATABASE_DIRECTORY"` after rejecting a symlink or mount). The threshold is strictly **greater than** 200,000,000, not greater than or equal. If the release also requires resetting a separate `leios.db` SQLite file, diagnose and register its exact path separately; the script's `leios.*` wildcard is not authority to delete it.
 
 Stop on an ambiguous path, running writer, untrusted or unsynced source, missing checksum, network mismatch, insufficient disk, unknown archive layout, or a database path that overlaps protected static material. Revalidate official sources before use; the example source repository may lag the current testnet.
 
 ## Workflow
 
 1. Read `AGENTS.md`, `HOST_SAFETY.md`, the node profile/state/memory, `network/current.yaml`, and this skill's `metadata.yaml`. Inspect the target process, service, paths, owner, permissions, ports, and other nodes on the host.
-2. Confirm the source relay is fully synced and serves the same network, protocol incarnation, node version, and snapshot format. Record its observed tip and source URL.
-3. Use `stop-node` to stop the target. The disposable-chain-database exemption covers this node-local stop only after confirming it affects no shared services or other nodes. Capture status and bounded logs before changing state.
-4. Resolve all paths to absolute paths. Put archive, checksum, and extraction directory outside the final database path, under the declared node working directory.
-5. Verify the stopped writer and resolve the database path again. Remove only the exact registered `chain_database_directory`; never use a wildcard, recursive parent target, or remove the working directory. Never touch `keys/`, `config/`, `state/`, `.musashi/`, topology/genesis files, or any declared protected static path. Do not back up or rename the previous chain database.
-6. Download the snapshot and checksum with fail-closed HTTP behavior, retries, bounded timeouts, and resume support. Never pipe a download to a shell or execute archive contents.
-7. Verify the checksum against the exact archive before extraction. Stop on a mismatch, HTML/error response, missing manifest entry, or ambiguous filename.
-8. Inspect the archive listing and reject absolute paths, `../` traversal, unexpected archive types, or unrelated files. Extract into a fresh temporary directory; never extract over the live database.
-9. Identify the contained database directory explicitly. The repository example extracts `db-leios` and comments a rename to `db`; do not assume that mapping without checking the current node command and layout.
-10. Validate the extracted layout, ownership, free space, and write permissions. Move it into the declared database path only after confirming the previous database was removed and no protected path is affected.
+2. Confirm the source relay is fully synced and serves the same network, protocol incarnation, node version, and snapshot format. For an invalid database over 200 MB, select the HTTP(S) snapshot flow unless source, compatibility, integrity, or disk checks fail. Record its observed tip, archive URL, checksum URL, and measured size. Never substitute a hardcoded endpoint for source verification.
+3. Resolve all paths to absolute paths. Put archive, checksum, and a fresh extraction directory outside the final database path, under the declared node working directory. Leave the node running during the potentially long transfer when safe.
+4. Download the snapshot and checksum with fail-closed HTTP behavior, retries, and bounded timeouts. Resume only when the partial archive belongs to the same verified source and ETag/version; otherwise start a fresh staged download. Never pipe a download to a shell or execute archive contents.
+5. Verify the checksum against the exact archive before extraction. Stop on a mismatch, HTML/error response, missing manifest entry, or ambiguous filename.
+6. Inspect the archive listing and reject absolute paths, `../` traversal, unexpected archive types, or unrelated files. Extract into a fresh temporary directory; never extract over the live database.
+7. Identify the contained database directory explicitly. The repository example extracts `db-leios` and comments a rename to `db`; do not assume that mapping without checking the current node command and layout. Validate the extracted layout, ownership, free space, and write permissions.
+8. Recheck snapshot freshness and target identity, then use `stop-node` after verifying it affects no shared services or other nodes. Capture status and bounded logs; verify a stopped writer and resolve the exact registered database path again.
+9. Only now remove that directory; never use a wildcard, parent target, or working directory. Never touch keys, configuration, certificates, topology/genesis, `.musashi/`, or protected static paths. Do not back up or rename the previous chain database.
+10. Move the verified staging database into the now-empty declared path. Keep the verified archive until post-start checks complete so a failed install has a usable replacement source.
 11. Verify configuration, topology, genesis files, keys, certificates, permissions, and service command are unchanged. Ensure private keys remain protected.
 12. Use `start-node` to start the node. Validate process identity, socket/API availability, peers, expected network, and advancing tip/sync progress. A snapshot accelerates synchronization; it is not proof of synchronization.
 13. Record diagnostic evidence, source URL/FQDN, source tip/sync status, archive and checksum, verification result, target path, extraction mapping, node version, and post-start observations in the node memory/report. Do not record or retain a chain database backup.
@@ -49,25 +54,28 @@ umask 077
 
 WORKING_DIR=/absolute/path/to/node
 DOWNLOAD_DIR="$WORKING_DIR/.bootstrap"
-ARCHIVE="$DOWNLOAD_DIR/leios.full.tar.zst"
-CHECKSUM="$DOWNLOAD_DIR/leios.full.tar.zst.sha256"
+ARCHIVE="$DOWNLOAD_DIR/leios.tar.zst"
+CHECKSUM="$DOWNLOAD_DIR/leios.tar.zst.sha256"
 EXTRACT_DIR="$DOWNLOAD_DIR/extracted"
-SOURCE_BASE="https://<trusted-fully-synced-relay>"
+SOURCE_BASE="https://leios1-rel-a-1.play.dev.cardano.org" # example only: verify current source and network
 
-mkdir -p "$DOWNLOAD_DIR" "$EXTRACT_DIR"
+mkdir -p "$DOWNLOAD_DIR"
+# Verify EXTRACT_DIR is absent, beneath the registered working directory, and not a symlink or mount.
+mkdir "$EXTRACT_DIR"
 curl --fail --location --retry 10 --retry-connrefused --retry-delay 10 \
-  --connect-timeout 15 --max-time 3600 --continue-at - \
-  --output "$ARCHIVE" "$SOURCE_BASE/leios.full.tar.zst"
+  --connect-timeout 15 --max-time 3600 \
+  --output "$ARCHIVE" "$SOURCE_BASE/leios.tar.zst"
 curl --fail --location --retry 5 --retry-delay 5 \
   --connect-timeout 15 --max-time 120 \
-  --output "$CHECKSUM" "$SOURCE_BASE/leios.full.tar.zst.sha256"
+  --output "$CHECKSUM" "$SOURCE_BASE/leios.tar.zst.sha256"
 
+# Check that the manifest has exactly one expected basename and a valid digest before using it.
 (cd "$DOWNLOAD_DIR" && sha256sum -c "$(basename "$CHECKSUM")")
 tar --list --file "$ARCHIVE" >/dev/null
 tar --extract --file "$ARCHIVE" --directory "$EXTRACT_DIR"
 ```
 
-Before extraction, review the full `tar --list` output and validate every member path. Do not delete the archive until post-start validation succeeds and the retention decision is recorded.
+Before extraction, review the full `tar --list` output and validate every member path. Ensure the checksum manifest names exactly the selected archive basename; inspect source network/version and layout. Do not delete the archive until post-start validation succeeds and the retention decision is recorded. This is a procedure example, not permission to run against a live node without target-specific preflight.
 
 ## Failure and success
 

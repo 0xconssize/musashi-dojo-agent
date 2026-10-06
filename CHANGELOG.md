@@ -4,8 +4,9 @@
 
 ### Changed
 
+- For diagnosed invalid chain databases larger than 200 MB, recovery and update workflows now prefer a verified HTTP(S) snapshot based on `reload-leios-db.sh` over full node replay, with exact-path measurement, checksum and compatibility gates, and staging before deletion.
 - The complete registered Musashi chain database is now classified as disposable experimental state: a diagnosed, single-node, exact-path reload can proceed without confirmation or database backup, while static node material and all host protections remain protected.
-- Required plan confirmations now use a fresh digest-derived four-digit decimal challenge while retaining the full SHA-256 plan digest for scope binding and audit.
+- Removed digest-based plan challenges and routine approval gates in favor of scoped autonomous execution, exact-target preflight, protected-state recovery, and independent validation. Observation schedules remain read-only; key overwrites and unrequested external effects remain out of scope.
 
 - Updated internal release declarations and operational metadata to the official `prototype-2026w36` release, including its respin, BLS, asset, and release-history guidance.
 

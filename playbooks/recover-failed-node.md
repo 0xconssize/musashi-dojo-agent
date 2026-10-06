@@ -12,15 +12,15 @@ Recover one diagnosed failure without broadening the action.
 
 1. Preserve bounded pre-recovery evidence and record the current node and host state.
 2. Revalidate the recovery authority against the installed and selected releases.
-3. Build a schema-valid recovery plan containing the narrowest action, exact paths, privileges, impact, stop conditions, validation, and recovery-of-recovery.
-4. Obtain a new four-digit confirmation for every host-level or destructive step. Earlier install, update, or diagnostic approval is not reusable. The only exception is a complete chain-database replacement that passes the disposable-chain-database exemption in `execute-node-plan`.
+3. Build a schema-valid recovery plan containing the narrowest action, exact paths, privileges, impact, stop conditions, validation, and recovery-of-recovery. For a diagnosed invalid complete database, record the exact database size and, when it exceeds 200,000,000 bytes, use `bootstrap-node-database` to stage and verify the HTTP(S) snapshot before stopping or removing database state. Never use size alone as a reason to delete data.
+4. Before host-level or destructive steps, verify exact targets, protected-state recovery, and shared-host isolation. A complete chain-database replacement must pass the registered database boundary in `execute-node-plan`.
 5. Execute short steps through `execute-node-plan`; stop after any unexpected result.
 6. Validate runtime identity, configuration integrity, database accessibility, bounded logs, tip progression, peers, and shared workloads.
 7. Record affected data, backups, evidence, and outcome.
 
 ## Current narrow exception
 
-For `prototype-2026w31a`, the official release notes permit deleting only volatile chain state when invalid Leios certificate crashes persist after updating. Confirm the exact trigger and path, preserve evidence, and require the four-digit destructive confirmation. This partial-state action does not qualify for the complete chain-database exemption.
+For `prototype-2026w31a`, the official release notes permit deleting only volatile chain state when invalid Leios certificate crashes persist after updating. Verify the exact trigger and path, preserve evidence, and verify a viable recovery route. This partial-state action is not a complete chain-database reload.
 
 ## Stop conditions
 

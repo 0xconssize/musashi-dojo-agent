@@ -17,7 +17,7 @@ Install the selected `cardano-node` implementation and prepare one already-regis
 6. Confirm the Musashi configuration was pinned and verified separately. Required files are `config/config.json`, `config/topology.json`, and the relevant genesis files under the declared working directory.
 7. The current network uses magic `164` and Dijkstra. These are network facts, not generic Cardano defaults; stop and revalidate if declarations or direct observation disagree.
 
-Installation changes host state and requires explicit confirmation before package installation, directory creation outside the operator workspace, ownership changes, service definitions, firewall changes, or container creation. Execute in short steps and leave the node stopped. Use `start-node` only after installation validation.
+Installation changes host state. Check package, path, ownership, service, firewall, container, and shared-host impact; preserve rollback. Execute in short steps and leave the node stopped. Use `start-node` only after installation validation.
 
 ## Common layout and validation
 
@@ -67,7 +67,7 @@ nix develop github:input-output-hk/ouroboros-leios#dev-testnet
 cardano-node --version
 ```
 
-The shell provides `cardano-node` and `cardano-cli`; it does not authorize host service installation or start the node. Run the producer invocation only through the separately confirmed `start-node` workflow. Do not substitute `nix run ...#leios-testnet-relay`: that wrapper is for a non-producing relay.
+The shell provides `cardano-node` and `cardano-cli`; it does not itself install host services or start the node. Run the producer invocation through the separate `start-node` workflow. Do not substitute `nix run ...#leios-testnet-relay`: that wrapper is for a non-producing relay.
 
 ## Prebuilt binaries
 

@@ -22,28 +22,23 @@ compatibility:
     - cardano-cli-dijkstra
     - bls-key-generation
 
-mode: prepare-and-confirm
+mode: prepare
 
 steps:
   - id: validate-instruction
     skill: sre-observe
-    confirmation: none
     risk: read-only
   - id: verify-cli-and-release
     skill: sre-observe
-    confirmation: none
     risk: read-only
   - id: generate-bls-keys
     skill: generate-cardano-keys
-    confirmation: explicit
     risk: key-material
   - id: prepare-registration
     skill: register-stake-pool
-    confirmation: explicit
     risk: transaction
   - id: verify-result
     skill: sre-observe
-    confirmation: none
     risk: read-only
 
 success_criteria:
@@ -57,9 +52,9 @@ success_criteria:
 stop_conditions:
   - The official instruction cannot be authenticated.
   - The release or CLI behavior is unknown or incompatible.
-  - Existing BLS key files are present and rotation was not explicitly approved.
+  - Existing BLS key files are present and a safe new directory cannot be selected.
   - The target network, pool, or key directory is ambiguous.
-  - Registration requires an undeclared or unapproved transaction.
+  - Registration requires a transaction outside the requested outcome.
 
 retirement:
   on_expiry: stop-new-executions

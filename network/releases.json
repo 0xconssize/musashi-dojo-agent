@@ -1,16 +1,45 @@
 {
   "schema_version": 1,
-  "verified_at": "2026-09-07T11:29:24Z",
+  "verified_at": "2026-10-05T15:44:15Z",
   "operational_guide": "https://leios.cardano-scaling.org/docs/testnet/getting-started/",
   "release_source": "https://github.com/input-output-hk/ouroboros-leios/releases",
   "selection_policy": "Select the most recently published non-draft release from the official repository, including a pre-release. A lagging operational guide does not downgrade it.",
-  "selected_release": "prototype-2026w36",
+  "selected_release": "prototype-2026w40",
   "releases": [
+    {
+      "tag": "prototype-2026w40",
+      "published_at": "2026-10-04T22:00:15Z",
+      "tag_commit": "e04f1b6b95f107b6ef14c87cbfbfe370df187cdc",
+      "status": "latest-selected",
+      "summary": "Stores endorser-block transactions per endorser block for cheaper sequential writes and rejects malformed peer data before allocation. No wire-format respin; w39 and w40 nodes interoperate.",
+      "state_action": "Requires a full chain-database state wipe because the LeiosDb schema changed without migration; remove the chain database together with leios.vol.db and leios.imm.db, then sync from genesis or sideload from IOG relays. Deleting only the two Leios DB files is insufficient. Do not perform without the exact-node/path safety workflow and required confirmation.",
+      "assets": {
+        "linux_x86_64": {
+          "archive": "cardano-node-leios-x86_64-linux.tar.gz",
+          "sha256": "36ec4cc9d5e3901f1fcaa5031080667f7665cf4315cf9bdebc253286f0d2ee48",
+          "status": "available"
+        },
+        "linux_aarch64": {
+          "archive": "cardano-node-leios-aarch64-linux.tar.gz",
+          "sha256": "7ed8902794339a6e38de3376649853047964b4dec2a41fc7080e95bb6f2d98b4",
+          "status": "available"
+        },
+        "macos_aarch64": {
+          "archive": "cardano-node-leios-aarch64-darwin.tar.gz",
+          "sha256": "dd3e0129711a289b6f91e4837f6f0075d6e05ddedc088e3a96ae288ca56addaf",
+          "status": "available"
+        }
+      },
+      "source_url": "https://github.com/input-output-hk/ouroboros-leios/releases/tag/prototype-2026w40",
+      "draft": false,
+      "prerelease": true,
+      "verified_at": "2026-10-05T15:44:15Z"
+    },
     {
       "tag": "prototype-2026w36",
       "published_at": "2026-09-07T11:29:24Z",
       "tag_commit": "4c030ceee6eb0e7e3d495599d74ca11c8078dfbb",
-      "status": "latest-selected",
+      "status": "historical-compatible-predecessor",
       "summary": "Adds protocol parameters, epoch-boundary Leios committee selection with expiring voting keys, a bounded forge loop, and corrected BLS proof of possession; requires a Musashi respin.",
       "state_action": "Preserve prior local state, delete or quarantine it only with confirmation, and re-sync from genesis or an official sideload using the current Musashi configuration. Revalidate BLS proofs and registrations with the w36 cardano-cli."
     },
@@ -153,7 +182,7 @@
     }
   },
   "conflicts": [
-    "The getting-started guide still embeds prototype-2026w30 examples while the official release repository selects prototype-2026w36.",
-    "The live Musashi configuration and deployment state must be revalidated after the prototype-2026w36 respin; the selected release requires a w36 cardano-cli for BLS proof and registration operations."
+    "The getting-started guide still embeds prototype-2026w30 examples while the official release repository selects prototype-2026w40.",
+    "The live Musashi configuration and deployment state must be revalidated after release changes; prototype-2026w40 requires a complete chain-database state wipe because the LeiosDb schema changed without migration. The installed version on each registered node must be checked independently."
   ]
 }

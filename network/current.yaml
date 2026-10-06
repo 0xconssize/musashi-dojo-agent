@@ -12,11 +12,11 @@ network:
   consensus_mode: PraosMode
 
 release:
-  selected: prototype-2026w36
+  selected: prototype-2026w40
   selection_basis: Most recently published non-draft release in the official Ouroboros Leios repository.
   node_version_reported: null
-  published_at: "2026-09-07T11:29:24Z"
-  tag_commit: 4c030ceee6eb0e7e3d495599d74ca11c8078dfbb
+  published_at: "2026-10-04T22:00:15Z"
+  tag_commit: e04f1b6b95f107b6ef14c87cbfbfe370df187cdc
   newer_available_not_selected: []
 
 configuration:
@@ -69,6 +69,7 @@ requirements:
 
 warnings:
   - This is continuously rebuilt pre-release software on a resettable prototype testnet.
+  - prototype-2026w40 is the latest official release as of 2026-10-05; its LeiosDb schema change requires rebuilding the complete chain database, with no migration. Release availability does not establish live Musashi configuration compatibility or which registered nodes are running w40; revalidate both before operational use.
   - prototype-2026w36 requires a Musashi respin; do not assume the registered nodes have been migrated until independently verified. Preserve prior local state before removing it and re-sync with the current configuration.
   - prototype-2026w36 changes committee selection, protocol-parameter handling, BLS proof-of-possession semantics, and Dijkstra block structures. Previous BLS proofs and registrations must be revalidated with the w36 cardano-cli.
   - The getting-started guide still embeds prototype-2026w30 examples; use w36 assets, release notes, and the live Musashi configuration while retaining its non-version-specific procedures.
@@ -87,8 +88,8 @@ sources:
   release_authority:
     url: https://github.com/input-output-hk/ouroboros-leios/releases
     api_url: https://api.github.com/repos/input-output-hk/ouroboros-leios/releases
-    retrieved_at: "2026-09-07T11:29:24Z"
-    latest_release: prototype-2026w36
+    retrieved_at: "2026-10-05T15:44:15Z"
+    latest_release: prototype-2026w40
   linked_official:
     - url: https://leios.cardano-scaling.org/docs/testnet/register-stake-pool/
       role: Block-producer requirements and Dijkstra procedures.
@@ -100,7 +101,7 @@ sources:
       sha256: 5ca65479c94966274ed4343e0d6c5a5e5df793f0e276ee66b95d0a49818b7f1b
 
 freshness:
-  status: current-as-reviewed
+  status: stale
   verified_at: "2026-09-10T09:41:17Z"
   review_before_use: true
   stale_when:

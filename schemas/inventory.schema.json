@@ -15,6 +15,12 @@
       "type": "array",
       "uniqueItems": true,
       "items": {"$ref": "#/$defs/id"}
+    },
+    "aliases": {
+      "type": "object",
+      "description": "Optional human-friendly node aliases mapped to canonical node IDs.",
+      "propertyNames": {"$ref": "#/$defs/id"},
+      "additionalProperties": {"$ref": "#/$defs/id"}
     }
   },
   "$defs": {

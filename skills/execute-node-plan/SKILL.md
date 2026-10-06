@@ -25,7 +25,7 @@ Complete chain-database replacement is allowed only when all of the following ar
 - the target profile declares an exact absolute `chain_database_directory` and relevant `protected_static_paths`;
 - every destructive affected path resolves exactly to that database directory, is not a symlink or mount point, and is disjoint from protected static paths, configuration, workspace, and broader data roots;
 - the target writer is verified stopped, the host identity and single-node scope are current, and the action has no shared-host or unrelated-service impact;
-- diagnostic evidence supports a full database reload, and the replacement snapshot has passed source, checksum, and layout preflight checks outside the live database path.
+- diagnostic evidence or authoritative release instructions require a full database reload; a snapshot route has passed source, checksum, and layout preflight outside the live database path, or a replay route has independently passed network compatibility, space, time/impact, and recovery preflight. Neither route may be assumed viable merely from a release note.
 
 Stop on ambiguity, protected-path overlap, broad targets, a running or unverified writer, multiple-node scope, shared-host impact, or missing preflight. A partial volatile-state deletion is a different recovery and needs its own evidence and exact paths. Never delete keys or other protected state to satisfy a recovery.
 
@@ -33,8 +33,8 @@ Stop on ambiguity, protected-path overlap, broad targets, a running or unverifie
 
 1. Read `AGENTS.md`, `HOST_SAFETY.md`, `SECURITY.md`, network freshness declarations, execution profile, target records, and the operation-specific skill.
 2. Refuse execution in advisory mode. Never claim a local or remote capability that has not been observed.
-3. Validate the operation record and resolve every node to one registered host, access method, runtime identity, relevant path, and shared-host dependency. Apply the destructive database boundary when relevant.
-4. Re-verify each modifying target with `connect-host` when evidence is missing, stale, or conflicting. Stop on identity conflict or broadened scope.
+3. Resolve every node to one registered host, access method, runtime identity, and shared-host dependency. Re-verify each modifying target with `connect-host` when evidence is missing, stale, or conflicting. Stop on identity conflict or broadened scope.
+4. If registration lacks exact paths, discover them read-only on the verified host and update the private profile from observed evidence before validating the operation record and modifying plan; do not guess or weaken the destructive database boundary. Resolve relevant paths and apply that boundary when relevant.
 5. Inspect current state before modification. Revalidate Musashi sources whenever the plan contains a mutable network value, release asset, testnet command, or release-specific recovery action.
 6. Save generated commands and scripts under `.musashi/generated/`. Inspect downloads, sources, affected paths, privileges, recursion, wildcards, and recovery before execution. Never download and immediately execute. Apply the generated-shell quality gate below.
 7. Execute short steps through runtime-provided tools only. Bound each step below the caller or transport timeout; split longer observation windows into resumable read-only polls. Capture command, target, timestamps, exit status, sanitized output, and errors in a command-result record.

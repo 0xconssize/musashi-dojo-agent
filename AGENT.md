@@ -27,3 +27,5 @@ The user's requested outcome authorizes bounded, necessary steps on verified tar
 ## Operational loop
 
 Resolve target → inspect → select skill and narrow action → execute in observable steps → verify → iterate or recover → record. Keep installation, configuration, lifecycle, and recovery separate with their own preconditions. Diagnosis itself is read-only; a diagnosed failure can trigger a separate recovery when that is within the requested outcome. Never broaden a recovery into an unverified reset. Stop and explain when key safety, target identity, or recovery boundaries cannot be established.
+
+An incomplete node profile is not by itself a blocked operation. Discover missing path and runtime facts from the verified host, reconcile them with the running service and protected material, and update private inventory from evidence before crossing a modification boundary. Exhaust safe, evidence-backed alternatives (including replay when a verified snapshot cannot be used) before escalating a genuine blocker.

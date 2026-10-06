@@ -5,7 +5,7 @@ description: "Bootstrap a Musashi Leios relay or block-producer node from a chec
 
 # Bootstrap node database
 
-Use this skill to bootstrap a new node or to reload a diagnosed invalid chain database. For an existing invalid database larger than **200,000,000 bytes (200 MB)**, prefer a verified HTTP(S) snapshot over replaying the chain through the node. Size alone never diagnoses corruption or authorizes replacement; at or below the threshold, choose recovery on evidence rather than forcing a snapshot.
+Use this skill to bootstrap a new node or to replace a chain database when diagnosed invalid or when the selected official release explicitly requires a full rebuild. For an existing database larger than **200,000,000 bytes (200 MB)**, prefer a verified HTTP(S) snapshot over replaying the chain through the node. Size alone never diagnoses corruption or authorizes replacement; at or below the threshold, choose recovery on evidence rather than forcing a snapshot. If a compatible snapshot is unavailable, investigate a verified, viable replay path rather than treating snapshot absence as automatic failure.
 
 `reload-leios-db.sh` is an operator example to inspect, **not a script to run verbatim**: it stops a user service, refreshes configuration, removes `leios.*` and `db`, downloads `leios.tar.zst` with `leios.tar.zst.sha256` from `https://leios1-rel-a-1.play.dev.cardano.org/`, extracts into `tmp-testnet`, and starts the service. Adapt only its verified snapshot source, checksum and archive layout to the registered node; never inherit its relative paths, broad deletions, config overwrite, or fixed service name. Recheck the live script and endpoint before each use.
 
@@ -16,22 +16,22 @@ This replaces disposable experimental chain state only after the registered chai
 Require and record:
 
 - one node ID, host ID, role, runtime identity, working directory, and database path;
-- an exact absolute `chain_database_directory` registered in the node profile, plus declared protected static paths;
+- an exact absolute `chain_database_directory` registered in the node profile, plus declared protected static paths; when absent, discover them read-only from the verified service command, actual paths and static files, then record observed facts in the private profile before any replacement (never derive them solely from `data_directory`);
 - the exact service/process/container stop and start operations;
-- a trusted source relay FQDN or URL, confirmed fully synced (`syncProgress: "100.00"`);
-- matching Musashi network incarnation, node version, config/topology/genesis hashes, and database layout;
-- sufficient free disk for archive, extracted database, and temporary data;
-- bounded diagnostic evidence that a complete chain database replacement is appropriate.
-- for an existing invalid database, a read-only byte count of the **exact registered chain database directory** before stopping or deleting it; record whether it exceeds 200,000,000 bytes. Do not measure the whole working directory or count keys/configuration. If the directory is missing, record size as unknown and use the diagnosed recovery path without inventing a threshold result.
+- for the snapshot branch, a trusted source relay FQDN or URL, confirmed fully synced (`syncProgress: "100.00"`);
+- for the snapshot branch, matching Musashi network incarnation, node version, config/topology/genesis hashes, and database layout;
+- for the snapshot branch, sufficient free disk for archive, extracted database, and temporary data;
+- bounded diagnostic evidence that a complete chain database replacement is appropriate, or authoritative release instructions explicitly requiring a full rebuild for this transition.
+- for any existing database, a read-only byte count of the **exact registered chain database directory** before stopping or deleting it; record whether it exceeds 200,000,000 bytes. Do not measure the whole working directory or count keys/configuration. If the directory is missing, record size as unknown and use the diagnosed recovery path without inventing a threshold result.
 
 Measure apparent bytes on the verified host with the exact resolved directory (for example `du --apparent-size --block-size=1 --summarize -- "$CHAIN_DATABASE_DIRECTORY"` after rejecting a symlink or mount). The threshold is strictly **greater than** 200,000,000, not greater than or equal. If the release also requires resetting a separate `leios.db` SQLite file, diagnose and register its exact path separately; the script's `leios.*` wildcard is not authority to delete it.
 
-Stop on an ambiguous path, running writer, untrusted or unsynced source, missing checksum, network mismatch, insufficient disk, unknown archive layout, or a database path that overlaps protected static material. Revalidate official sources before use; the example source repository may lag the current testnet.
+Stop the snapshot branch on an ambiguous path, untrusted or unsynced source, missing checksum, network mismatch, insufficient disk, unknown archive layout, or a database path that overlaps protected static material. A running writer is expected during read-only discovery and staging; stop it and verify before replacement. If the snapshot branch fails, return to `update-node` to evaluate replay only after independently establishing network compatibility, sufficient space and time, bounded service impact, and a viable recovery route; otherwise stop the entire update. Replay is a separate planned branch: do not apply this skill's snapshot download/extract/move steps to it. Revalidate official sources before use; the example source repository may lag the current testnet.
 
 ## Workflow
 
 1. Read `AGENTS.md`, `HOST_SAFETY.md`, the node profile/state/memory, `network/current.yaml`, and this skill's `metadata.yaml`. Inspect the target process, service, paths, owner, permissions, ports, and other nodes on the host.
-2. Confirm the source relay is fully synced and serves the same network, protocol incarnation, node version, and snapshot format. For an invalid database over 200 MB, select the HTTP(S) snapshot flow unless source, compatibility, integrity, or disk checks fail. Record its observed tip, archive URL, checksum URL, and measured size. Never substitute a hardcoded endpoint for source verification.
+2. For the snapshot branch, confirm the source relay is fully synced and serves the same network, protocol incarnation, node version, and snapshot format. For an existing database over 200 MB, select the HTTP(S) snapshot flow unless source, compatibility, integrity, or disk checks fail. Record its observed tip, archive URL, checksum URL, and measured size. Never substitute a hardcoded endpoint for source verification. If it fails, document each failed check and assess the replay alternative before escalation; do not make snapshot availability an extra release requirement.
 3. Resolve all paths to absolute paths. Put archive, checksum, and a fresh extraction directory outside the final database path, under the declared node working directory. Leave the node running during the potentially long transfer when safe.
 4. Download the snapshot and checksum with fail-closed HTTP behavior, retries, and bounded timeouts. Resume only when the partial archive belongs to the same verified source and ETag/version; otherwise start a fresh staged download. Never pipe a download to a shell or execute archive contents.
 5. Verify the checksum against the exact archive before extraction. Stop on a mismatch, HTML/error response, missing manifest entry, or ambiguous filename.

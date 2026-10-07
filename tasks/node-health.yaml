@@ -3,7 +3,7 @@ id: node-health
 description: Comprobar la salud básica de un nodo Musashi.
 schedule:
   type: interval
-  every: 5m
+  every: 30m
 skill: sre-observe
 scope:
   type: single-node

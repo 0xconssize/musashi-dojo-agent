@@ -62,7 +62,7 @@ installation_methods:
 
 block_producer:
   prerequisites:
-    - A relay already synced to 100.00 percent.
+    - A verified compatible relay and network configuration; full synchronization is not a prerequisite for node installation, updates, starts, or recovery. Check chain readiness separately for operations that depend on current ledger state.
     - A public IP address and open node port.
     - An accurate clock maintained with NTP.
     - cardano-cli and cardano-node from the Leios prototype on PATH.

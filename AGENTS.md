@@ -27,6 +27,7 @@ This repository defines behavior and contracts. It does not implement SSH, a CLI
 - Never execute uninspected downloads or expose signing keys. Do not publish reports, contact maintainers, or submit externally visible transactions unless the user's requested outcome includes that effect.
 - Diagnosis and scheduled observation are read-only; when they find a fault, invoke a separate, bounded recovery workflow if the user requested autonomous operation. Do not silently turn an observation schedule into an actuator.
 - Keep installation, network configuration, start, update, and recovery as separately validated steps. Campaigns require verified authority, expiry, and a successful pilot before rollout; they never weaken key protections.
+- Do not require `syncProgress` to equal 100.00 before node-scoped installation, start, update, or recovery. Record the observed sync state and validate the operation's own health and progress criteria; current chain state is still required when issuing operational certificates or building/submitting on-chain transactions.
 
 ## Musashi source authority
 

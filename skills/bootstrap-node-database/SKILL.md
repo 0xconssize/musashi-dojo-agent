@@ -1,13 +1,13 @@
 ---
 name: bootstrap-node-database
-description: "Bootstrap a Musashi Leios relay or block-producer node from a checksum-verified database snapshot served by a fully synced relay."
+description: "Bootstrap a Musashi Leios relay or block-producer node from a checksum-verified, network-compatible database snapshot."
 ---
 
 # Bootstrap node database
 
 Use this skill to bootstrap a new node or to replace a chain database when diagnosed invalid or when the selected official release explicitly requires a full rebuild. For an existing database larger than **200,000,000 bytes (200 MB)**, prefer a verified HTTP(S) snapshot over replaying the chain through the node. Size alone never diagnoses corruption or authorizes replacement; at or below the threshold, choose recovery on evidence rather than forcing a snapshot. If a compatible snapshot is unavailable, investigate a verified, viable replay path rather than treating snapshot absence as automatic failure.
 
-`reload-leios-db.sh` is an operator example to inspect, **not a script to run verbatim**: it stops a user service, refreshes configuration, removes `leios.*` and `db`, downloads `leios.tar.zst` with `leios.tar.zst.sha256` from `https://leios1-rel-a-1.play.dev.cardano.org/`, extracts into `tmp-testnet`, and starts the service. Adapt only its verified snapshot source, checksum and archive layout to the registered node; never inherit its relative paths, broad deletions, config overwrite, or fixed service name. Recheck the live script and endpoint before each use.
+`reload-leios-db.sh` is an operator example to inspect, **not a script to run verbatim**: it stops a user service, refreshes configuration, removes `leios.*` and `db`, downloads `leios.tar.zst` with `leios.tar.zst.sha256` from `https://leios1-rel-a-1.play.dev.cardano.org/`, extracts into `tmp-testnet`, and starts the service. Adapt only its verified snapshot source, checksum and archive layout to the registered node; never inherit its relative paths, broad deletions, config overwrite, or fixed service name. Recheck the live script and endpoint before each use. Discover the archive database root from the artifact; do not write a plan with a guessed name such as `db-leios` or `db`.
 
 This replaces disposable experimental chain state only after the registered chain-database boundary in `execute-node-plan` is validated. It never changes keys, operational certificates, configuration, topology/genesis files, `.musashi/` state, or unrelated nodes.
 
@@ -18,70 +18,54 @@ Require and record:
 - one node ID, host ID, role, runtime identity, working directory, and database path;
 - an exact absolute `chain_database_directory` registered in the node profile, plus declared protected static paths; when absent, discover them read-only from the verified service command, actual paths and static files, then record observed facts in the private profile before any replacement (never derive them solely from `data_directory`);
 - the exact service/process/container stop and start operations;
-- for the snapshot branch, a trusted source relay FQDN or URL, confirmed fully synced (`syncProgress: "100.00"`);
+- for the snapshot branch, a trusted source relay FQDN or URL and evidence that the snapshot belongs to the intended Musashi network and selected node release. Query source tip/sync status when directly exposed; lack of a public sync metric alone is not a blocker. Record unavailable source status as unknown, not as unsynced;
 - for the snapshot branch, matching Musashi network incarnation, node version, config/topology/genesis hashes, and database layout;
-- for the snapshot branch, sufficient free disk for archive, extracted database, and temporary data;
+- for the snapshot branch, artifact metadata, checksum manifest, full non-extracting archive inspection, observed database root/layout, expanded byte count, and documented staging strategy;
+- for the snapshot branch, a disk budget using current available bytes, actual allocated bytes of the exact disposable database path, archive bytes if staged remotely, expanded snapshot bytes, other temporary data, and the host's required free-space reserve;
 - bounded diagnostic evidence that a complete chain database replacement is appropriate, or authoritative release instructions explicitly requiring a full rebuild for this transition.
 - for any existing database, a read-only byte count of the **exact registered chain database directory** before stopping or deleting it; record whether it exceeds 200,000,000 bytes. Do not measure the whole working directory or count keys/configuration. If the directory is missing, record size as unknown and use the diagnosed recovery path without inventing a threshold result.
 
-Measure apparent bytes on the verified host with the exact resolved directory (for example `du --apparent-size --block-size=1 --summarize -- "$CHAIN_DATABASE_DIRECTORY"` after rejecting a symlink or mount). The threshold is strictly **greater than** 200,000,000, not greater than or equal. If the release also requires resetting a separate `leios.db` SQLite file, diagnose and register its exact path separately; the script's `leios.*` wildcard is not authority to delete it.
+Measure the 200 MB preference with apparent bytes on the verified host and exact resolved directory (for example `du --apparent-size --block-size=1 --summarize -- "$CHAIN_DATABASE_DIRECTORY"` after rejecting a symlink or mount). The threshold is strictly **greater than** 200,000,000, not greater than or equal. For the disk budget, measure allocated bytes separately (for example `du --block-size=1 --summarize -- "$CHAIN_DATABASE_DIRECTORY"`) and filesystem availability (`df --block-size=1`). Do not use apparent size as reclaimed space. Resolve the node's actual working directory and Leios DB config. If release-specific instructions require resetting `leios.vol.db` or `leios.imm.db` outside the registered chain directory, register each exact path and include it explicitly in the plan; neither `leios.*` nor any other wildcard is authority to delete it.
 
-Stop the snapshot branch on an ambiguous path, untrusted or unsynced source, missing checksum, network mismatch, insufficient disk, unknown archive layout, or a database path that overlaps protected static material. A running writer is expected during read-only discovery and staging; stop it and verify before replacement. If the snapshot branch fails, return to `update-node` to evaluate replay only after independently establishing network compatibility, sufficient space and time, bounded service impact, and a viable recovery route; otherwise stop the entire update. Replay is a separate planned branch: do not apply this skill's snapshot download/extract/move steps to it. Revalidate official sources before use; the example source repository may lag the current testnet.
+Stop the snapshot branch on an ambiguous path, untrusted source, affirmative evidence that the snapshot is for the wrong network or unusably stale, missing or inconsistent metadata/checksum, network mismatch, insufficient disk, unsafe archive entry, unknown database layout, or a database path that overlaps protected static material. Do not classify an unobservable source sync metric as evidence that the relay is unsynced. Establish suitability from official provenance, pinned artifact metadata, checksum, network/release compatibility, full archive inspection, and target recovery needs. A running writer is expected during read-only discovery and staging; stop it only after the artifact and recovery route are ready, then verify before replacement. If the snapshot branch fails, evaluate replay separately only after establishing compatibility, disk/time/impact, and recovery; never reuse snapshot steps for replay. Revalidate official sources before use; the example repository may lag the current testnet.
 
 ## Workflow
 
-1. Read `AGENTS.md`, `HOST_SAFETY.md`, the node profile/state/memory, `network/current.yaml`, and this skill's `metadata.yaml`. Inspect the target process, service, paths, owner, permissions, ports, and other nodes on the host.
-2. For the snapshot branch, confirm the source relay is fully synced and serves the same network, protocol incarnation, node version, and snapshot format. For an existing database over 200 MB, select the HTTP(S) snapshot flow unless source, compatibility, integrity, or disk checks fail. Record its observed tip, archive URL, checksum URL, and measured size. Never substitute a hardcoded endpoint for source verification. If it fails, document each failed check and assess the replay alternative before escalation; do not make snapshot availability an extra release requirement.
-3. Resolve all paths to absolute paths. Put archive, checksum, and a fresh extraction directory outside the final database path, under the declared node working directory. Leave the node running during the potentially long transfer when safe.
-4. Download the snapshot and checksum with fail-closed HTTP behavior, retries, and bounded timeouts. Resume only when the partial archive belongs to the same verified source and ETag/version; otherwise start a fresh staged download. Never pipe a download to a shell or execute archive contents.
-5. Verify the checksum against the exact archive before extraction. Stop on a mismatch, HTML/error response, missing manifest entry, or ambiguous filename.
-6. Inspect the archive listing and reject absolute paths, `../` traversal, unexpected archive types, or unrelated files. Extract into a fresh temporary directory; never extract over the live database.
-7. Identify the contained database directory explicitly. The repository example extracts `db-leios` and comments a rename to `db`; do not assume that mapping without checking the current node command and layout. Validate the extracted layout, ownership, free space, and write permissions.
-8. Recheck snapshot freshness and target identity, then use `stop-node` after verifying it affects no shared services or other nodes. Capture status and bounded logs; verify a stopped writer and resolve the exact registered database path again.
-9. Only now remove that directory; never use a wildcard, parent target, or working directory. Never touch keys, configuration, certificates, topology/genesis, `.musashi/`, or protected static paths. Do not back up or rename the previous chain database.
-10. Move the verified staging database into the now-empty declared path. Keep the verified archive until post-start checks complete so a failed install has a usable replacement source.
-11. Verify configuration, topology, genesis files, keys, certificates, permissions, and service command are unchanged. Ensure private keys remain protected.
-12. Use `start-node` to start the node. Validate process identity, socket/API availability, peers, expected network, and advancing tip/sync progress. A snapshot accelerates synchronization; it is not proof of synchronization.
-13. Record diagnostic evidence, source URL/FQDN, source tip/sync status, archive and checksum, verification result, target path, extraction mapping, node version, and post-start observations in the node memory/report. Do not record or retain a chain database backup.
+1. Read `AGENTS.md`, `HOST_SAFETY.md`, `SECURITY.md`, target profile/state/memory, `network/current.yaml`, execution profile, and this skill's metadata. Resolve one node/host/runtime identity; inspect service/process, exact paths, owners, permissions, ports, free space, and shared workloads. Refresh network and release declarations before using a network value.
+2. Read the exact running service command, working directory, and database config. Resolve the registered chain database path and every release-required Leios DB file. Verify they are not symlinks/mounts and are disjoint from protected static paths. If a required database file is outside the registered chain path, add its exact path as a separate affected path before planning; never infer it from a wildcard.
+3. Verify official source provenance, current metadata, network incarnation, node version, config/topology/genesis compatibility, snapshot format, and freshness. Query source tip/sync only when directly exposed; otherwise record unavailable and continue using independent evidence. For an existing DB over 200 MB, choose snapshot unless a specific trust, compatibility, integrity, freshness, recovery, or disk check fails. Record URL, metadata/checksum URLs, ETag/version, size, digest, creation time, and source status (or unknown). Never assume an endpoint is current because it appeared in an example.
+4. Before stopping the node, choose and prove a staging route. Record filesystem availability, allocated bytes of exact disposable DB paths, compressed bytes, inspected expanded bytes, other temporary usage, and required free-space reserve. For remote archive-and-extract staging, require current free bytes to cover archive + expanded snapshot + temporary overhead + reserve. If that does not fit, use a checksum-verified local archive and stream it over the verified host connection into a fresh remote staging directory after deleting only the exact registered DB path; require `free + actually_reclaimable_allocated_bytes - expanded_snapshot_bytes - other_temporary_bytes >= reserve`. If neither method meets the reserve, stop before service shutdown. Keep the verified local archive through successful post-start validation.
+5. Download metadata and checksum first; validate their schema, expected artifact basename, positive byte count, digest format, network/version fields, and a stable HTTP ETag/Last-Modified identifier. Download to private scratch using bounded retries/timeouts and conditional `If-Match` when supported. Download to a `.part` name and rename only after successful HTTP completion and exact byte count. Re-fetch metadata/checksum after transfer and require they still identify the same artifact/version. On a changed source or interrupted/mismatched partial, discard the partial and restart from a newly pinned artifact; do not resume across versions. Never pipe downloads to a shell or execute archive content.
+6. Run `skills/bootstrap-node-database/scripts/inspect_snapshot.py` on the staged archive with the metadata JSON and checksum sidecar. The script checks exact filename/size/SHA-256, scans the entire zstd tar without extracting, rejects absolute/traversal/duplicate paths, links and special files, requires one explicit top-level directory, and reports expanded bytes and discovered database root. Require its report to show `status: verified`. If the script is unavailable on a staging host, use the reviewed repository script on the operator host; do not replace this with a partial `tar --list`.
+7. Compare the discovered root and database markers with the selected release and exact node command/config. For current Cardano ChainDB layout, require the observed expected `immutable/`, `volatile/`, `ledger/` directories and `protocolMagicId` file (adjust only when authoritative release documentation and actual node layout prove a change). If needed, rerun the inspector with `--expected-root` and `--require-dir`/`--require-file` checks. Record the exact mapping from archive root to registered database path; do not guess or rename `db`/`db-leios`. Recalculate the disk budget using `expanded_file_bytes` before any destructive step.
+8. Create and schema-validate the execution plan only after paths, archive root, disk budget, staging method, preconditions, affected paths, recovery source, and independent validations are known. Save it under `.musashi/generated/`; confirm it covers the exact registered node and no protected state. User request authorizes the requested outcome; do not ask a redundant confirmation. If a runtime tool blocks a step, reconcile actual remote state and report the specific gate; do not bypass it with another transport or repeat the same destructive request blindly.
+9. Keep the node running through download and inspection when safe. Immediately before replacement, revalidate host identity and free space, use `stop-node`, capture status/bounded logs, verify the exact writer is stopped, re-resolve target paths, and verify other host workloads remain healthy.
+10. For remote staging with enough space, extract the verified archive only into a fresh staging directory outside the final path, then independently inspect its resulting root, layout, owner, permissions, and size. For local-stream staging, remove only the verified exact registered chain database path(s), then stream the still-verified local archive over the authenticated host connection into a fresh staging directory using a non-executing archive extractor. The plan must name this recovery point: if transfer/extraction fails, keep the service stopped, preserve the local archive, discard only the exact incomplete staging directory after verifying its path, and retry extraction from the same verified source or stop with evidence.
+11. Before installation, ensure the exact destination is absent and not a symlink/mount, and the staging root is the validated archive database root. Move only that directory to the exact declared database destination; never target a parent, wildcard, working directory, or protected static path. Do not back up or rename the previous chain database. Preserve configuration, keys, certificates, topology/genesis, and `.musashi/` state.
+12. Verify protected files and service command are unchanged; verify expected ownership, permissions, database layout, and remaining disk reserve. Use `start-node`; validate process identity, API/socket, peers, network, node version, logs, and advancing tip/sync progress. A snapshot accelerates synchronization; it does not prove full sync.
+13. Record source URL/FQDN, metadata/checksum/ETag, archive size/digest, inspector output, snapshot root/mapping/expanded size, disk budget/staging strategy, exact affected paths, recovery events, and post-start observations in the private operation report/node memory. Retain the archive until post-start validation; cleanup it only after success and the chosen retention decision. Never record or retain a chain database backup.
 
 ## Download and verification shape
 
-Adapt only after paths and source are confirmed; execute through `execute-node-plan`:
+The archive verifier is read-only and can run before the target is stopped. Run it against the exact staged metadata and sidecar; use the observed root from its JSON output, not a hardcoded archive layout:
 
 ```bash
-set -euo pipefail
-umask 077
-
-WORKING_DIR=/absolute/path/to/node
-DOWNLOAD_DIR="$WORKING_DIR/.bootstrap"
-ARCHIVE="$DOWNLOAD_DIR/leios.tar.zst"
-CHECKSUM="$DOWNLOAD_DIR/leios.tar.zst.sha256"
-EXTRACT_DIR="$DOWNLOAD_DIR/extracted"
-SOURCE_BASE="https://leios1-rel-a-1.play.dev.cardano.org" # example only: verify current source and network
-
-mkdir -p "$DOWNLOAD_DIR"
-# Verify EXTRACT_DIR is absent, beneath the registered working directory, and not a symlink or mount.
-mkdir "$EXTRACT_DIR"
-curl --fail --location --retry 10 --retry-connrefused --retry-delay 10 \
-  --connect-timeout 15 --max-time 3600 \
-  --output "$ARCHIVE" "$SOURCE_BASE/leios.tar.zst"
-curl --fail --location --retry 5 --retry-delay 5 \
-  --connect-timeout 15 --max-time 120 \
-  --output "$CHECKSUM" "$SOURCE_BASE/leios.tar.zst.sha256"
-
-# Check that the manifest has exactly one expected basename and a valid digest before using it.
-(cd "$DOWNLOAD_DIR" && sha256sum -c "$(basename "$CHECKSUM")")
-tar --list --file "$ARCHIVE" >/dev/null
-tar --extract --file "$ARCHIVE" --directory "$EXTRACT_DIR"
+python3 skills/bootstrap-node-database/scripts/inspect_snapshot.py \
+  --archive /private/staging/leios.tar.zst \
+  --metadata /private/staging/leios.tar.zst.meta.json \
+  --checksum /private/staging/leios.tar.zst.sha256 \
+  --expected-root db \
+  --require-dir immutable --require-dir volatile --require-dir ledger \
+  --require-file protocolMagicId
 ```
 
-Before extraction, review the full `tar --list` output and validate every member path. Ensure the checksum manifest names exactly the selected archive basename; inspect source network/version and layout. Do not delete the archive until post-start validation succeeds and the retention decision is recorded. This is a procedure example, not permission to run against a live node without target-specific preflight.
+`--expected-root db` is illustrative only: replace it with the root discovered from this artifact and proven compatible with the selected node. Marker requirements are release/layout-specific and must be confirmed from authoritative release material and the registered node's actual database format. For remote extraction, use a fresh absolute stage path and `tar --zstd --extract --file "$ARCHIVE" --directory "$EXTRACT_DIR" --no-same-owner`; for local streaming, feed the verified archive to the same non-executing extractor over the verified host connection. Never extract over the live destination. Do not delete the local archive until post-start validation succeeds and retention is decided. The execution plan must capture actual transfer/extract commands and exact paths before mutation.
 
 ## Failure and success
 
-Stop and report evidence on checksum failure, source mismatch, path traversal, unexpected contents, permission errors, failed extraction, insufficient disk, failed startup, or a non-progressing tip. Do not retry a failed replacement blindly.
+Stop and report evidence on checksum/metadata mismatch, source drift, unsafe or duplicate archive entries, unexpected layout, permission errors, failed extraction, insufficient reserve, failed startup, or a non-progressing tip. After an interrupted or blocked destructive step, reconcile remote state read-only before retrying; never infer that a command ran or rolled back from a tool error alone. Do not ask the user to repeat an authorization already given, and do not route around a runtime gate. A failed stream after exact DB removal leaves the service stopped; preserve the locally verified snapshot and use the planned bounded recovery route.
 
-Success means a checksum-verified snapshot from a trusted fully synced relay is installed at the declared database path, protected static material is intact, the node starts through the normal lifecycle workflow, and observations show the expected node identity with a progressing tip.
+Success means a metadata-pinned, checksum-verified snapshot from a trusted source passed full safe-member/layout inspection and disk budgeting, is installed at the exact declared database path; protected static material is intact; the node starts through the normal lifecycle workflow; and independent observations show the expected node identity/network/version with a progressing tip. Source sync status is recorded when available but is not a mandatory provider endpoint.
 
 ## Sources
 

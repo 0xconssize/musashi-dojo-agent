@@ -3,9 +3,9 @@ skill: bootstrap-node-database
 phase: 6
 risk: destructive-state
 scope: [single-node]
-inputs: [node_id, host_assessment, working_directory, database_path, database_size_bytes, invalid_database_evidence, runtime_identity, trusted_source_relay, source_sync_status, selected_node_version]
-outputs: [database_bootstrap_report, node_state]
-success: A checksum-verified Leios database snapshot from a trusted fully synced relay is installed and the node passes post-start validation.
+inputs: [node_id, host_assessment, working_directory, database_path, database_size_bytes, allocated_database_bytes, invalid_database_evidence, runtime_identity, trusted_source_relay, source_sync_status_if_available, selected_node_version, snapshot_metadata, snapshot_etag, snapshot_archive_bytes, snapshot_sha256, snapshot_database_root, snapshot_expanded_bytes, disk_reserve_bytes, staging_strategy]
+outputs: [validated_execution_plan, database_bootstrap_report, node_state]
+success: A metadata-pinned, checksum-verified Leios snapshot passes full safe-member/layout inspection and disk budgeting, is installed at the exact registered database path, and the node passes independent post-start validation; source sync status is recorded when available but is not a required endpoint.
 
 sources:
   operational:
